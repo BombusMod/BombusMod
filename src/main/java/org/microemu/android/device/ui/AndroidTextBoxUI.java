@@ -27,15 +27,13 @@ import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 import javax.microedition.lcdui.Command;
 
-import android.text.InputFilter;
-import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.*;
+
+import org.bombusmod.BombusModActivity;
 import org.microemu.DisplayAccess;
 import org.microemu.MIDletBridge;
-import org.microemu.android.MicroEmulatorActivity;
 import org.microemu.device.InputMethod;
 import org.microemu.device.ui.CommandUI;
 import org.microemu.device.ui.TextBoxUI;
@@ -47,10 +45,8 @@ import android.graphics.Typeface;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.view.Gravity;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.Vector;
@@ -60,7 +56,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
     private EditText editView;
     private TableLayout commandGrid;
 
-    public AndroidTextBoxUI(final MicroEmulatorActivity activity, final TextBox textBox) {
+    public AndroidTextBoxUI(final BombusModActivity activity, final TextBox textBox) {
         super(activity, textBox, true);
         activity.post(new Runnable() {
             public void run() {
@@ -151,7 +147,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
         });
     }
 
-    private EditText createEditor(final MicroEmulatorActivity activity, final TextBox textBox) {
+    private EditText createEditor(final BombusModActivity activity, final TextBox textBox) {
         final EditText editor = new EditText(activity) {
             @Override
             protected void onWindowVisibilityChanged(int visibility) {

@@ -34,11 +34,10 @@ import javax.microedition.lcdui.Canvas;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Display;
 import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.Item;
 import javax.microedition.lcdui.TextBox;
 import javax.microedition.lcdui.TextField;
 
-import org.microemu.android.MicroEmulatorActivity;
+import org.bombusmod.BombusModActivity;
 import org.microemu.android.device.ui.AndroidCanvasUI;
 import org.microemu.android.device.ui.AndroidCommandUI;
 import org.microemu.android.device.ui.AndroidTextBoxUI;
@@ -62,7 +61,7 @@ public class AndroidDevice implements Device {
 
 	private EmulatorContext emulatorContext;
 	
-	private MicroEmulatorActivity activity;
+	private BombusModActivity activity;
 	
 	private UIFactory ui = new UIFactory() {
 
@@ -97,7 +96,7 @@ public class AndroidDevice implements Device {
 	
 	private Vector softButtons = new Vector();
 	
-	public AndroidDevice(EmulatorContext emulatorContext, MicroEmulatorActivity activity) {
+	public AndroidDevice(EmulatorContext emulatorContext, BombusModActivity activity) {
 		this.emulatorContext = emulatorContext;
 		this.activity = activity;
 	}

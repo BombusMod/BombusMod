@@ -29,7 +29,7 @@ package org.microemu.android.device.ui;
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.Image;
 
-import org.microemu.android.MicroEmulatorActivity;
+import org.bombusmod.BombusModActivity;
 import org.microemu.android.device.AndroidImmutableImage;
 import org.microemu.device.ui.CommandUI;
 
@@ -38,13 +38,13 @@ import android.graphics.drawable.Drawable;
 
 public class AndroidCommandUI implements CommandUI {
 
-	private MicroEmulatorActivity activity;
+	private BombusModActivity activity;
 	
 	private Command command;
 	
 	private Drawable drawable;
 
-	public AndroidCommandUI(MicroEmulatorActivity activity, Command command) {
+	public AndroidCommandUI(BombusModActivity activity, Command command) {
 		this.activity = activity;
 		this.command = command;
 	}

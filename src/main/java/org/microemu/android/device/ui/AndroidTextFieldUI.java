@@ -27,10 +27,9 @@
 package org.microemu.android.device.ui;
 
 import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.ItemStateListener;
 import javax.microedition.lcdui.TextField;
 
-import org.microemu.android.MicroEmulatorActivity;
+import org.bombusmod.BombusModActivity;
 import org.microemu.device.InputMethod;
 import org.microemu.device.ui.TextFieldUI;
 
@@ -45,13 +44,13 @@ import android.widget.TextView;
 
 public class AndroidTextFieldUI extends LinearLayout implements TextFieldUI {
 	
-	private MicroEmulatorActivity activity;
+	private BombusModActivity activity;
 	
 	private TextView labelView;
 	
 	private EditText editView;
 	
-	public AndroidTextFieldUI(final MicroEmulatorActivity activity, final TextField textField) {
+	public AndroidTextFieldUI(final BombusModActivity activity, final TextField textField) {
 		super(activity);
 		
 		this.activity = activity;

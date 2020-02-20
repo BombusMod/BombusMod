@@ -28,10 +28,10 @@ package org.microemu.android.device.ui;
 
 import javax.microedition.lcdui.Canvas;
 
+import org.bombusmod.BombusModActivity;
 import org.microemu.DisplayAccess;
 import org.microemu.MIDletAccess;
 import org.microemu.MIDletBridge;
-import org.microemu.android.MicroEmulatorActivity;
 import org.microemu.android.device.AndroidDeviceDisplay;
 import org.microemu.android.device.AndroidDisplayGraphics;
 import org.microemu.android.device.AndroidInputMethod;
@@ -62,7 +62,7 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
     
     private AndroidDisplayGraphics graphics = null;   
     
-    public AndroidCanvasUI(final MicroEmulatorActivity activity, Canvas canvas) {
+    public AndroidCanvasUI(final BombusModActivity activity, Canvas canvas) {
         super(activity, canvas, false);
        
         

@@ -25,6 +25,7 @@ dependencies {
     implementation 'androidx.asynclayoutinflater:asynclayoutinflater:1.0.0'
     implementation 'androidx.collection:collection:1.1.0'
     implementation 'androidx.work:work-runtime:2.3.2'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
 
 android {

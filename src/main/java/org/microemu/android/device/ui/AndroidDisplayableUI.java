@@ -33,7 +33,7 @@ import java.util.Vector;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 
-import org.microemu.android.MicroEmulatorActivity;
+import org.bombusmod.BombusModActivity;
 import org.microemu.device.ui.CommandUI;
 import org.microemu.device.ui.DisplayableUI;
 
@@ -43,7 +43,7 @@ import android.widget.TextView;
 
 public abstract class AndroidDisplayableUI implements DisplayableUI {
 	
-	protected MicroEmulatorActivity activity;
+	protected BombusModActivity activity;
 	
 	protected Displayable displayable;
 	
@@ -69,7 +69,7 @@ public abstract class AndroidDisplayableUI implements DisplayableUI {
 	
 	private CommandListener commandListener = null;
 	
-	protected AndroidDisplayableUI(MicroEmulatorActivity activity, Displayable displayable, boolean initView) {
+	protected AndroidDisplayableUI(BombusModActivity activity, Displayable displayable, boolean initView) {
 		this.activity = activity;
 		this.displayable = displayable;
 		

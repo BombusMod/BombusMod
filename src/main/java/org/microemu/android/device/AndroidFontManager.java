@@ -30,12 +30,11 @@ import java.util.HashMap;
 
 import javax.microedition.lcdui.Font;
 
-import org.microemu.android.MicroEmulatorActivity;
+import org.bombusmod.BombusModActivity;
 import org.microemu.device.FontManager;
 
 import android.graphics.Typeface;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 
 public class AndroidFontManager implements FontManager
 {
@@ -76,11 +75,11 @@ public class AndroidFontManager implements FontManager
 	    	}
 	    	int size = 0;
 	    	if (meFont.getSize() == Font.SIZE_SMALL) {
-	    		size = MicroEmulatorActivity.config.FONT_SIZE_SMALL;
+	    		size = BombusModActivity.config.FONT_SIZE_SMALL;
 	    	} else if (meFont.getSize() == Font.SIZE_MEDIUM) {
-	    		size = MicroEmulatorActivity.config.FONT_SIZE_MEDIUM;
+	    		size = BombusModActivity.config.FONT_SIZE_MEDIUM;
 	    	} else if (meFont.getSize() == Font.SIZE_LARGE) {
-	    		size = MicroEmulatorActivity.config.FONT_SIZE_LARGE;
+	    		size = BombusModActivity.config.FONT_SIZE_LARGE;
 	    	}
 
 	    	// 	Once default font size is defined,

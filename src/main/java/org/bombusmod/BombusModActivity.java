@@ -21,29 +21,45 @@
  */
 package org.bombusmod;
 
-import Client.Contact;
-import Client.StaticData;
+import android.app.Dialog;
 import android.app.NotificationManager;
-import android.content.*;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
+import android.view.View;
 import android.view.Window;
-import de.duenndns.ssl.MemorizingTrustManager;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.bombusmod.android.service.XmppService;
 import org.bombusmod.scrobbler.Receiver;
 import org.microemu.DisplayAccess;
+import org.microemu.DisplayComponent;
 import org.microemu.MIDletAccess;
 import org.microemu.MIDletBridge;
-import org.microemu.android.MicroEmulatorActivity;
+import org.microemu.android.AndroidConfig;
 import org.microemu.android.device.AndroidDevice;
+import org.microemu.android.device.AndroidDeviceDisplay;
+import org.microemu.android.device.AndroidFontManager;
 import org.microemu.android.device.AndroidInputMethod;
 import org.microemu.android.device.ui.AndroidCanvasUI;
 import org.microemu.android.device.ui.AndroidCommandUI;
@@ -51,31 +67,44 @@ import org.microemu.android.device.ui.AndroidDisplayableUI;
 import org.microemu.android.util.AndroidRecordStoreManager;
 import org.microemu.android.util.AndroidRepaintListener;
 import org.microemu.app.Common;
-import org.microemu.app.util.MIDletSystemProperties;
 import org.microemu.device.Device;
+import org.microemu.device.DeviceDisplay;
 import org.microemu.device.DeviceFactory;
+import org.microemu.device.EmulatorContext;
+import org.microemu.device.FontManager;
+import org.microemu.device.InputMethod;
 import org.microemu.device.ui.CommandUI;
-import util.ClipBoardIO;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
-public class BombusModActivity extends MicroEmulatorActivity {
+import Client.Contact;
+import Client.StaticData;
+import de.duenndns.ssl.MemorizingTrustManager;
+import util.ClipBoardIO;
+
+public class BombusModActivity extends AppCompatActivity {
 
     public static final String LOG_TAG = "BombusModActivity";
+    public static AndroidConfig config = new AndroidConfig();
     public Common common;
+    public boolean windowFullscreen;
+    protected View contentView;
+    protected EmulatorContext emulatorContext;
     private MIDlet midlet;
     private static BombusModActivity instance;
     protected Receiver musicReceiver;
@@ -85,6 +114,11 @@ public class BombusModActivity extends MicroEmulatorActivity {
     private MemorizingTrustManager memorizingTrustManager;
 
     private boolean serviceBound;
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Thread activityThread;
+
+    //audio scrobbler
+    IntentFilter scrobblerIntentFilter;
 
     public static BombusModActivity getInstance() {
         return instance;
@@ -97,6 +131,79 @@ public class BombusModActivity extends MicroEmulatorActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
+        config.FONT_SIZE_SMALL = getResources().getDimensionPixelSize(R.dimen.small_font_size);
+        config.FONT_SIZE_MEDIUM = getResources().getDimensionPixelSize(R.dimen.medium_font_size);
+        config.FONT_SIZE_LARGE = getResources().getDimensionPixelSize(R.dimen.large_font_size);
+
+        // Query the activity property android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        TypedArray ta = getTheme().obtainStyledAttributes(new int[]{android.R.attr.windowFullscreen});
+        windowFullscreen = ta.getBoolean(0, false);
+
+        Drawable phoneCallIcon = getResources().getDrawable(android.R.drawable.stat_sys_phone_call);
+        int statusBarHeight = 0;
+        if (!windowFullscreen) {
+            statusBarHeight = phoneCallIcon.getIntrinsicHeight();
+        }
+
+        Display display = getWindowManager().getDefaultDisplay();
+        final int width = display.getWidth();
+        final int height = display.getHeight() - statusBarHeight;
+
+        emulatorContext = new EmulatorContext() {
+
+            private InputMethod inputMethod = new AndroidInputMethod();
+
+            private DeviceDisplay deviceDisplay = new AndroidDeviceDisplay(BombusModActivity.this, this, width, height);
+
+            private FontManager fontManager = new AndroidFontManager(BombusModActivity.this.getResources().getDisplayMetrics());
+
+            public DisplayComponent getDisplayComponent() {
+                // TODO consider removal of EmulatorContext.getDisplayComponent()
+                System.out.println("MicroEmulator.emulatorContext::getDisplayComponent()");
+                return null;
+            }
+
+            public InputMethod getDeviceInputMethod() {
+                return inputMethod;
+            }
+
+            public DeviceDisplay getDeviceDisplay() {
+                return deviceDisplay;
+            }
+
+            public FontManager getDeviceFontManager() {
+                return fontManager;
+            }
+
+            public InputStream getResourceAsStream(Class origClass, String name) {
+                try {
+                    if (name.startsWith("/")) {
+                        return getAssets().open(name.substring(1));
+                    } else {
+                        Package p = origClass.getPackage();
+                        if (p == null) {
+                            return getAssets().open(name);
+                        } else {
+                            String folder = origClass.getPackage().getName().replace('.', '/');
+                            return getAssets().open(folder + "/" + name);
+                        }
+                    }
+                } catch (IOException e1) {
+                    //Logger.debug(e); // large output with BombusMod
+                    return null;
+                }
+            }
+
+            public boolean platformRequest(String url) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+
+                return true;
+            }
+
+        };
+
+        activityThread = Thread.currentThread();
+
         instance = this;
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -108,7 +215,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
             StringBuffer line = new StringBuffer();
 
             @Override
-            public void write(int oneByte) throws IOException {
+            public void write(int oneByte) {
                 if (((char) oneByte) == '\n') {
                     Log.d(BombusModActivity.LOG_TAG, line.toString());
                     if (line.length() > 0) {
@@ -149,66 +256,9 @@ public class BombusModActivity extends MicroEmulatorActivity {
         System.setProperty("device.model", android.os.Build.MODEL);
         System.setProperty("device.software.version", android.os.Build.VERSION.RELEASE);
 
-
-        initializeExtensions();
-
         common.setSuiteName("org.BombusMod");
         midlet = common.initMIDlet(false);
-        //audio scrobbler
-        IntentFilter filter = new IntentFilter();
-        //Google Android player
-        filter.addAction("com.android.music.playstatechanged");
-        filter.addAction("com.android.music.playbackcomplete");
-        filter.addAction("com.android.music.metachanged");
-        //HTC Music
-        filter.addAction("com.htc.music.playstatechanged");
-        filter.addAction("com.htc.music.playbackcomplete");
-        filter.addAction("com.htc.music.metachanged");
-        //MIUI Player
-        filter.addAction("com.miui.player.playstatechanged");
-        filter.addAction("com.miui.player.playbackcomplete");
-        filter.addAction("com.miui.player.metachanged");
-        //Real
-        filter.addAction("com.real.IMP.playstatechanged");
-        filter.addAction("com.real.IMP.playbackcomplete");
-        filter.addAction("com.real.IMP.metachanged");
-        //SEMC Music Player
-        filter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_TRACK_STARTED");
-        filter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_PAUSED");
-        filter.addAction("com.sonyericsson.music.TRACK_COMPLETED");
-        filter.addAction("com.sonyericsson.music.metachanged");
-        filter.addAction("com.sonyericsson.music.playbackcomplete");
-        filter.addAction("com.sonyericsson.music.playstatechanged");
-        //rdio
-        filter.addAction("com.rdio.android.metachanged");
-        filter.addAction("com.rdio.android.playstatechanged");
-        //Samsung Music Player
-        filter.addAction("com.samsung.sec.android.MusicPlayer.playstatechanged");
-        filter.addAction("com.samsung.sec.android.MusicPlayer.playbackcomplete");
-        filter.addAction("com.samsung.sec.android.MusicPlayer.metachanged");
-        filter.addAction("com.sec.android.app.music.playstatechanged");
-        filter.addAction("com.sec.android.app.music.playbackcomplete");
-        filter.addAction("com.sec.android.app.music.metachanged");
-        //Winamp
-        filter.addAction("com.nullsoft.winamp.playstatechanged");
-        //Amazon
-        filter.addAction("com.amazon.mp3.playstatechanged");
-        //Rhapsody
-        filter.addAction("com.rhapsody.playstatechanged");
-        //PowerAmp
-        filter.addAction("com.maxmpz.audioplayer.playstatechanged");
-        //will be added any....
-        //scrobblers detect for players (poweramp for example)
-        //Last.fm
-        filter.addAction("fm.last.android.metachanged");
-        filter.addAction("fm.last.android.playbackpaused");
-        filter.addAction("fm.last.android.playbackcomplete");
-        //A simple last.fm scrobbler
-        filter.addAction("com.adam.aslfms.notify.playstatechanged");
-        //Scrobble Droid
-        filter.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
-        musicReceiver = new Receiver();
-        registerReceiver(musicReceiver, filter);
+
         ClipBoardIO.getInstance();
         try {
             sslContext = SSLContext.getInstance("TLS");
@@ -223,6 +273,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
         System.out.println("onNewIntent(" + intent.getAction() + ")");
         if ("org.bombusmod.bm-notify".equals(intent.getAction())) {
             Contact c = StaticData.getInstance().roster.getFirstContactWithNewHighlite(null);
@@ -234,7 +285,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         if ("org.bombusmod.bm-notify.reply".equals(intent.getAction())) {
             Contact c = StaticData.getInstance().roster.getFirstContactWithNewHighlite(null);
             if (c != null) {
-                c.getMsgList().Reply();                
+                c.getMsgList().Reply();
             }
         }
     }
@@ -276,6 +327,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
         if (memorizingTrustManager != null) {
             memorizingTrustManager.unbindDisplayActivity(this);
         }
+        unregisterReceiver(musicReceiver);
     }
 
     @Override
@@ -285,23 +337,62 @@ public class BombusModActivity extends MicroEmulatorActivity {
         if (memorizingTrustManager != null) {
             memorizingTrustManager.bindDisplayActivity(this);
         }
+        scrobblerIntentFilter = new IntentFilter();
+        //Google Android player
+        scrobblerIntentFilter.addAction("com.android.music.playstatechanged");
+        scrobblerIntentFilter.addAction("com.android.music.playbackcomplete");
+        scrobblerIntentFilter.addAction("com.android.music.metachanged");
+        //HTC Music
+        scrobblerIntentFilter.addAction("com.htc.music.playstatechanged");
+        scrobblerIntentFilter.addAction("com.htc.music.playbackcomplete");
+        scrobblerIntentFilter.addAction("com.htc.music.metachanged");
+        //MIUI Player
+        scrobblerIntentFilter.addAction("com.miui.player.playstatechanged");
+        scrobblerIntentFilter.addAction("com.miui.player.playbackcomplete");
+        scrobblerIntentFilter.addAction("com.miui.player.metachanged");
+        //Real
+        scrobblerIntentFilter.addAction("com.real.IMP.playstatechanged");
+        scrobblerIntentFilter.addAction("com.real.IMP.playbackcomplete");
+        scrobblerIntentFilter.addAction("com.real.IMP.metachanged");
+        //SEMC Music Player
+        scrobblerIntentFilter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_TRACK_STARTED");
+        scrobblerIntentFilter.addAction("com.sonyericsson.music.playbackcontrol.ACTION_PAUSED");
+        scrobblerIntentFilter.addAction("com.sonyericsson.music.TRACK_COMPLETED");
+        scrobblerIntentFilter.addAction("com.sonyericsson.music.metachanged");
+        scrobblerIntentFilter.addAction("com.sonyericsson.music.playbackcomplete");
+        scrobblerIntentFilter.addAction("com.sonyericsson.music.playstatechanged");
+        //rdio
+        scrobblerIntentFilter.addAction("com.rdio.android.metachanged");
+        scrobblerIntentFilter.addAction("com.rdio.android.playstatechanged");
+        //Samsung Music Player
+        scrobblerIntentFilter.addAction("com.samsung.sec.android.MusicPlayer.playstatechanged");
+        scrobblerIntentFilter.addAction("com.samsung.sec.android.MusicPlayer.playbackcomplete");
+        scrobblerIntentFilter.addAction("com.samsung.sec.android.MusicPlayer.metachanged");
+        scrobblerIntentFilter.addAction("com.sec.android.app.music.playstatechanged");
+        scrobblerIntentFilter.addAction("com.sec.android.app.music.playbackcomplete");
+        scrobblerIntentFilter.addAction("com.sec.android.app.music.metachanged");
+        //Winamp
+        scrobblerIntentFilter.addAction("com.nullsoft.winamp.playstatechanged");
+        //Amazon
+        scrobblerIntentFilter.addAction("com.amazon.mp3.playstatechanged");
+        //Rhapsody
+        scrobblerIntentFilter.addAction("com.rhapsody.playstatechanged");
+        //PowerAmp
+        scrobblerIntentFilter.addAction("com.maxmpz.audioplayer.playstatechanged");
+        //will be added any....
+        //scrobblers detect for players (poweramp for example)
+        //Last.fm
+        scrobblerIntentFilter.addAction("fm.last.android.metachanged");
+        scrobblerIntentFilter.addAction("fm.last.android.playbackpaused");
+        scrobblerIntentFilter.addAction("fm.last.android.playbackcomplete");
+        //A simple last.fm scrobbler
+        scrobblerIntentFilter.addAction("com.adam.aslfms.notify.playstatechanged");
+        //Scrobble Droid
+        scrobblerIntentFilter.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
+        musicReceiver = new Receiver();
+        registerReceiver(musicReceiver, scrobblerIntentFilter);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.i(LOG_TAG, "onDestroy();");
-        unregisterReceiver(musicReceiver);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.i(LOG_TAG, "onStop();");
-    }
-
-    protected void initializeExtensions() {
-    }
     private boolean ignoreBackKeyUp = false;
 
     @Override
@@ -363,14 +454,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
 
             return true;
         }
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.ECLAIR
-                && keyCode == KeyEvent.KEYCODE_BACK
-                && event.getRepeatCount() == 0) {
-            // Take care of calling this method on earlier versions of 
-            // the platform where it doesn't exist. 
-            onBackPressed();
-            return true;
-        }
         return super.onKeyDown(keyCode, event);
     }
 
@@ -429,6 +512,7 @@ public class BombusModActivity extends MicroEmulatorActivity {
                 return false;
         }
     }
+
     private final static KeyEvent KEY_RIGHT_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT);
     private final static KeyEvent KEY_RIGHT_UP_EVENT = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT);
     private final static KeyEvent KEY_LEFT_DOWN_EVENT = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT);
@@ -600,4 +684,57 @@ public class BombusModActivity extends MicroEmulatorActivity {
             serviceBound = false;
         }
     };
+
+    public void setConfig(AndroidConfig config) {
+        BombusModActivity.config = config;
+    }
+
+    public EmulatorContext getEmulatorContext() {
+        return emulatorContext;
+    }
+
+    public boolean post(Runnable r) {
+        return handler.post(r);
+    }
+
+    public boolean isActivityThread() {
+        return (activityThread == Thread.currentThread());
+    }
+
+    public View getContentView() {
+        return contentView;
+    }
+
+    @Override
+    public void setContentView(View view) {
+        Log.d("AndroidCanvasUI", "set content view: " + view);
+        super.setContentView(view);
+
+        contentView = view;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Drawable phoneCallIcon = getResources().getDrawable(android.R.drawable.stat_sys_phone_call);
+        int statusBarHeight = 0;
+        if (!windowFullscreen) {
+            statusBarHeight = phoneCallIcon.getIntrinsicHeight();
+        }
+
+        Display display = getWindowManager().getDefaultDisplay();
+        AndroidDeviceDisplay deviceDisplay = (AndroidDeviceDisplay) DeviceFactory.getDevice().getDeviceDisplay();
+        deviceDisplay.displayRectangleWidth = display.getWidth();
+        deviceDisplay.displayRectangleHeight = display.getHeight() - statusBarHeight;
+        MIDletAccess ma = MIDletBridge.getMIDletAccess();
+        if (ma == null) {
+            return;
+        }
+        DisplayAccess da = ma.getDisplayAccess();
+        if (da != null) {
+            da.sizeChanged();
+            deviceDisplay.repaint(0, 0, deviceDisplay.getFullWidth(), deviceDisplay.getFullHeight());
+        }
+    }
 }
