@@ -33,12 +33,6 @@ public abstract class Screen extends Displayable
     {
         super(title);
     }
-
-    
-    void scroll(int gameKeyCode) {
-    	viewPortY += traverse(gameKeyCode, viewPortY, viewPortY + viewPortHeight);
-    	repaint();
-    }
     
 	
 	abstract int traverse(int gameKeyCode, int top, int bottom);
@@ -82,11 +76,6 @@ public abstract class Screen extends Displayable
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		g.setGrayScale(0);
-
-        // TODO move to Displayable
-		if (getTicker() != null) {
-			contentHeight += getTicker().paintContent(g);
-		}
 
 		g.translate(0, contentHeight);
 		translatedY = contentHeight;

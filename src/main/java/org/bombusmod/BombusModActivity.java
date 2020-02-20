@@ -21,7 +21,6 @@
  */
 package org.bombusmod;
 
-import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -53,7 +52,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.bombusmod.android.service.XmppService;
 import org.bombusmod.scrobbler.Receiver;
 import org.microemu.DisplayAccess;
-import org.microemu.DisplayComponent;
 import org.microemu.MIDletAccess;
 import org.microemu.MIDletBridge;
 import org.microemu.android.AndroidConfig;
@@ -65,7 +63,6 @@ import org.microemu.android.device.ui.AndroidCanvasUI;
 import org.microemu.android.device.ui.AndroidCommandUI;
 import org.microemu.android.device.ui.AndroidDisplayableUI;
 import org.microemu.android.util.AndroidRecordStoreManager;
-import org.microemu.android.util.AndroidRepaintListener;
 import org.microemu.app.Common;
 import org.microemu.device.Device;
 import org.microemu.device.DeviceDisplay;
@@ -81,8 +78,6 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
@@ -156,12 +151,6 @@ public class BombusModActivity extends AppCompatActivity {
             private DeviceDisplay deviceDisplay = new AndroidDeviceDisplay(BombusModActivity.this, this, width, height);
 
             private FontManager fontManager = new AndroidFontManager(BombusModActivity.this.getResources().getDisplayMetrics());
-
-            public DisplayComponent getDisplayComponent() {
-                // TODO consider removal of EmulatorContext.getDisplayComponent()
-                System.out.println("MicroEmulator.emulatorContext::getDisplayComponent()");
-                return null;
-            }
 
             public InputMethod getDeviceInputMethod() {
                 return inputMethod;
@@ -256,7 +245,6 @@ public class BombusModActivity extends AppCompatActivity {
         System.setProperty("device.model", android.os.Build.MODEL);
         System.setProperty("device.software.version", android.os.Build.VERSION.RELEASE);
 
-        common.setSuiteName("org.BombusMod");
         midlet = common.initMIDlet(false);
 
         ClipBoardIO.getInstance();
@@ -300,12 +288,6 @@ public class BombusModActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-        if (contentView != null) {
-            if (contentView instanceof AndroidRepaintListener) {
-                ((AndroidRepaintListener) contentView).onPause();
-            }
-        }
 
         if (isFinishing()) {
             NotificationManager mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -664,11 +646,7 @@ public class BombusModActivity extends AppCompatActivity {
                     }
 
                     if (contentView != null) {
-                        if (contentView instanceof AndroidRepaintListener) {
-                            ((AndroidRepaintListener) contentView).onResume();
-                        }
                         post(new Runnable() {
-
                             public void run() {
                                 contentView.invalidate();
                             }

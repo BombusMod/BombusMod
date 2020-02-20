@@ -749,14 +749,6 @@ public class Config {
         return getPlatformName();
     }
 
-    public final String getStringProperty(final String key, final String defvalue) {
-        if (key != null) {
-            String s = BombusMod.getInstance().getAppProperty(key);
-            return (s == null) ? defvalue : s;
-        } 
-        return defvalue;
-    }
-
     public final int getIntProperty(final String key, final int defvalue) {
         try {
             return Integer.parseInt(key);

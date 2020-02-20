@@ -126,11 +126,6 @@ public class TextBox extends Screen {
     }
 
     @Override
-    public void setTicker(Ticker ticker) {
-        // TODO implement
-    }
-
-    @Override
     public void setTitle(String s) {
         super.setTitle(s);
     }

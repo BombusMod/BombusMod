@@ -245,10 +245,6 @@ public class TextField extends Item {
         return constraints;
     }
 
-    public void setInitialInputMode(String characterSubset) {
-        // TODO implement
-    }
-
     @Override
     boolean isFocusable() {
         return true;

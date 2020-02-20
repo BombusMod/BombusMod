@@ -26,20 +26,16 @@
 
 package org.microemu.android.device;
 
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Image;
-
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.DashPathEffect;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
-import android.util.Log;
-import org.bombusmod.BombusModActivity;
+
+import javax.microedition.lcdui.Font;
+import javax.microedition.lcdui.Image;
 
 public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	
@@ -51,22 +47,12 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
     
 	private static final DashPathEffect dashPathEffect = new DashPathEffect(new float[] { 5, 5 }, 0);
 	
-	private static final Matrix identityMatrix = new Matrix();
-	
 	private Canvas canvas;
 
 	private Rect clip;
 	
 	private Font font;
-	
-	private int strokeStyle = SOLID;
-	
-	private Rect tmpRect = new Rect();
-	
-    private Rect tmpRectSecond = new Rect();
-    
-    private Matrix tmpMatrix = new Matrix();
-    
+
 	public AndroidDisplayGraphics() {
 		strokePaint.setAntiAlias(true);
 		strokePaint.setStyle(Paint.Style.STROKE);
@@ -109,11 +95,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 		canvas.clipRect(x, y, x + width, y + height);
 		clip = canvas.getClipBounds();
 	}
-
-	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-	    RectF rect = new RectF(x, y, x + width, y + height);
-	    canvas.drawArc(rect, -startAngle, -arcAngle, false, strokePaint);
-    }
 
 	public void drawImage(Image img, int x, int y, int anchor) {
 		int newx = x;
@@ -187,11 +168,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
         canvas.drawText(str, offset, len + offset, newx, newy, androidFont.paint);
 	}
 
-    public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-	    RectF rect = new RectF(x, y, x + width, y + height);
-	    canvas.drawArc(rect, -startAngle, -arcAngle, true, fillPaint);
-    }
-
 	public void fillRect(int x, int y, int width, int height) {
         canvas.drawRect(x, y, x + width, y + height, fillPaint);
 	}
@@ -223,10 +199,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	public Font getFont() {
 		return font;
 	}
-	
-	public int getStrokeStyle() {
-		return strokeStyle;
-	}
 
 	public void setClip(int x, int y, int width, int height) {
 		if (x == clip.left && x + width == clip.right && y == clip.top && y + height == clip.bottom) {
@@ -256,9 +228,7 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 		if (style != SOLID && style != DOTTED) {
 			throw new IllegalArgumentException();
 		}
-		
-		this.strokeStyle = style;
-		
+
 		if (style == SOLID) {
 			strokePaint.setPathEffect(null);
 			fillPaint.setPathEffect(null);
@@ -278,52 +248,5 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
         clip.top -= y;
         clip.bottom -= y;
     }
-
-	public void drawRGB(int[] rgbData, int offset, int scanlength, int x,
-			int y, int width, int height, boolean processAlpha) {
-        if (rgbData == null)
-            throw new NullPointerException();
-
-        if (width == 0 || height == 0) {
-            return;
-        }
-
-        int l = rgbData.length;
-        if (width < 0 || height < 0 || offset < 0 || offset >= l || (scanlength < 0 && scanlength * (height - 1) < 0)
-                || (scanlength >= 0 && scanlength * (height - 1) + width - 1 >= l)) {
-            throw new ArrayIndexOutOfBoundsException();
-        }
-        
-        // MIDP allows almost any value of scanlength, drawBitmap is more strict with the stride
-        if (scanlength == 0) {
-        	scanlength = width;
-        }
-        int rows = rgbData.length / scanlength;
-        if (rows < height) {
-        	height = rows;
-        }
-        
-       	canvas.drawBitmap(rgbData, offset, scanlength, x, y, width, height, processAlpha, strokePaint);
-	}
-
-	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {
-		Path path = new Path();
-		path.moveTo(x1, y1);
-		path.lineTo(x2, y2);
-		path.lineTo(x3, y3);
-		path.lineTo(x1, y1);
-		canvas.drawPath(path, fillPaint);
-	}
-
-	public void copyArea(int x_src, int y_src, int width, int height,
-			int x_dest, int y_dest, int anchor) {
-		Log.d(BombusModActivity.LOG_TAG, "copyArea");
-	}
-
-	public int getDisplayColor(int color) {
-		Log.d(BombusModActivity.LOG_TAG, "getDisplayColor");
-
-		return -1;
-	}
 	
 }

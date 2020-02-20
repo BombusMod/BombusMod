@@ -119,17 +119,12 @@ public class MIDletBridge {
         return emulator.getRecordStoreManager();
     }
 
-    public static String getAppProperty(String key) {
-        return emulator.getAppProperty(key);
-    }
-
     public static InputStream getResourceAsStream(Class origClass, String name) {
         return emulator.getResourceAsStream(origClass, name);
     }
 
     public static void notifyDestroyed() {
         MIDletContext midletContext = getMIDletContext();
-        emulator.notifyDestroyed(midletContext);
         destroyMIDletContext(midletContext);
     }
 
@@ -147,10 +142,6 @@ public class MIDletBridge {
                 }
             }
         }
-    }
-
-    public static int checkPermission(String permission) {
-        return emulator.checkPermission(permission);
     }
 
     public static boolean platformRequest(String URL) {

@@ -40,21 +40,10 @@ public class Version {
     public final static String NAME = "BombusMod";
     public final static String BOMBUS_SITE_URL = "http://github.com/BombusMod";
 
-    public static String getBuildNum() {
-        String build = Config.getInstance().getStringProperty("Bombus-Build", "0");
-
-        return (!build.equals("0") && build != null) ? " [" + build + "]" : "";
-    }
-
-    public static String getVersionLang() {
-        return getVersionNumber() + " (" + SR.MS_IFACELANG + ")" + getBuildNum();
-    }
-
     public static String getVersionNumber() {
         Context context = BombusModActivity.getInstance();
-        PackageInfo packageInfo = null;
         try {
-            packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             return packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();

@@ -75,7 +75,7 @@ public class AndroidDevice implements Device {
 		}
 
 		public CommandUI createCommandUI(Command command) {
-			return new AndroidCommandUI(activity, command);
+			return new AndroidCommandUI(command);
 		}
 
 		public CanvasUI createCanvasUI(Canvas canvas) {

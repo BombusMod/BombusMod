@@ -4,18 +4,17 @@
  */
 package org.bombusmod.tls;
 
-import android.net.SSLCertificateSocketFactory;
-import io.tls.TlsIO;
 import org.bombusmod.BombusModActivity;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import javax.net.SocketFactory;
+
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
+
+import io.tls.TlsIO;
 
 /**
  *

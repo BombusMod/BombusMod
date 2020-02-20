@@ -26,11 +26,7 @@ package org.microemu.device;
 
 import java.io.InputStream;
 
-import org.microemu.DisplayComponent;
-
 public interface EmulatorContext {
-
-	DisplayComponent getDisplayComponent();
 
 	InputMethod getDeviceInputMethod();
 

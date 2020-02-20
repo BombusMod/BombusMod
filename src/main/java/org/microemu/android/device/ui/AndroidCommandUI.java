@@ -38,14 +38,11 @@ import android.graphics.drawable.Drawable;
 
 public class AndroidCommandUI implements CommandUI {
 
-	private BombusModActivity activity;
-	
 	private Command command;
 	
 	private Drawable drawable;
 
-	public AndroidCommandUI(BombusModActivity activity, Command command) {
-		this.activity = activity;
+	public AndroidCommandUI(Command command) {
 		this.command = command;
 	}
 

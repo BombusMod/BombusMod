@@ -31,7 +31,6 @@
 package javax.microedition.lcdui;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.microedition.midlet.MIDlet;
 
@@ -44,52 +43,17 @@ import org.microemu.device.ui.ItemUI;
 
 public class Display {
 
-	public static final int LIST_ELEMENT = 1;
-
-	public static final int CHOICE_GROUP_ELEMENT = 2;
-
-	public static final int ALERT = 3;
-
 	public static final int COLOR_BACKGROUND = 0;
 
-	public static final int COLOR_FOREGROUND = 1;
-
-	public static final int COLOR_HIGHLIGHTED_BACKGROUND = 2;
-
 	public static final int COLOR_HIGHLIGHTED_FOREGROUND = 3;
-
-	public static final int COLOR_BORDER = 4;
 
 	public static final int COLOR_HIGHLIGHTED_BORDER = 5;
 
 	private Displayable current = null;
 
-	private DisplayAccessor accessor = null;
+	private DisplayAccessor accessor;
 
 	private EventDispatcher eventDispatcher;
-
-	/**
-	 * @author radoshi
-	 * 
-	 */
-	private final class TickerPaintTask implements Runnable {
-
-		public void run() {
-			if (current != null) {
-				Ticker ticker = current.getTicker();
-				if (ticker != null) {
-					synchronized (ticker) {
-						if (ticker.resetTextPosTo != -1) {
-							ticker.textPos = ticker.resetTextPosTo;
-							ticker.resetTextPosTo = -1;
-						}
-						ticker.textPos -= Ticker.PAINT_MOVE;
-					}
-					repaint(current, 0, 0, current.getWidth(), current.getHeight());
-				}
-			}
-		}
-	}
 
 	/**
 	 * Wrap a key event as a runnable so it can be thrown into the event
@@ -341,45 +305,10 @@ public class Display {
 
 	private final Timer timer = new Timer();
 
-	/**
-	 * Wrap any runnable as a timertask so that when the timer gets fired, the
-	 * runnable gets run
-	 * 
-	 * @author radoshi
-	 * 
-	 */
-	private final class RunnableWrapper extends TimerTask {
-
-		private final Runnable runnable;
-
-		RunnableWrapper(Runnable runnable) {
-			this.runnable = runnable;
-		}
-
-		public void run() {
-			eventDispatcher.put(runnable);
-		}
-
-	}
-
 	Display() {
 		accessor = new DisplayAccessor(this);
 
 		eventDispatcher = DeviceFactory.getDevice().getUIFactory().createEventDispatcher(this);
-
-//		timer.scheduleAtFixedRate(new RunnableWrapper(new TickerPaintTask()), 0, Ticker.PAINT_TIMEOUT);
-	}
-
-	public void callSerially(Runnable runnable) {
-		eventDispatcher.put(runnable);
-	}
-
-	public int numAlphaLevels() {
-		return DeviceFactory.getDevice().getDeviceDisplay().numAlphaLevels();
-	}
-
-	public int numColors() {
-		return DeviceFactory.getDevice().getDeviceDisplay().numColors();
 	}
 
 	public boolean flashBacklight(int duration) {
@@ -409,22 +338,6 @@ public class Display {
 		default:
 			return 0x000000;
 		}
-	}
-
-	public int getBorderStyle(boolean highlighted) {
-		// TODO implement better
-		return highlighted ? Graphics.DOTTED : Graphics.SOLID;
-	}
-
-	public int getBestImageWidth(int imageType) {
-		// TODO implement
-		return 0;
-	}
-
-	public int getBestImageHeight(int imageType) {
-
-		// TODO implement
-		return 0;
 	}
 
 	public Displayable getCurrent() {
@@ -464,12 +377,6 @@ public class Display {
 				}
 												
 			}));
-		}
-	}
-
-	public void setCurrentItem(Item item) {
-		if (item.owner != current) {
-			setCurrent(item.owner);
 		}
 	}
 

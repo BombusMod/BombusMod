@@ -55,7 +55,7 @@ public class IqVersionReply implements JabberBlockListener {
             Iq reply=new Iq(data.getAttribute("from"), Iq.TYPE_RESULT, data.getAttribute("id"));
             reply.addChild(query);
             query.addChild("name", Version.NAME);
-            query.addChild("version",Version.getVersionLang());
+            query.addChild("version",Version.getVersionNumber());
             if (Config.getInstance().enableVersionOs) {
                 query.addChild("os", Config.getOs());
             }

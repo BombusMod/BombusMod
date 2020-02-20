@@ -56,20 +56,6 @@ public class Graphics {
 		implementationError();
 	}
 
-	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-        implementationError();
-    }
-
-	public void drawChar(char character, int x, int y, int anchor) {
-		char[] carr = new char[1];
-		carr[0] = character;
-		drawString(new String(carr), x, y, anchor);
-	}
-
-	public void drawChars(char[] data, int offset, int length, int x, int y, int anchor) {
-        drawString(new String(data, offset, length), x, y, anchor);
-    }
-
 	public void drawImage(Image img, int x, int y, int anchor) {
 		implementationError();
 	}
@@ -94,10 +80,6 @@ public class Graphics {
 		implementationError();
     }
 
-    public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
-        implementationError();
-    }
-
 	public void fillRect(int x, int y, int width, int height) {
 		implementationError();
 	}
@@ -105,10 +87,6 @@ public class Graphics {
 	public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
         implementationError();
     }
-
-	public int getBlueComponent() {
-		return getColor() & 255;
-	}
 
 	public int getClipHeight() {
 		implementationError();
@@ -144,24 +122,6 @@ public class Graphics {
 		implementationError();
 
 		return null;
-	}
-
-	public int getGrayScale() {
-		return (getRedComponent() + getGreenComponent() + getBlueComponent()) / 3;
-	}
-
-	public int getGreenComponent() {
-		return (getColor() >> 8) & 255;
-	}
-
-	public int getRedComponent() {
-		return (getColor() >> 16) & 255;
-	}
-
-	public int getStrokeStyle() {
-		implementationError();
-
-		return -1;
 	}
 
 	public int getTranslateX() {
@@ -205,28 +165,6 @@ public class Graphics {
 	public void translate(int x, int y) {
 		translateX += x;
 		translateY += y;
-	}
-	
-	// MIDP2
-
-	public void drawRGB(int[] rgbData, int offset, int scanlength, int x,
-			int y, int width, int height, boolean processAlpha) {
-		implementationError();
-	}
-
-	public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {
-		implementationError();
-	}
-
-	public void copyArea(int x_src, int y_src, int width, int height,
-			int x_dest, int y_dest, int anchor) {
-		implementationError();
-	}
-
-	public int getDisplayColor(int color) {
-		implementationError();
-
-		return -1;
 	}
 
 	private void implementationError() {

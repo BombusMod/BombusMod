@@ -33,18 +33,10 @@ public interface MicroEmulator {
 
 	RecordStoreManager getRecordStoreManager();
 	
-	String getAppProperty(String key);
-	
 	InputStream getResourceAsStream(Class origClass, String name);
-
-	void notifyDestroyed(MIDletContext midletContext);
 
 	void destroyMIDletContext(MIDletContext midletContext);
 	
-	int checkPermission(String permission);
-	
 	boolean platformRequest(String URL);
-
-	String getSuiteName();
 
 }

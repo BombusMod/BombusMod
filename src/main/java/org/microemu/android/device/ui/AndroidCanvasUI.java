@@ -43,7 +43,6 @@ import org.microemu.device.ui.CanvasUI;
 
 import android.content.Context;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.text.InputType;
 import android.view.KeyEvent;
@@ -53,10 +52,6 @@ import android.view.inputmethod.BaseInputConnection;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
-import org.microemu.android.util.AndroidRepaintListener;
 
 public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {   
     
@@ -139,18 +134,7 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
             this.ui = ui;
             setFocusable(true);
             setFocusableInTouchMode(true);
-            try {
-                Method setLayerTypeMethod = getClass().getMethod("setLayerType", new Class[]{int.class, Paint.class});
-                setLayerTypeMethod.invoke(this, new Object[]{LAYER_TYPE_SOFTWARE, null});
-            } catch (NoSuchMethodException e) {
-                // Older OS, no HW acceleration anyway
-            } catch (IllegalArgumentException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            }
+            setLayerType(LAYER_TYPE_SOFTWARE, null);
         }
         
         public AndroidCanvasUI getUI() {
@@ -159,11 +143,7 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
 
         public void flushGraphics(int x, int y, int width, int height) {
             // TODO handle x, y, width and height
-            if (repaintListener == null) {
-                postInvalidate();
-            } else {
-                repaintListener.flushGraphics();
-            }
+            postInvalidate();
         }
 
         public void setOverlay(Overlay overlay) {
@@ -307,13 +287,6 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
         {
             Rect r = (Rect) repaintObject;
             flushGraphics(r.left, r.top, r.width(), r.height());
-        }       
-        
-        private AndroidRepaintListener repaintListener;
-
-        public void setAndroidRepaintListener(AndroidRepaintListener repaintListener)
-        {
-            this.repaintListener = repaintListener;
         }
 
     }

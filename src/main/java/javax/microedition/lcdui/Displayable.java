@@ -44,8 +44,6 @@ public abstract class Displayable
 	int height;
     
 	boolean fullScreenMode;
-
-    Ticker ticker;
     
     // TODO make private
     int viewPortY;
@@ -114,20 +112,6 @@ public abstract class Displayable
 		}
 		return currentDisplay.isShown(this);
 	}
-
-    
-    public Ticker getTicker() 
-    {
-        return ticker;
-    }
-
-    
-    public void setTicker(Ticker ticker) 
-    {
-        this.ticker = ticker;
-
-        repaint();
-    }
 
     
     public String getTitle() 
@@ -257,9 +241,6 @@ public abstract class Displayable
         // TODO remove this StringComponent object when native UI is completed
         StringComponent title = new StringComponent(getTitle());
         viewPortHeight = getHeight() - title.getHeight() - 1;
-        if (ticker != null) {
-        		viewPortHeight -= this.ticker.getHeight();
-        }
         
         int w;
     	int h;

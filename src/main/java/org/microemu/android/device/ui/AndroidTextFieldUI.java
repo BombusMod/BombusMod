@@ -42,6 +42,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 public class AndroidTextFieldUI extends LinearLayout implements TextFieldUI {
 	
 	private BombusModActivity activity;
@@ -69,7 +71,7 @@ public class AndroidTextFieldUI extends LinearLayout implements TextFieldUI {
 				labelView.setTextAppearance(labelView.getContext(), android.R.style.TextAppearance_Large);
 				addView(labelView);
 				
-				editView = new EditText(activity);
+				editView = new AppCompatEditText(activity);
 				editView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.FILL_PARENT));
 				editView.addTextChangedListener(new TextWatcher() {
 

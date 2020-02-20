@@ -60,24 +60,9 @@ public class MIDletThread extends Thread {
     private static synchronized int nextThreadNum() {
     	return threadInitNumber++;
     }
-    
-	public MIDletThread() {
-		super(THREAD_NAME_PREFIX + nextThreadNum());
-		register(this);
-	}
 	
 	public MIDletThread(Runnable target) {
 		super(target, THREAD_NAME_PREFIX + nextThreadNum());
-		register(this);
-	}
-	
-	public MIDletThread(Runnable target, String name) {
-		super(target, THREAD_NAME_PREFIX + name);
-		register(this);
-	}
-	
-	public MIDletThread(String name) {
-		super(THREAD_NAME_PREFIX + name);
 		register(this);
 	}
 	
@@ -127,11 +112,6 @@ public class MIDletThread extends Thread {
 			terminator.start();
 		}
 		MIDletTimer.contextDestroyed(midletContext);
-	}
-	
-	public static boolean hasRunningThreads(MIDletContext midletContext) {
-		//return (midlets.get(midletContext) != null);
-		return terminator;
 	}
 	
 	private static void terminateThreads(Map threads) {

@@ -26,6 +26,18 @@
 
 package org.microemu.android.device;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.os.PowerManager;
+
+import org.microemu.MIDletBridge;
+import org.microemu.app.ui.DisplayRepaintListener;
+import org.microemu.device.DeviceDisplay;
+import org.microemu.device.EmulatorContext;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,23 +45,7 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
-
-import org.microemu.MIDletBridge;
-import org.microemu.android.device.ui.AndroidCanvasUI;
-import org.microemu.android.device.ui.AndroidCanvasUI.CanvasView;
-import org.microemu.app.ui.DisplayRepaintListener;
-import org.microemu.device.DeviceDisplay;
-import org.microemu.device.EmulatorContext;
-
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.os.PowerManager;
 
 public class AndroidDeviceDisplay implements DeviceDisplay {
 	

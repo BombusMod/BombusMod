@@ -92,7 +92,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 	}
 
 	public void deleteRecordStore(final String recordStoreName) 
-			throws RecordStoreNotFoundException, RecordStoreException 
+			throws RecordStoreException
 	{
 		initializeIfNecessary();
 		
@@ -175,13 +175,13 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 	}
 
 	public void deleteRecord(RecordStoreImpl recordStoreImpl, int recordId) 
-			throws RecordStoreNotOpenException, RecordStoreException 
+			throws RecordStoreException
 	{
 		deleteFromDisk(recordStoreImpl, recordId);
 	}
 	
 	public void loadRecord(RecordStoreImpl recordStoreImpl, int recordId)
-			throws RecordStoreNotOpenException, InvalidRecordIDException, RecordStoreException 
+			throws RecordStoreException
 	{
 		try {
 			DataInputStream dis = new DataInputStream(
@@ -197,7 +197,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 
 
 	public void saveRecord(RecordStoreImpl recordStoreImpl, int recordId) 
-			throws RecordStoreNotOpenException, RecordStoreException 
+			throws RecordStoreException
 	{
 		saveToDisk(recordStoreImpl, recordId);
 	}

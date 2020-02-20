@@ -79,28 +79,14 @@ public abstract class MIDlet {
 
 	protected abstract void destroyApp(boolean unconditional) throws MIDletStateChangeException;
 
-	public final int checkPermission(String permission) {
-		return MIDletBridge.checkPermission(permission);
-	}
-
-	public final String getAppProperty(String key) {
-		return MIDletBridge.getAppProperty(key);
-	}
-
 	public final void notifyDestroyed() {
 		destroyed = true;
 		MIDletBridge.notifyDestroyed();
-	}
-
-	public final void notifyPaused() {
 	}
 
 	public final boolean platformRequest(String URL) {
 		return MIDletBridge.platformRequest(URL);
 	}
 
-	public final void resumeRequest() {
-		// TODO implement
-	}
 
 }

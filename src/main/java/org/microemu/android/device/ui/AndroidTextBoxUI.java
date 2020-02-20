@@ -49,6 +49,8 @@ import android.view.Gravity;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.appcompat.widget.AppCompatEditText;
+
 import java.util.Vector;
 
 public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI {
@@ -148,7 +150,7 @@ public class AndroidTextBoxUI extends AndroidDisplayableUI implements TextBoxUI 
     }
 
     private EditText createEditor(final BombusModActivity activity, final TextBox textBox) {
-        final EditText editor = new EditText(activity) {
+        final EditText editor = new AppCompatEditText(activity) {
             @Override
             protected void onWindowVisibilityChanged(int visibility) {
                 if (View.VISIBLE != visibility) {
