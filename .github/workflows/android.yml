@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      name: Checkout source
+    - name: Checkout submodules
       run: |
         git submodule update --init --recursive
     - name: set up JDK 1.8
