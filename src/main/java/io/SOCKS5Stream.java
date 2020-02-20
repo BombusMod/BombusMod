@@ -10,7 +10,7 @@ package io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import javax.microedition.io.StreamConnection;
+import java.net.Socket;
 
 /**
  *
@@ -18,14 +18,14 @@ import javax.microedition.io.StreamConnection;
  */
 public class SOCKS5Stream {
     
-    private StreamConnection connection;
+    private Socket connection;
     private InputStream inpStream = null;
     private OutputStream outStream = null;
     
-    public SOCKS5Stream(StreamConnection con) throws IOException {
+    public SOCKS5Stream(Socket con) throws IOException {
         connection = con;
-        inpStream = connection.openInputStream();
-        outStream = connection.openOutputStream();
+        inpStream = connection.getInputStream();
+        outStream = connection.getOutputStream();
     }
     
     public void send(byte[] data, int ofs, int length) throws IOException {        

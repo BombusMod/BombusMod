@@ -29,8 +29,6 @@ package org.microemu;
 
 import java.io.InputStream;
 
-import javax.microedition.io.ConnectionNotFoundException;
-
 public interface MicroEmulator {
 
 	RecordStoreManager getRecordStoreManager();
@@ -45,7 +43,7 @@ public interface MicroEmulator {
 	
 	int checkPermission(String permission);
 	
-	boolean platformRequest(String URL) throws ConnectionNotFoundException;
+	boolean platformRequest(String URL);
 
 	String getSuiteName();
 

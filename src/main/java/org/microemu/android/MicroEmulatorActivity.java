@@ -31,8 +31,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import javax.microedition.io.ConnectionNotFoundException;
-
 import android.os.Looper;
 import org.microemu.DisplayAccess;
 import org.microemu.DisplayComponent;
@@ -164,13 +162,9 @@ public abstract class MicroEmulatorActivity extends Activity {
                 }
             }
 
-            public boolean platformRequest(String url) throws ConnectionNotFoundException 
+            public boolean platformRequest(String url)
             {
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
-                } catch (ActivityNotFoundException e) {
-                    throw new ConnectionNotFoundException();
-                }
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
 
                 return true;
             }

@@ -37,6 +37,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Socket;
 import java.util.Vector;
 import javax.microedition.lcdui.Graphics;
 import locale.SR;
@@ -44,8 +45,6 @@ import Colors.ColorTheme;
 import ui.IconTextElement;
 import xmpp.XmppError;
 
-import javax.microedition.io.Connector;
-import javax.microedition.io.StreamConnection;
 import Client.StaticData;
 import ServiceDiscovery.DiscoForm;
 import com.alsutton.jabber.datablocks.Message;
@@ -357,7 +356,7 @@ public class TransferTask
 
     public boolean openStreams(final String host, int port) {
         try {
-            StreamConnection connection = (StreamConnection) Connector.open("socket://" + host + ":" + port);
+            Socket connection = new Socket(host, port);
             proxystream = new SOCKS5Stream(connection);
             return true;
         } catch (Exception e) {

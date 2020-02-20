@@ -29,73 +29,33 @@
 
 package io.file;
 
-import Client.Config;
-import Client.StaticData;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.Vector;
+import java.util.List;
+
+import Client.StaticData;
 
 /**
  *
  * @author evgs
  */
 public abstract class FileIO {
-    protected final static int NOT_DETECTED=0;
-    protected final static int NONE=-1;
-    protected final static int JSR75=1;
-    protected final static int COM_MOTOROLA=2;
-    protected final static int COM_SIEMENS=3;
-    protected final static int JSR75_SIEMENS=4;
     
     public final static int MAX_NAME_LEN=48;
-    
-    protected static int fileSystemType;
     
     protected String fileName;
     
     public static FileIO createConnection(String fileName) {        
-//#if android
-            return new FileJSR75(fileName);
-//#else            
-//#         if (fileSystemType==NOT_DETECTED) {
-//#             fileSystemType=NONE;
-//# 
-//#             try {
-//#                 if (Config.getInstance().phoneManufacturer!=Config.JBED)
-//#                     Class.forName("javax.microedition.io.file.FileConnection");
-//#                 fileSystemType=JSR75;
-//#                 if (Config.getInstance().phoneManufacturer==Config.SIEMENS) fileSystemType=JSR75_SIEMENS;
-//#             } catch (Exception e) {
-//#                 try {
-//#                     Class.forName("com.motorola.io.FileConnection");
-//#                     fileSystemType=COM_MOTOROLA;
-//#                 } catch (Exception e2) {
-//#                     try {
-//#                         Class.forName("com.siemens.mp.io.File");
-//#                         fileSystemType=COM_SIEMENS;
-//#                     } catch (Exception e3) {}
-//#                 }
-//#             }
-//#             //System.out.println("Detected fs:"+fileSystemType );
-//#         }
-//#         switch (fileSystemType) {
-//#             case JSR75_SIEMENS:
-//#             case JSR75: return new FileJSR75(fileName);
-//#ifndef NOMMEDIA
-//#             case COM_MOTOROLA: return new FileComMotorolaIo(fileName);
-//#             case COM_SIEMENS: return new FileSiemens(fileName);
-//#endif
-//#         }
-//#         return null;
-//#endif            
+        return new FileJDK(fileName);
     }
     
-    public Vector fileList(boolean directoriesOnly) throws IOException{
+    public List<File> fileList(boolean directoriesOnly) throws IOException{
         if (fileName.length()==0) return rootDirs();
-        Vector dir=dirs(directoriesOnly);
-        dir.addElement("../");
+        List<File> dir=dirs(directoriesOnly);
+        dir.add(new File("../"));
         return dir;
     }
     
@@ -190,9 +150,9 @@ public abstract class FileIO {
     
     public abstract long fileSize() throws IOException;
 
-    protected abstract Vector rootDirs();
-    
-    protected abstract Vector dirs(boolean directoriesOnly) throws IOException;
+    protected abstract List<File> rootDirs();
+
+    protected abstract List<File> dirs(boolean directoriesOnly) throws IOException;
 
     public abstract OutputStream appendOutputStream() throws IOException;
 }

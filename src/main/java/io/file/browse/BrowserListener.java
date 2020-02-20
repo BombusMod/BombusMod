@@ -34,7 +34,7 @@ package io.file.browse;
  * @author evgs
  */
 public interface BrowserListener {
-    public void BrowserFilePathNotify(String pathSelected);
+    void BrowserFilePathNotify(String pathSelected);
 }
 
 //#endif

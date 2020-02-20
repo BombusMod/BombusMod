@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Vector;
 
-import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
@@ -49,9 +48,6 @@ import org.microemu.app.util.MIDletThread;
 import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.EmulatorContext;
-import org.microemu.microedition.ImplFactory;
-import org.microemu.microedition.ImplementationInitialization;
-import org.microemu.microedition.io.ConnectorImpl;
 
 public class Common implements MicroEmulator, CommonInterface {
 
@@ -75,14 +71,7 @@ public class Common implements MicroEmulator, CommonInterface {
         instance = this;
         this.emulatorContext = context;
 
-        /*
-         * Initialize secutity context for implemenations, May be there are better place
-         * for this call
-         */
-        ImplFactory.instance();
         MIDletSystemProperties.initContext();
-        // TODO integrate with ImplementationInitialization
-        ImplFactory.registerGCF(ImplFactory.DEFAULT, new ConnectorImpl());
 
         MIDletBridge.setMicroEmulator(this);
     }
@@ -116,7 +105,6 @@ public class Common implements MicroEmulator, CommonInterface {
 
     public void notifyDestroyed(MIDletContext midletContext) {
         Log.d(BombusModActivity.LOG_TAG, "notifyDestroyed");
-        notifyImplementationMIDletDestroyed();
         startLauncher(midletContext);
     }
 
@@ -141,26 +129,6 @@ public class Common implements MicroEmulator, CommonInterface {
         }
         // TODO to be removed when event dispatcher will run input method task
         DeviceFactory.getDevice().getInputMethod().dispose();
-    }
-
-    public static boolean isMIDletUrlExtension(String nameString) {
-        if (nameString == null) {
-            return false;
-        }
-        // Remove query
-        if (nameString.startsWith("http://") || nameString.startsWith("https://")) {
-            int s = nameString.lastIndexOf('?');
-            if (s != -1) {
-                nameString = nameString.substring(0, s);
-            }
-        }
-        int end = nameString.lastIndexOf('.');
-        if (end == -1) {
-            return false;
-        }
-
-        return (nameString.substring(end + 1, nameString.length()).toLowerCase(Locale.ENGLISH).equals("jad") || nameString.substring(end + 1,
-                nameString.length()).toLowerCase(Locale.ENGLISH).equals("jar"));
     }
 
     private MIDlet loadMidlet(Class midletClass, MIDletAccess previousMidletAccess) {
@@ -194,7 +162,6 @@ public class Common implements MicroEmulator, CommonInterface {
                     throw new Error("MIDlet Context corrupted");
                 }
 
-                notifyImplementationMIDletStart();
                 return m;
             } catch (Throwable e) {
                 Log.d(BombusModActivity.LOG_TAG, "Unable to start MIDlet", e);
@@ -231,7 +198,7 @@ public class Common implements MicroEmulator, CommonInterface {
         return MIDletSystemProperties.getPermission(permission);
     }
 
-    public boolean platformRequest(final String URL) throws ConnectionNotFoundException {
+    public boolean platformRequest(final String URL) {
         return emulatorContext.platformRequest(URL);
     }
 
@@ -273,21 +240,6 @@ public class Common implements MicroEmulator, CommonInterface {
     private void setResponseInterface(boolean state) {
         if (responseInterfaceListener != null) {
             responseInterfaceListener.stateChanged(state);
-        }
-    }
-
-
-    public void notifyImplementationMIDletStart() {
-        for (Iterator iterator = extensions.iterator(); iterator.hasNext();) {
-            ImplementationInitialization impl = (ImplementationInitialization) iterator.next();
-            impl.notifyMIDletStart();
-        }
-    }
-
-    public void notifyImplementationMIDletDestroyed() {
-        for (Iterator iterator = extensions.iterator(); iterator.hasNext();) {
-            ImplementationInitialization impl = (ImplementationInitialization) iterator.next();
-            impl.notifyMIDletDestroyed();
         }
     }
 

@@ -31,7 +31,6 @@ import Client.Config;
 import Client.StaticData;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.io.ConnectionNotFoundException;
 import locale.SR;
 import midlet.BombusMod;
 import ui.controls.form.DefForm;
@@ -78,10 +77,7 @@ public class InfoWindow
         siteUrl = new LinkString(Version.getUrl()) {
 
             public void doAction() {
-                try {
-                    BombusMod.getInstance().platformRequest(Version.getUrl());
-                } catch (ConnectionNotFoundException ex) {
-                }
+                BombusMod.getInstance().platformRequest(Version.getUrl());
             }
         };
         itemsList.addElement(siteUrl);

@@ -27,7 +27,6 @@
 
 package javax.microedition.midlet;
 
-import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.Display;
 
 import org.microemu.DisplayAccess;
@@ -96,7 +95,7 @@ public abstract class MIDlet {
 	public final void notifyPaused() {
 	}
 
-	public final boolean platformRequest(String URL) throws ConnectionNotFoundException {
+	public final boolean platformRequest(String URL) {
 		return MIDletBridge.platformRequest(URL);
 	}
 

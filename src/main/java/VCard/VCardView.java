@@ -26,9 +26,7 @@
  */
 
 package VCard;
-import Client.Config;
 import Client.Contact;
-import javax.microedition.io.ConnectionNotFoundException;
 import midlet.BombusMod;
 //#if FILE_IO
 import io.file.FileIO;
@@ -118,10 +116,11 @@ public class VCardView
 //#endif                        
                     } else {
                         url=data;
-                        LinkString nData=new LinkString(url) { public void doAction() {
-                                try {BombusMod.getInstance().platformRequest(url);
-                                } catch (ConnectionNotFoundException ex) {
-                                } } };
+                        LinkString nData = new LinkString(url) {
+                            public void doAction() {
+                                BombusMod.getInstance().platformRequest(url);
+                            }
+                        };
                         itemsList.addElement(nData);
                     }
                 }

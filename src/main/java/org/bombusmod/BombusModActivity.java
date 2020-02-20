@@ -52,7 +52,6 @@ import org.microemu.android.util.AndroidRecordStoreManager;
 import org.microemu.android.util.AndroidRepaintListener;
 import org.microemu.app.Common;
 import org.microemu.app.util.MIDletSystemProperties;
-import org.microemu.cldc.file.FileSystem;
 import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
 import org.microemu.device.ui.CommandUI;
@@ -150,26 +149,6 @@ public class BombusModActivity extends MicroEmulatorActivity {
         System.setProperty("device.model", android.os.Build.MODEL);
         System.setProperty("device.software.version", android.os.Build.VERSION.RELEASE);
 
-
-        /*
-         * JSR-75
-         */
-        Map<String, String> properties = new HashMap<String, String>();
-        properties.put("fsRoot", "/");
-        properties.put("fsSingle", "sdcard");
-        FileSystem fs = new FileSystem();
-        fs.registerImplementation(properties);
-        common.extensions.add(fs);
-        MIDletSystemProperties.setPermission("javax.microedition.io.Connector.file.read", 1);
-        MIDletSystemProperties.setPermission("javax.microedition.io.Connector.file.write", 1);
-        System.setProperty("fileconn.dir.photos", "file:///sdcard/");
-
-        /*
-         * BombusModInitialization and Service
-         */
-        BombusModInitialization init = new BombusModInitialization();
-        init.registerImplementation(null);
-        common.extensions.add(init);
 
         initializeExtensions();
 

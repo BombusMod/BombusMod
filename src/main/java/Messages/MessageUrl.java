@@ -28,7 +28,6 @@
 package Messages;
 
 import java.util.Vector;
-import javax.microedition.io.ConnectionNotFoundException;
 import midlet.BombusMod;
 import ui.MIDPTextBox;
 import ui.MIDPTextBox.TextBoxNotify;
@@ -83,11 +82,7 @@ public class MessageUrl extends DefForm implements TextBoxNotify {
     }
     
     public void eventOk() {
-        try {
-            BombusMod.getInstance().platformRequest(itemsList.elementAt(cursor).toString());
-        } catch (ConnectionNotFoundException ex) {
-        }
-
+        BombusMod.getInstance().platformRequest(itemsList.elementAt(cursor).toString());
         destroyView();
     }
 

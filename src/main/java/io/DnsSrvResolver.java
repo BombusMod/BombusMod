@@ -27,29 +27,17 @@
 
 package io;
 
-import Client.Config;
-import Client.StaticData;
-import Info.Version;
-//#if (android)
-import java.security.MessageDigest;
-//#else
-//# import com.ssttr.crypto.MessageDigest;
-//#endif
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Vector;
-import javax.microedition.io.Connector;
-//#if android
 import java.net.Socket;
-import java.io.InputStream;
-import java.io.OutputStream;
-//#else
-//# import javax.microedition.io.StreamConnection;
-//#endif
+import java.security.MessageDigest;
+import java.util.Vector;
+
+import Client.Config;
+import Info.Version;
 import ui.Time;
 import util.StringUtils;
 
@@ -146,15 +134,9 @@ public class DnsSrvResolver {
             return true;
         }*/
         try {
-//#if android
 	    Socket sc = new Socket("8.8.8.8", 53);
 	    DataInputStream is = new DataInputStream(sc.getInputStream());
 	    DataOutputStream os = new DataOutputStream(sc.getOutputStream());
-//#else
-//#             StreamConnection sc = (StreamConnection) Connector.open("socket://8.8.8.8:53");
-//# 	    DataInputStream is = sc.openDataInputStream();
-//#             DataOutputStream os = sc.openDataOutputStream();              
-//#endif
             byte [] message = encode(server, type);
             byte [] data = new byte[2 + message.length];
             System.arraycopy(message, 0, data, 2, message.length);
