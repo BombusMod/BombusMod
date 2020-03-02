@@ -13,7 +13,7 @@ import ui.controls.PopUp;
  */
 public class PopupNotificator implements Notificator {
 
-    public void sendNotify(String title, String text) {
+    public static void sendNotify(String title, String text) {
         int popupType = PopUp.TYPE_MESSAGE;
         if (title == null)
             popupType = PopUp.TYPE_SYSTEM;
