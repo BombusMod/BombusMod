@@ -8,8 +8,8 @@ robovm {
 
 dependencies {
     compile rootProject
-    compile "com.mobidevelop.robovm:robovm-rt:2.3.9-SNAPSHOT"
-    compile "com.mobidevelop.robovm:robovm-cocoatouch:2.3.9-SNAPSHOT"
+    compile "com.mobidevelop.robovm:robovm-rt:2.3.10-SNAPSHOT"
+    compile "com.mobidevelop.robovm:robovm-cocoatouch:2.3.10-SNAPSHOT"
 
     compile "ch.qos.logback:logback-classic:1.2.3"
     compile "org.slf4j:log4j-over-slf4j:1.7.30"
