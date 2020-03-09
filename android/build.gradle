@@ -15,15 +15,14 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 27
         versionCode 1415
         versionName '0.9.1415'
         applicationId "org.bombusmod"
-        multiDexEnabled = true
     }
     lintOptions {
         checkReleaseBuilds false
