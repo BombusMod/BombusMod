@@ -45,8 +45,6 @@ public interface DeviceDisplay
 	int getFullWidth();
 
 	int getFullHeight();
-
-	boolean isColor();
 	
 	boolean isFullScreenMode();
 

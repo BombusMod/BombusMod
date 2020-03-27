@@ -6,3 +6,6 @@ if (enableAndroid.toBoolean()) {
 if (enableIOS.toBoolean()) {
     include  ":ios"
 }
+if (enableDesktop.toBoolean()) {
+    include  ":desktop"
+}

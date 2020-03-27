@@ -1,4 +1,4 @@
-name: Android CI
+name: Gradle CI
 
 on: [push, pull_request]
 
@@ -12,9 +12,9 @@ jobs:
     - name: Checkout submodules
       run: |
         git submodule update --init --recursive
-    - name: set up JDK 1.8
+    - name: set up JDK
       uses: actions/setup-java@v1
       with:
-        java-version: 1.8
+        java-version: 13
     - name: Build with Gradle
       run: sudo ./gradlew --no-daemon check
