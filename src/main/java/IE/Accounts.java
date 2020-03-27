@@ -83,7 +83,6 @@ public class Accounts {
         } else {
             exportData();
         }
-        accountList = null;
     }
 
     public final void importData(boolean fromResource) {

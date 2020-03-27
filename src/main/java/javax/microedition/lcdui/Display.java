@@ -344,10 +344,6 @@ public class Display {
 		return current;
 	}
 
-	public boolean isColor() {
-		return DeviceFactory.getDevice().getDeviceDisplay().isColor();
-	}
-
 	public void setCurrent(final Displayable nextDisplayable) {
 		if (nextDisplayable == current) {
 			return;
