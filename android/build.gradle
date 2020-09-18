@@ -40,25 +40,9 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/notice.txt'
     }
-    // signing config
-    if (file("keystore.properties").exists()) {
-        Properties props = new Properties()
-        props.load(new FileInputStream(file("keystore.properties")))
-
-        signingConfigs {
-            release {
-                storeFile file(props["key.store"])
-                storePassword props["key.store.password"]
-                keyAlias props["key.alias"]
-                keyPassword props["key.alias.password"]
-            }
-        }
-
-        buildTypes {
-            release {
-                minifyEnabled false
-                signingConfig signingConfigs.release
-            }
+    buildTypes {
+        release {
+            minifyEnabled false
         }
     }
 }
