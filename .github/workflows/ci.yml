@@ -5,16 +5,12 @@ on: [push, pull_request]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
     - name: Checkout submodules
       run: |
         git submodule update --init --recursive
-    - name: set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: 13
-    - name: Build with Gradle
-      run: sudo ./gradlew --no-daemon check -PenableIOS=true -PenableDesktop=true
+    - name: Build
+      run: gradle --no-daemon check -PenableIOS=true -PenableDesktop=true
