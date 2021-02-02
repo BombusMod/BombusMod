@@ -86,7 +86,6 @@ public class Group extends IconTextElement {
             w -= il.getWidth();
             il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w, (getVHeight() - il.getWidth()) >> 1);
         }
-        g.setClip(xo, yo, w, h);
         
         super.drawItem(g, ofs, sel);
     }

@@ -64,8 +64,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	
     public AndroidDisplayGraphics(Bitmap bitmap) {
         this.canvas = new Canvas(bitmap);
-        this.canvas.clipRect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        
 		strokePaint.setAntiAlias(true);
 		strokePaint.setDither(true);
 		strokePaint.setStyle(Paint.Style.STROKE);
@@ -78,11 +76,6 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	
 	public final void reset(Canvas canvas) {
 	    this.canvas = canvas;
-	    
-		Rect tmp = this.canvas.getClipBounds();
-		// this.canvas.setMatrix(identityMatrix); // bugs with BombusMod SplashScreen
-		// setMatrix changes the clipping too
-		this.canvas.clipRect(tmp, Region.Op.REPLACE);
 		clip = this.canvas.getClipBounds();
 		setFont(Font.getDefaultFont());
 	}
