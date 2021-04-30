@@ -13,4 +13,4 @@ jobs:
       run: |
         git submodule update --init --recursive
     - name: Build
-      run: gradle --no-daemon check -PenableIOS=true -PenableDesktop=true
+      run: ./gradlew --no-daemon check -PenableIOS=true -PenableDesktop=true
