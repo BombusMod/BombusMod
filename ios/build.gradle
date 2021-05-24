@@ -7,12 +7,12 @@ robovm {
 }
 
 dependencies {
-    compile rootProject
-    compile "com.mobidevelop.robovm:robovm-rt:2.3.13"
-    compile "com.mobidevelop.robovm:robovm-cocoatouch:2.3.13"
+    implementation rootProject
+    implementation "com.mobidevelop.robovm:robovm-rt:2.3.13"
+    implementation "com.mobidevelop.robovm:robovm-cocoatouch:2.3.13"
 
-    compile "ch.qos.logback:logback-classic:1.2.3"
-    compile "org.slf4j:log4j-over-slf4j:1.7.30"
+    implementation "ch.qos.logback:logback-classic:1.2.3"
+    implementation "org.slf4j:log4j-over-slf4j:1.7.30"
     
-    testCompile "junit:junit:4.13.2"
+    testImplementation "junit:junit:4.13.2"
 }
