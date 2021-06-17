@@ -517,7 +517,7 @@ class TimerTaskRotate extends TimerTask {
 
 
         if (scroll == 0) {
-            if (instance.scroll()) {
+            if (scroll()) {
                 if (attachedList != null) {
                     attachedList.redraw();
                 }
