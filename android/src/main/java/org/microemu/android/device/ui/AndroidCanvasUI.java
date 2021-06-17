@@ -35,7 +35,6 @@ import org.microemu.MIDletBridge;
 import org.microemu.android.device.AndroidDeviceDisplay;
 import org.microemu.android.device.AndroidDisplayGraphics;
 import org.microemu.android.device.AndroidInputMethod;
-import org.microemu.android.util.Overlay;
 import org.microemu.app.ui.DisplayRepaintListener;
 import org.microemu.device.Device;
 import org.microemu.device.DeviceFactory;
@@ -114,8 +113,6 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
         
         private int pressedY = -FIRST_DRAG_SENSITIVITY_Y;
         
-        private Overlay overlay = null;
-        
         private Matrix scale = new Matrix();
 
         private AndroidKeyListener keyListener = null;
@@ -137,10 +134,6 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
         public void flushGraphics(int x, int y, int width, int height) {
             // TODO handle x, y, width and height
             postInvalidate();
-        }
-
-        public void setOverlay(Overlay overlay) {
-            this.overlay = overlay;
         }
         
         public void setScale(float sx, float sy) {
@@ -215,13 +208,8 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
                 ((CanvasView)view).scale = androidCanvas.getMatrix();
             }
             graphics.reset(androidCanvas);
-//            graphics.setClip(0, 0, view.getWidth(), view.getHeight());
             androidCanvas.setMatrix(scale);
             ma.getDisplayAccess().paint(graphics);
-//            androidCanvas.drawBitmap(bitmap, scale, null);
-            if (overlay != null) {
-                overlay.onDraw(androidCanvas);
-            }
         }   
         
 		@Override
@@ -243,9 +231,6 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
 
         @Override
         public boolean onTouchEvent(MotionEvent event) {
-            if (overlay != null && overlay.onTouchEvent(event)) {
-                return true;
-            }
             Device device = DeviceFactory.getDevice();
             AndroidInputMethod inputMethod = (AndroidInputMethod) device.getInputMethod();
             int x = (int) event.getX();
