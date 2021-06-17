@@ -40,7 +40,7 @@ public class XmppService extends Service implements ConnectionService {
     }
 
     public void startConnection() throws IOException {
-        workManager = WorkManager.getInstance();
+        workManager = WorkManager.getInstance(this);
         StaticData sd = StaticData.getInstance();
         PeriodicWorkRequest periodicWorkRequest =
                 new PeriodicWorkRequest.Builder(KeepAliveWorker.class, sd.account.keepAlivePeriod, TimeUnit.SECONDS)
