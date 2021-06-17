@@ -19,8 +19,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 1417
-        versionName '0.9.1417'
+        versionCode 1418
+        versionName '0.9.1418'
         applicationId "org.bombusmod"
     }
     lintOptions {
