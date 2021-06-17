@@ -31,6 +31,8 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.JabberStream;
 import com.alsutton.jabber.datablocks.Iq;
 import java.io.IOException;
+import java.util.Vector;
+
 import locale.SR;
 import util.Strconv;
 import xmpp.Account;
@@ -43,6 +45,8 @@ import xmpp.login.sasl.SaslMechanism;
  * @author evgs
  */
 public class SASLAuth implements JabberBlockListener {
+
+    private static final String SASL_X_OAUTH2 = "X-OAUTH2";
 
     private LoginListener listener;
     private Account account;
@@ -99,8 +103,12 @@ public class SASLAuth implements JabberBlockListener {
 //#endif            
             JabberDataBlock mech = data.getChildBlock("mechanisms");            
             if (mech != null) {
+                Vector availableMechanisms = SaslMechanism.parseMechanisms(mech);
+                if (availableMechanisms.contains(SASL_X_OAUTH2)) {
+                    account.isGoogle = true;
+                }
                 selectedMechanism = SaslFactory
-                        .getPreferredMechanism(account, stream, SaslMechanism.parseMechanisms(mech));
+                        .getPreferredMechanism(account, stream, availableMechanisms);
                 if (selectedMechanism == null) {
                     // no more method found
                     listener.loginFailed("SASL: Unknown mechanisms");

@@ -248,9 +248,6 @@ public class InfoWindow
 //#ifdef RUNNING_MESSAGE
 //#         abilitiesList.addElement("RUNNING_MESSAGE");
 //#endif
-//#ifdef SASL_XGOOGLETOKEN
-        abilitiesList.addElement("SASL_XGOOGLETOKEN");
-//#endif
 //#ifdef SERVICE_DISCOVERY
         abilitiesList.addElement("SERVICE_DISCOVERY");
 //#endif
