@@ -89,7 +89,6 @@ import javax.net.ssl.X509TrustManager;
 
 import Client.Contact;
 import Client.StaticData;
-import de.duenndns.ssl.MemorizingTrustManager;
 
 public class BombusModActivity extends AppCompatActivity {
 
@@ -102,10 +101,6 @@ public class BombusModActivity extends AppCompatActivity {
     private MIDlet midlet;
     private static BombusModActivity instance;
     protected Receiver musicReceiver;
-
-    private SSLContext sslContext;
-
-    private MemorizingTrustManager memorizingTrustManager;
 
     private boolean serviceBound;
     private Handler handler = new Handler(Looper.getMainLooper());
@@ -247,13 +242,6 @@ public class BombusModActivity extends AppCompatActivity {
         midlet = common.initMIDlet(false);
 
         ClipBoardIO.getInstance();
-        try {
-            sslContext = SSLContext.getInstance("TLS");
-            memorizingTrustManager = new MemorizingTrustManager(instance);
-            sslContext.init(null, new X509TrustManager[]{memorizingTrustManager}, new java.security.SecureRandom());
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            Log.w("TLS", e.getMessage());
-        }
         Intent intent = new Intent(this, XmppService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
@@ -305,19 +293,12 @@ public class BombusModActivity extends AppCompatActivity {
                 da.hideNotify();
             }
         }
-        if (memorizingTrustManager != null) {
-            memorizingTrustManager.unbindDisplayActivity(this);
-        }
         unregisterReceiver(musicReceiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (memorizingTrustManager != null) {
-            memorizingTrustManager.bindDisplayActivity(this);
-        }
         scrobblerIntentFilter = new IntentFilter();
         //Google Android player
         scrobblerIntentFilter.addAction("com.android.music.playstatechanged");
@@ -617,10 +598,6 @@ public class BombusModActivity extends AppCompatActivity {
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(startMain);
-    }
-
-    public SSLContext getSslContext() {
-        return sslContext;
     }
     /** Defines callbacks for service binding, passed to bindService() */
     private ServiceConnection serviceConnection = new ServiceConnection() {

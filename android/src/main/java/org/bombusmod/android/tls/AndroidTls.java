@@ -4,6 +4,10 @@
  */
 package org.bombusmod.android.tls;
 
+import android.net.SSLCertificateSocketFactory;
+import android.net.SSLSessionCache;
+
+import org.bombusmod.App;
 import org.bombusmod.BombusModActivity;
 
 import java.io.IOException;
@@ -24,13 +28,14 @@ public final class AndroidTls extends TlsIO {
 
     SSLSocket tls;
     SSLSocketFactory sslFactory;
+    SSLSessionCache sslSessionCache;
 
     public AndroidTls(Socket socket, InputStream in, OutputStream out,
             String authHost)
             throws IOException {
-        sslFactory = BombusModActivity.getInstance().getSslContext().getSocketFactory();
+        sslSessionCache = new SSLSessionCache(App.getInstance());
+        sslFactory = SSLCertificateSocketFactory.getDefault(60000, sslSessionCache);
         tls = (SSLSocket) (sslFactory.createSocket(socket, authHost, socket.getPort(), true));
-        tls.setUseClientMode(true);
         tls.startHandshake();
     }
 
