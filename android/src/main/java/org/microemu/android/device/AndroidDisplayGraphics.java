@@ -53,6 +53,8 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	
 	private Font font;
 
+	private int canvasInitSave;
+
 	public AndroidDisplayGraphics() {
 		strokePaint.setAntiAlias(true);
 		strokePaint.setStyle(Paint.Style.STROKE);
@@ -70,12 +72,15 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 		fillPaint.setAntiAlias(true);
 		fillPaint.setDither(true);
 		fillPaint.setStyle(Paint.Style.FILL);
-        
         reset(this.canvas);
     }
 	
 	public final void reset(Canvas canvas) {
 	    this.canvas = canvas;
+	    if (canvasInitSave > 0) {
+			canvas.restoreToCount(canvasInitSave);
+		}
+	    canvasInitSave = canvas.save();
 		clip = this.canvas.getClipBounds();
 		setFont(Font.getDefaultFont());
 	}
@@ -202,7 +207,10 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
         clip.top = y;
         clip.right = x + width;
         clip.bottom = y + height;
-		canvas.clipRect(clip, Region.Op.REPLACE);
+		canvas.restore();
+		canvas.save();
+		canvas.translate(getTranslateX(), getTranslateY());
+		canvas.clipRect(clip);
 	}
 
 	public void setColor(int RGB) {

@@ -68,13 +68,6 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
             }
         });
     }
-        
-    public void initGraphics(int width, int height, Matrix matrix) {
-        if (graphics == null) {
-            graphics = new AndroidDisplayGraphics();
-            ((CanvasView)view).scale = matrix;
-        }        
-    }
     
     public View getView() {
         return view;
@@ -217,7 +210,10 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
             if (ma == null) {
                 return;
             }
-            initGraphics(androidCanvas.getWidth(), androidCanvas.getHeight(), androidCanvas.getMatrix());
+            if (graphics == null) {
+                graphics = new AndroidDisplayGraphics();
+                ((CanvasView)view).scale = androidCanvas.getMatrix();
+            }
             graphics.reset(androidCanvas);
 //            graphics.setClip(0, 0, view.getWidth(), view.getHeight());
             androidCanvas.setMatrix(scale);
