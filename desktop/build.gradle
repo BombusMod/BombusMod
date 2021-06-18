@@ -6,7 +6,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 dependencies {
     implementation rootProject
     implementation "ch.qos.logback:logback-classic:1.2.3"
-    implementation "org.slf4j:log4j-over-slf4j:1.7.30"
+    implementation "org.slf4j:log4j-over-slf4j:1.7.31"
     
     testImplementation "junit:junit:4.13.2"
 }
