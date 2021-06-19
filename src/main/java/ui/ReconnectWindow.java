@@ -85,7 +85,7 @@ public class ReconnectWindow extends TimerTask {
         VirtualCanvas.getInstance().repaint();
     }
 
-    public void startReconnect() {
+    public void startReconnect() throws IllegalStateException {
         if (active) {
             return;
         }

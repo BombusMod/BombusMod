@@ -240,9 +240,7 @@ public class RosterToolsMenu extends Menu {
                 return;
 //#endif
             case 22:
-                sd.roster.errorLog(SR.MS_SIMULATED_BREAK);
-                //reconnectWindow.getInstance().startReconnect();
-                sd.roster.doReconnect();//connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
+                sd.getTheStream().listener.connectionTerminated(new Exception(SR.MS_SIMULATED_BREAK));
                 destroyView();
                 return;
             case 21:

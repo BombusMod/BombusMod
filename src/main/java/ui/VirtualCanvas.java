@@ -522,9 +522,11 @@ class TimerTaskRotate extends TimerTask {
                     attachedList.redraw();
                 }
             } else {
-                timer.cancel();
-                timer = null;
-                instance = null;
+                if (timer != null) {
+                    timer.cancel();
+                    timer = null;
+                    instance = null;
+                }
             }
         } else {
             scroll--;
