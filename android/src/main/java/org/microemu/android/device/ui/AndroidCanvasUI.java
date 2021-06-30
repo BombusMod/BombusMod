@@ -58,14 +58,7 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
     
     public AndroidCanvasUI(final BombusModActivity activity, Canvas canvas) {
         super(activity, canvas, false);
-       
-        
-        activity.post(new Runnable() {
-            public void run() {
-                view = new CanvasView(activity, AndroidCanvasUI.this);
-                view.setId(666);
-            }
-        });
+        activity.post(() -> view = new CanvasView(activity, AndroidCanvasUI.this));
     }
     
     public View getView() {
@@ -232,6 +225,15 @@ public class AndroidCanvasUI extends AndroidDisplayableUI implements CanvasUI {
         @Override
         public boolean onTouchEvent(MotionEvent event) {
             Device device = DeviceFactory.getDevice();
+            MIDletAccess ma = MIDletBridge.getMIDletAccess();
+            if (ma == null) {
+                return false;
+            }
+
+            DisplayAccess da = ma.getDisplayAccess();
+            if (da == null) {
+                return false;
+            }
             AndroidInputMethod inputMethod = (AndroidInputMethod) device.getInputMethod();
             int x = (int) event.getX();
             int y = (int) event.getY();
