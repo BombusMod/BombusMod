@@ -9,8 +9,5 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Checkout submodules
-      run: |
-        git submodule update --init --recursive
     - name: Build
       run: ./gradlew --no-daemon check -PenableIOS=true -PenableDesktop=true
