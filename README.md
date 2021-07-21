@@ -1,5 +1,5 @@
-# BombusMod ![Android CI][Badge]
+# BombusMod ![Gradle CI][Badge]
 
 BombusMod is a mobile XMPP client.
 
-[Badge]: https://github.com/BombusMod/BombusMod/workflows/Android%20CI/badge.svg
+[Badge]: https://github.com/BombusMod/BombusMod/workflows/Gradle%20CI/badge.svg
