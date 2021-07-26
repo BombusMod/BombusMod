@@ -2,7 +2,7 @@
 version = 1
 
 [merge]
-method = rebase
+method = "rebase"
 
 [approve]
 # note: remove the "[bot]" suffix from GitHub Bot usernames.
