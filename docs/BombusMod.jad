@@ -5,7 +5,7 @@ MIDlet-1: BombusMod,/_icon.png,midlet.BombusMod
 MIDlet-Description: MIDP Jabber Client
 MIDlet-Icon: /_icon.png
 MIDlet-Jar-Size: 691831
-MIDlet-Jar-URL: BombusMod.jar
+MIDlet-Jar-URL: http://bombusmod.github.io/BombusMod/BombusMod.jar
 MIDlet-Name: BombusMod
 MIDlet-Permissions: javax.microedition.io.Connector.https, javax.microedition.io.Connector.socket, javax.microedition.io.Connector.file.read, javax.microedition.io.Connector.file.write
 MIDlet-Permissions-Opt: javax.microedition.io.Connector.http, javax.microedition.io.Connector.ssl, javax.microedition.location.Location
