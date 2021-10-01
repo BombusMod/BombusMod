@@ -48,12 +48,6 @@ public class J2SEImmutableImage extends javax.microedition.lcdui.Image {
         this.height = -1;
     }
 
-    public J2SEImmutableImage(J2SEMutableImage image) {
-        img = Toolkit.getDefaultToolkit().createImage(image.getImage().getSource());
-        this.width = -1;
-        this.height = -1;
-    }
-
     public int getHeight() {
         if (height == -1) {
             ImageObserver observer = new ImageObserver() {

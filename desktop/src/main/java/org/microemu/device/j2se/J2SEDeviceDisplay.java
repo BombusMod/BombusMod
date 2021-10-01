@@ -226,14 +226,6 @@ public class J2SEDeviceDisplay implements DeviceDisplayImpl
 		return getImage(name);
 	}
 
-	public Image createImage(javax.microedition.lcdui.Image source) {
-		if (source.isMutable()) {
-			return new J2SEImmutableImage((J2SEMutableImage) source);
-		} else {
-			return source;
-		}
-	}
-
 	// Andres Navarro
 	public Image createImage(InputStream is) throws IOException {
 		if (is == null) {
@@ -241,45 +233,6 @@ public class J2SEDeviceDisplay implements DeviceDisplayImpl
 		}
 		return getImage(is);
 	}
-
-	public Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha) {
-		if (rgb == null)
-			throw new NullPointerException();
-		if (width <= 0 || height <= 0)
-			throw new IllegalArgumentException();
-
-		BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-
-		if (!processAlpha) {
-			// we should eliminate the transparency info
-			// but can't touch the original array
-			// so we just create another
-			int l = rgb.length;
-
-			int[] rgbAux = new int[l];
-			for (int i = 0; i < l; i++)
-				rgbAux[i] = rgb[i] | 0xff000000;
-			rgb = rgbAux;
-		}
-
-		img.setRGB(0, 0, width, height, rgb, 0, width);
-
-		// now apply the corresponding filter
-		ImageFilter filter = null;
-		if (backgroundColor.getRed() != 255 || backgroundColor.getGreen() != 255
-				|| backgroundColor.getBlue() != 255 || foregroundColor.getRed() != 0
-				|| foregroundColor.getGreen() != 0 || foregroundColor.getBlue() != 0) {
-			filter = new RGBImageFilter();
-		}
-		if (filter != null) {
-			FilteredImageSource imageSource = new FilteredImageSource(img.getSource(), filter);
-			return new J2SEImmutableImage(Toolkit.getDefaultToolkit().createImage(imageSource));
-		} else {
-			return new J2SEImmutableImage(img);
-		}
-	}
-
-	// Andres Navarro
 
 	public Image createImage(byte[] imageData, int imageOffset, int imageLength) {
 		ByteArrayInputStream is = new ByteArrayInputStream(imageData, imageOffset, imageLength);

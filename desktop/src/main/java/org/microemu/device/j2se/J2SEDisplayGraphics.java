@@ -172,12 +172,7 @@ public class J2SEDisplayGraphics extends javax.microedition.lcdui.Graphics {
         } else if ((anchor & javax.microedition.lcdui.Graphics.VCENTER) != 0) {
             newy -= img.getHeight() / 2;
         }
-
-        if (img.isMutable()) {
-            g.drawImage(((J2SEMutableImage) img).getImage(), newx, newy, null);
-        } else {
-            g.drawImage(((J2SEImmutableImage) img).getImage(), newx, newy, null);
-        }
+        g.drawImage(((J2SEImmutableImage) img).getImage(), newx, newy, null);
     }
 
     public void drawLine(int x1, int y1, int x2, int y2) {
