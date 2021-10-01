@@ -31,12 +31,13 @@ import org.bombusmod.App;
 
 public class AndroidImmutableImage extends javax.microedition.lcdui.Image {
 
-	private Bitmap bitmap;
+	private final Bitmap bitmap;
+
 	
 	public AndroidImmutableImage(Bitmap bitmap) {
         final float scale = App.getInstance().getResources().getDisplayMetrics().density;
-        int px = (int) (bitmap.getWidth() * scale + 0.5f);
-        int py = (int) (bitmap.getHeight() * scale + 0.5f);
+        int px = bitmap.getWidth() * Math.round(scale);
+        int py = bitmap.getHeight() * Math.round(scale);
 		this.bitmap = Bitmap.createScaledBitmap(bitmap, px, py, true);
 	}
 
