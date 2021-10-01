@@ -62,14 +62,6 @@ public class IPhoneDeviceDisplay implements DeviceDisplay {
 		return createImage(emulatorContext.getResourceAsStream(this.getClass(), name));
 	}
 
-	public Image createImage(Image source) {
-		if (source.isMutable()) {
-			return new IPhoneImmutableImage((IPhoneMutableImage) source);
-		} else {
-			return source;
-		}
-	}
-
 	public Image createImage(InputStream is) throws IOException {
         byte[] imageData=getStreamAsByteArray(is);
         return createImage(imageData, 0, imageData.length);
@@ -194,11 +186,6 @@ public class IPhoneDeviceDisplay implements DeviceDisplay {
 
 	public void setScrollUp(boolean arg0) {
 //        throw new UnsupportedOperationException("Currently not supported on iPhone");
-	}
-
-	@Override
-	public Image createImage(int width, int height, boolean withAlpha, int fillColor) {
-		return null;
 	}
 
 	public void paintDisplayable(int x, int y, int width, int height) {

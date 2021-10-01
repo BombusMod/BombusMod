@@ -66,11 +66,6 @@ public class IPhoneMutableImage extends MutableImage implements IPhoneImage {
 		return displayGraphics;
 	}
 
-	@Override
-	public boolean isMutable() {
-		return true;
-	}
-
 	public CGImage getBitmap() {
 		displayGraphics.flushRenderQueue();
 		return ((CGBitmapContext)imageContext).toImage();
