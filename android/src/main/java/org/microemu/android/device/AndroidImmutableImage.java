@@ -40,13 +40,6 @@ public class AndroidImmutableImage extends javax.microedition.lcdui.Image {
 		this.bitmap = Bitmap.createScaledBitmap(bitmap, px, py, true);
 	}
 
-    public AndroidImmutableImage(AndroidMutableImage image) {
-        final float scale = App.getInstance().getResources().getDisplayMetrics().density;
-        int px = (int) (image.getBitmap().getWidth() * scale + 0.5f);
-        int py = (int) (image.getBitmap().getHeight() * scale + 0.5f);
-        this.bitmap = Bitmap.createScaledBitmap(image.getBitmap(), px, py, true);
-    }
-
     public Bitmap getBitmap() {
 		return bitmap;
 	}

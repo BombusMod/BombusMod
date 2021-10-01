@@ -34,27 +34,9 @@ import org.microemu.device.DeviceFactory;
 public class Image
 {
 
-//    TODO there should be a public constructors
-//    private Image() {
-//        
-//    }
-    
-	public static Image createImage(int width, int height)
-	{
-		if (width <= 0 || height <= 0) {
-			throw new IllegalArgumentException();
-		}
-		return DeviceFactory.getDevice().getDeviceDisplay().createImage(width, height, false, 0x00FFFFFF);
-	}
-
 	public static Image createImage(String name) throws IOException
 	{
 		return DeviceFactory.getDevice().getDeviceDisplay().createImage(name);
-	}
-
-	public static Image createImage(Image source)
-	{
-		return DeviceFactory.getDevice().getDeviceDisplay().createImage(source);
 	}
 
 	public static Image createImage(byte[] imageData, int imageOffset, int imageLength)
@@ -75,11 +57,6 @@ public class Image
 	public int getWidth()
 	{
 		return 0;
-	}
-
-	public boolean isMutable()
-	{
-		return false;
 	}
 
 	// Andres Navarro

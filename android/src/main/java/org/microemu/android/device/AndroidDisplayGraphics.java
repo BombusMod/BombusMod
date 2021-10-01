@@ -113,11 +113,7 @@ public class AndroidDisplayGraphics extends javax.microedition.lcdui.Graphics {
 			newy -= img.getHeight() / 2;
 		}
 
-		if (img.isMutable()) {
-			canvas.drawBitmap(((AndroidMutableImage) img).getBitmap(), newx, newy, strokePaint);
-		} else {
-			canvas.drawBitmap(((AndroidImmutableImage) img).getBitmap(), newx, newy, strokePaint);
-		}
+		canvas.drawBitmap(((AndroidImmutableImage) img).getBitmap(), newx, newy, strokePaint);
 	}
 
 	public void drawLine(int x1, int y1, int x2, int y2) {

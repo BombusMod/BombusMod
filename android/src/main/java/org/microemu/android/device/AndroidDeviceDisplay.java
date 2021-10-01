@@ -83,14 +83,6 @@ public class AndroidDeviceDisplay implements DeviceDisplay {
 		return createImage(is);
 	}
 
-	public Image createImage(Image source) {
-		if (source.isMutable()) {
-			return new AndroidImmutableImage((AndroidMutableImage) source);
-		} else {
-			return source;
-		}
-	}
-
 	public Image createImage(InputStream is) throws IOException {
 		byte[] imageBytes = new byte[1024];
 		int num;
@@ -101,14 +93,6 @@ public class AndroidDeviceDisplay implements DeviceDisplay {
 
 		byte[] bytes = ba.toByteArray();
 		return new AndroidImmutableImage(BitmapFactory.decodeByteArray(bytes, 0, bytes.length));
-	}
-
-	public Image createImage(int width, int height, boolean withAlpha, int fillColor) {
-		if (width <= 0 || height <= 0) {
-			throw new IllegalArgumentException();
-		}
-
-		return new AndroidMutableImage(width, height, withAlpha, fillColor);
 	}
 
 	public Image createImage(byte[] imageData, int imageOffset, int imageLength) {
