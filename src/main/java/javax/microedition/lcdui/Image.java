@@ -44,37 +44,24 @@ public class Image
 		return DeviceFactory.getDevice().getDeviceDisplay().createImage(imageData, imageOffset, imageLength);
 	}
 
-	public Graphics getGraphics()
-	{
+	public Graphics getGraphics() {
 		throw new IllegalStateException("Image is immutable");
 	}
 
-        public int getHeight()
-	{
+	public int getHeight() {
 		return 0;
 	}
 
-	public int getWidth()
-	{
+	public int getWidth() {
 		return 0;
 	}
 
-	// Andres Navarro
-	// MIDP2 Methods
-
-        public void getRGB(int []argb, int offset, int scanlenght,
-			int x, int y, int width, int height) {
+	public void getRGB(int[] argb, int offset, int scanlenght,
+					   int x, int y, int width, int height) {
 		// Implemented in Immutable and Mutable image
 	}
 
-        public static Image createImage(java.io.InputStream stream) throws IOException {
-            return DeviceFactory.getDevice().getDeviceDisplay().createImage(stream);
-        }
-        
-        public static Image createRGBImage(int[] rgb, int width, int height, 
-                boolean processAlpha) {
-            return DeviceFactory.getDevice().getDeviceDisplay().createRGBImage(rgb, 
-                    width, height, processAlpha);
-        }
-	// Andres Navarro
+	public static Image createImage(java.io.InputStream stream) throws IOException {
+		return DeviceFactory.getDevice().getDeviceDisplay().createImage(stream);
+	}
 }

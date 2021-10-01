@@ -26,52 +26,57 @@
  */
 
 /**
- *
  * @author Eugene Stahov
  */
 
 package ui;
+
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Graphics;
 
 public class ImageList {
 
     public Image skin_png;
-    
+
     protected Image resImage;
     protected int height;
     protected int width;
     public boolean isLoaded = false;
+
     protected ImageList() {
     }
+
     /** Creates a new instance of ImageList */
     public ImageList(String resource, int rows, int columns) {
         try {
             resImage = Image.createImage(resource);
-            width = resImage.getWidth()/columns;
-            height = (rows==0)? width : resImage.getHeight()/rows;
+            width = resImage.getWidth() / columns;
+            height = (rows == 0) ? width : resImage.getHeight() / rows;
             isLoaded = true;
-        }  catch(OutOfMemoryError eom) {
-            } catch (Exception e) {
+        } catch (OutOfMemoryError eom) {
+        } catch (Exception e) {
         }
     }
 
-    public void drawImage(Graphics g, int index, int x, int y){
+    public void drawImage(Graphics g, int index, int x, int y) {
         if (!isLoaded) return;
-        int ho=g.getClipHeight();
-        int wo=g.getClipWidth();
-        int xo=g.getClipX();
-        int yo=g.getClipY();
-        
-        int iy=y-height*(index >> 4);
-        int ix=x-width*(index&0x0f);
-        g.clipRect(x,y, width,height);
-        try {
-            g.drawImage(resImage,ix,iy,Graphics.TOP|Graphics.LEFT);
-        } catch (Exception e) {}
-        g.setClip(xo,yo, wo, ho);
-    };
-    
-    public int getHeight() {return height;}
-    public int getWidth() {return width;}
+        int ho = g.getClipHeight();
+        int wo = g.getClipWidth();
+        int xo = g.getClipX();
+        int yo = g.getClipY();
+
+        int iy = y - height * (index >> 4);
+        int ix = x - width * (index & 0x0f);
+        g.clipRect(x, y, width, height);
+        g.drawImage(resImage, ix, iy, Graphics.TOP | Graphics.LEFT);
+        g.setClip(xo, yo, wo, ho);
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getWidth() {
+        return width;
+    }
 }

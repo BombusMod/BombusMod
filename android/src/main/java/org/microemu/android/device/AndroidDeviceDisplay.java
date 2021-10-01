@@ -99,23 +99,6 @@ public class AndroidDeviceDisplay implements DeviceDisplay {
 		return new AndroidImmutableImage(BitmapFactory.decodeByteArray(imageData, imageOffset, imageLength));
 	}
 
-	public Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha) {
-		if (rgb == null)
-			throw new NullPointerException();
-		if (width <= 0 || height <= 0)
-			throw new IllegalArgumentException();
-		
-		// TODO processAlpha is not handled natively, check whether we need to create copy of rgb
-		int[] newrgb = rgb;
-		if (!processAlpha) {
-			newrgb = new int[rgb.length];
-			for (int i = 0; i < rgb.length; i++) {
-				newrgb[i] = (0x00ffffff & rgb[i]) | 0xff000000;
-			}
-		}
-		return new AndroidImmutableImage(Bitmap.createBitmap(newrgb, width, height, Bitmap.Config.ARGB_8888));
-	}
-
     private Timer flashBackLightTimer = null;
     
     public boolean flashBacklight(int duration) {

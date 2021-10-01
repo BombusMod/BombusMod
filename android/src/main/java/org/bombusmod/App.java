@@ -13,10 +13,6 @@ public class App extends Application {
     private static App instance;
 
     public static App getInstance() {
-        StaticData sd = StaticData.getInstance();
-        sd.setAssetsLoader(new InternalResource());
-        sd.setVersionInfo(new AndroidVersion());
-        sd.setEventNotifier(new EventNotify());
         return instance;
     }
 
@@ -24,5 +20,9 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        StaticData sd = StaticData.getInstance();
+        sd.setAssetsLoader(new InternalResource());
+        sd.setVersionInfo(new AndroidVersion());
+        sd.setEventNotifier(new EventNotify());
     }
 }

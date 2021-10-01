@@ -88,42 +88,10 @@ public class ImageItem
         if (!collapsed) {
             g.drawImage(img, screenWidth/2, 0, Graphics.TOP|Graphics.HCENTER);
         }
-		resizeImage();
 	}
 		VirtualCanvas.getInstance().repaint();
         super.drawItem(g, ofs, sel);
     }
 
     public boolean isSelectable() { return selectable; }
-	
-	private void resizeImage() {
-		try {
-			if (img.getWidth()>screenWidth) {
-				int newHeight=(img.getHeight() * (screenWidth * 100 / img.getWidth()))/100;
-				this.img=scale(img, screenWidth, newHeight);
-			}
-		} catch(OutOfMemoryError eom){
-		} catch (Exception e) {}
-	}
-    
-    public Image scale(Image image, int w, int h) {
-        int w0 = image.getWidth();
-        int h0 = image.getHeight();
-        int[] arrayOld = new int[w0*h0];
-        int[] arrayNew = new int[w*h];
-        image.getRGB(arrayOld, 0, w0, 0, 0, w0, h0);
-        
-        int wy=0;
-        int wy1=0;
-        
-        for (int y = 0; y < h; y++) {
-             wy=w*y; 
-             wy1=w0*(int)(y*h0/h); //thanks evgs :)
-             for (int x = 0; x < w; x++) {
-                   arrayNew[x+wy] = arrayOld[x*w0/w+wy1];
-             }
-        }
-        arrayOld=null;
-        return Image.createRGBImage(arrayNew, w, h, true);
-    }
 }

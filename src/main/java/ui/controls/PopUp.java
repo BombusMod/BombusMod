@@ -27,7 +27,6 @@
 
 package ui.controls;
 
-import Client.ContactMessageList;
 import Client.StaticData;
 import Colors.ColorTheme;
 import images.RosterIcons;
@@ -37,7 +36,6 @@ import javax.microedition.lcdui.Font;
 import javax.microedition.lcdui.Graphics;
 import Fonts.FontCache;
 import ui.VirtualCanvas;
-import ui.VirtualList;
 import util.StringUtils;
 
 public class PopUp {

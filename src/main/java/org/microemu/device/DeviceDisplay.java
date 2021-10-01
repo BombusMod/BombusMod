@@ -63,6 +63,4 @@ public interface DeviceDisplay
 	Image createImage(byte[] imageData, int imageOffset, int imageLength);
 
 	Image createImage(InputStream is) throws IOException;
-
-	Image createRGBImage(int[] rgb, int width, int height, boolean processAlpha);
 }
