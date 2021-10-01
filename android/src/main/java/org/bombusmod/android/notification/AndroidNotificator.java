@@ -60,10 +60,11 @@ public class AndroidNotificator implements Notificator {
             CharSequence contentText = context.getApplicationContext().getText(R.string.notifyInfo) + ": " + StaticData.getInstance().roster.highliteMessageCount;
             Intent notificationIntent = new Intent(context, BombusModActivity.class);
             notificationIntent.setAction("org.bombusmod.bm-notify");
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
             Intent replyIntent = new Intent(context, BombusModActivity.class);
             replyIntent.setAction("org.bombusmod.bm-notify.reply");
-            PendingIntent piReply = PendingIntent.getActivity(context, 0, replyIntent, PendingIntent.FLAG_ONE_SHOT);
+            PendingIntent activity = PendingIntent.getActivity(context, 0, replyIntent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent piReply = activity;
             //notification.setLights(0xff00ff00, 300, 1000);
             notification.setVibrate(vibraPattern);
             notification.setDefaults(Notification.DEFAULT_ALL);

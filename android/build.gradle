@@ -2,17 +2,17 @@ apply plugin: 'com.android.application'
 
 dependencies {
     implementation rootProject
-    implementation 'androidx.work:work-runtime:2.6.0'
+    implementation 'androidx.work:work-runtime:2.7.0-rc01'
     implementation 'androidx.appcompat:appcompat:1.3.1'
 
     implementation 'org.slf4j:slf4j-android:1.7.32'
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1420
         versionName '0.9.1420'
         applicationId "org.bombusmod"
@@ -26,13 +26,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
-    }
-    packagingOptions {
-        exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/notice.txt'
     }
     buildTypes {
         release {
