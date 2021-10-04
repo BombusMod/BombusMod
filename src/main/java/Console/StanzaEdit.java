@@ -29,6 +29,8 @@
 
 package Console;
 
+import com.alsutton.jabber.JabberStream;
+
 import Client.StaticData;
 import java.io.IOException;
 import javax.microedition.lcdui.Command;
@@ -110,8 +112,14 @@ public class StanzaEdit
 
             if (c == cmdSend && body != null && body.length() > 0) {
                 try {
-                    StaticData.getInstance().getTheStream().send(body.trim());
+                    JabberStream stream = StaticData.getInstance().getTheStream();
+                    if (stream != null && stream.loggedIn) {
+                        stream.send(body.trim());
+                    }
                 } catch (IOException ex) {
+                    if (StaticData.Debug) {
+                        ex.printStackTrace();
+                    }
                 }
             }
             destroyView();
