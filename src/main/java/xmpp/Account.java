@@ -79,7 +79,6 @@ public class Account {
 //#endif        
         if (resolveHostname) {
             DnsSrvResolver dns = new DnsSrvResolver();
-            int type = DnsSrvResolver.XMPP_TCP;
 //#if HTTPCONNECT || HTTPBIND || HTTPPOLL                    
 //#             if (enableProxy) {
 //#ifdef HTTPBIND
@@ -90,7 +89,7 @@ public class Account {
 //#endif            
 //#             }
 //#endif            
-            if (dns.getSrv(JID.getServer(), type)) {
+            if (dns.getSrv(JID.getServer())) {
                 host = dns.getHost();
                 tempPort = dns.getPort();
 //#if HTTPBIND || HTTPPOLL
