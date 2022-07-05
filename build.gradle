@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.2.1'
-        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.16'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.17'
     }
 }
 
