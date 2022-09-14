@@ -12,7 +12,7 @@ dependencies {
     implementation "com.mobidevelop.robovm:robovm-cocoatouch:2.3.18"
 
     implementation "ch.qos.logback:logback-classic:1.4.0"
-    implementation "org.slf4j:log4j-over-slf4j:2.0.0"
+    implementation "org.slf4j:log4j-over-slf4j:2.0.1"
     
     testImplementation "junit:junit:4.13.2"
 }
