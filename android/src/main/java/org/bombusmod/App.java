@@ -20,6 +20,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        // see https://github.com/tony19/logback-android/issues/228
+        System.out.println("External file directory: " + getExternalFilesDir(null));
         StaticData sd = StaticData.getInstance();
         sd.setAssetsLoader(new InternalResource());
         sd.setVersionInfo(new AndroidVersion());
