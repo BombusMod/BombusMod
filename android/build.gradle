@@ -5,8 +5,7 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.7.1'
     implementation 'androidx.appcompat:appcompat:1.5.1'
 
-    //noinspection GradleDependency slf4j 2.x is not supported on Android and RoboVM
-    implementation "org.slf4j:slf4j-simple:$slf4j_version"
+    implementation 'com.github.tony19:logback-android:2.0.0'
 }
 
 android {
