@@ -37,7 +37,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -47,10 +46,14 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
-import org.bombusmod.android.service.XmppService;
 import org.bombusmod.android.scrobbler.Receiver;
+import org.bombusmod.android.service.XmppService;
+import org.bombusmod.util.ClipBoardIO;
 import org.microemu.DisplayAccess;
 import org.microemu.MIDletAccess;
 import org.microemu.MIDletBridge;
@@ -71,28 +74,28 @@ import org.microemu.device.EmulatorContext;
 import org.microemu.device.FontManager;
 import org.microemu.device.InputMethod;
 import org.microemu.device.ui.CommandUI;
-import org.bombusmod.util.ClipBoardIO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Locale;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
 
 import Client.Contact;
 import Client.StaticData;
 
 public class BombusModActivity extends AppCompatActivity {
 
-    public static final String LOG_TAG = "BombusModActivity";
+    public static final Logger logger = LoggerFactory.getLogger(
+            BombusModActivity.class.getSimpleName()
+    );
     public static AndroidConfig config = new AndroidConfig();
     public Common common;
     public boolean windowFullscreen;
@@ -200,7 +203,7 @@ public class BombusModActivity extends AppCompatActivity {
             @Override
             public void write(int oneByte) {
                 if (((char) oneByte) == '\n') {
-                    Log.d(BombusModActivity.LOG_TAG, line.toString());
+                    logger.debug(line.toString());
                     if (line.length() > 0) {
                         line.delete(0, line.length() - 1);
                     }
@@ -217,7 +220,7 @@ public class BombusModActivity extends AppCompatActivity {
             @Override
             public void write(int oneByte) throws IOException {
                 if (((char) oneByte) == '\n') {
-                    Log.d(BombusModActivity.LOG_TAG, line.toString());
+                    logger.debug(line.toString());
                     if (line.length() > 0) {
                         line.delete(0, line.length() - 1);
                     }
@@ -279,11 +282,11 @@ public class BombusModActivity extends AppCompatActivity {
         if (isFinishing()) {
             NotificationManager mNM = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             mNM.cancelAll();
-            Log.i(LOG_TAG, "onPause(); with isFinishing() == true.");
+            logger.info("onPause(); with isFinishing() == true.");
             return;
         }
 
-        Log.i(LOG_TAG, "onPause(); with isFinishing() == false.");
+        logger.info("onPause(); with isFinishing() == false.");
 
         MIDletAccess ma = MIDletBridge.getMIDletAccess(midlet);
         if (ma != null) {
@@ -607,7 +610,7 @@ public class BombusModActivity extends AppCompatActivity {
                                        IBinder service) {
             XmppService.LocalBinder binder = (XmppService.LocalBinder) service;
             StaticData.getInstance().setService(binder.getService());
-            Log.d("BombusMod", "Service connected");
+            logger.debug("Service connected");
             serviceBound = true;
             new Thread(new Runnable() {
 
@@ -634,7 +637,7 @@ public class BombusModActivity extends AppCompatActivity {
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            Log.d("BombusMod", "Service disconnected");
+            logger.debug("Service disconnected");
             serviceBound = false;
         }
     };
@@ -661,17 +664,19 @@ public class BombusModActivity extends AppCompatActivity {
 
     @Override
     public void setContentView(View view) {
-        Log.d("AndroidCanvasUI", "set content view: " + view);
+        logger.debug("set content view: " + view);
         super.setContentView(view);
 
         contentView = view;
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        Drawable phoneCallIcon = getResources().getDrawable(android.R.drawable.stat_sys_phone_call);
+        Drawable phoneCallIcon = ContextCompat.getDrawable(
+                this, android.R.drawable.stat_sys_phone_call
+        );
         int statusBarHeight = 0;
         if (!windowFullscreen) {
             statusBarHeight = phoneCallIcon.getIntrinsicHeight();

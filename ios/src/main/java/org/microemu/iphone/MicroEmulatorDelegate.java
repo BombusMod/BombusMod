@@ -30,14 +30,18 @@ import org.bombusmod.ios.RootViewController;
 import org.microemu.MIDletBridge;
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.microedition.midlet.MIDletStateChangeException;
 
 public class MicroEmulatorDelegate extends UIApplicationDelegateAdapter {
 
+	private static final Logger logger = LoggerFactory.getLogger(MicroEmulatorDelegate.class.getSimpleName());
+
 	private static final class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		public void uncaughtException(Thread arg0, Throwable arg1) {
-			System.err.println("Uncaught exception in thread: " + arg0.getName());
+			logger.error("Uncaught exception in thread: " + arg0.getName());
 			arg1.printStackTrace();
 			System.exit(-1);
 		}
@@ -60,7 +64,7 @@ public class MicroEmulatorDelegate extends UIApplicationDelegateAdapter {
 	
 	@Override
 	public void willEnterForeground(UIApplication application) {
-		System.out.println("MicroEmulator.applicationDidResume()");
+		logger.debug("MicroEmulator.applicationDidResume()");
 		try {
 			MIDletBridge.getMIDletContext().getMIDletAccess().startApp();
 		} catch (MIDletStateChangeException e) {
@@ -70,7 +74,7 @@ public class MicroEmulatorDelegate extends UIApplicationDelegateAdapter {
 	
 	@Override
 	public void didEnterBackground(UIApplication application) {
-		System.out.println("MicroEmulator.applicationWillSuspend()");
+		logger.debug("MicroEmulator.applicationWillSuspend()");
 		MIDletBridge.getMIDletContext().getMIDletAccess().pauseApp();
 	}
 

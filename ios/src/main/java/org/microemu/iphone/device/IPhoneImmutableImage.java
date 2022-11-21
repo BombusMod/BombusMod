@@ -31,15 +31,19 @@ import org.robovm.apple.foundation.NSData;
 import org.robovm.apple.uikit.UIImage;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.ptr.IntPtr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IPhoneImmutableImage extends javax.microedition.lcdui.Image implements IPhoneImage {
 
+	private final static Logger logger = LoggerFactory.getLogger(IPhoneImmutableImage.class.getSimpleName());
+
 	private CGImage bitmap;
-	
+
 	public IPhoneImmutableImage(CGImage bitmap) {
 		this.bitmap = bitmap;
-    	bitmap.retain();
-		System.out.println("Retaining bitmap "+this+" "+bitmap);
+		bitmap.retain();
+		logger.debug("Retaining bitmap " + this + " " + bitmap);
 	}
 
     public IPhoneImmutableImage(IPhoneMutableImage image) {
@@ -131,7 +135,7 @@ public class IPhoneImmutableImage extends javax.microedition.lcdui.Image impleme
 	
 	@Override
 	protected void finalize() throws Throwable {
-		System.out.println("Releasing bitmap "+this+" "+bitmap);
+		logger.debug("Releasing bitmap "+this+" "+bitmap);
 	   	bitmap.release();
 	}
 }

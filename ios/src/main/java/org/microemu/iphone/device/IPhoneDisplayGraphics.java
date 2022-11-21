@@ -41,8 +41,12 @@ import org.robovm.apple.uikit.UIFont;
 import org.robovm.apple.uikit.UIGraphics;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.ptr.IntPtr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class IPhoneDisplayGraphics extends javax.microedition.lcdui.Graphics {
+
+	private final static Logger logger = LoggerFactory.getLogger(IPhoneDisplayGraphics.class.getSimpleName());
 
 	private CGContext context;
 
@@ -334,7 +338,7 @@ public class IPhoneDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	public void drawRegion(final Image src, final int x_src, final int y_src, final int width, final int height,
 			final int transform, final int x_dst, final int y_dst, final int anchor) {
 		// may throw NullPointerException, this is ok
-		System.out.println("IPhoneDisplayGraphics.drawRegion()");
+		logger.debug("IPhoneDisplayGraphics.drawRegion()");
 		queue(new Renderable() {
 			public void render() {
 				CGRect clipRect = new CGRect(x_dst, y_dst, width, height);
@@ -566,7 +570,7 @@ public class IPhoneDisplayGraphics extends javax.microedition.lcdui.Graphics {
 	}
 
 	final void flushRenderQueue() {
-		System.out.println("IPhoneDisplayGraphics.flushRenderQueue() " + renderQueue.size());
+		logger.debug("IPhoneDisplayGraphics.flushRenderQueue() " + renderQueue.size());
 		synchronized (renderQueue) {
 			try {
 				UIGraphics.pushContext(context);

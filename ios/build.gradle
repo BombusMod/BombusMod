@@ -8,11 +8,11 @@ robovm {
 
 dependencies {
     implementation rootProject
-    implementation "com.mobidevelop.robovm:robovm-rt:2.3.18"
-    implementation "com.mobidevelop.robovm:robovm-cocoatouch:2.3.18"
+    implementation "com.mobidevelop.robovm:robovm-rt:$robovm_version"
+    implementation "com.mobidevelop.robovm:robovm-cocoatouch:$robovm_version"
 
-    implementation "ch.qos.logback:logback-classic:1.4.5"
-    implementation "org.slf4j:log4j-over-slf4j:2.0.4"
+    implementation "org.slf4j:slf4j-simple:$slf4j_version"
+    implementation "org.slf4j:log4j-over-slf4j:$slf4j_version"
     
-    testImplementation "junit:junit:4.13.2"
+    testImplementation "junit:junit:$junit_version"
 }

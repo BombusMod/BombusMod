@@ -35,6 +35,8 @@ import org.robovm.apple.uikit.UIBarButtonItem;
 import org.robovm.apple.uikit.UIBarButtonItemStyle;
 import org.robovm.apple.uikit.UIToolbar;
 import org.robovm.apple.uikit.UIView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
@@ -42,6 +44,8 @@ import javax.microedition.lcdui.Displayable;
 import java.util.Vector;
 
 public abstract class AbstractUI<T extends Displayable> extends NSObject implements DisplayableUI {
+
+	private static final Logger logger = LoggerFactory.getLogger(AbstractUI.class.getSimpleName());
 
 	public static final int NAVIGATION_HEIGHT = 40;
 
@@ -80,7 +84,7 @@ public abstract class AbstractUI<T extends Displayable> extends NSObject impleme
 			NSMutableArray items = new NSMutableArray(commands.size());
 			for (int i = 0; i < commands.size(); i++) {
 				CommandUI command = commands.get(i);
-				System.out.println(command.getCommand().getLabel());
+				logger.debug(command.getCommand().getLabel());
 				UIBarButtonItem item = new UIBarButtonItem(command.getCommand().getLabel(), UIBarButtonItemStyle.Plain);
 				final int itemIndex = i;
 				item.setOnClickListener(new UIBarButtonItem.OnClickListener() {

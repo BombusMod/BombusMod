@@ -36,6 +36,8 @@ import org.microemu.device.ui.DisplayableUI;
 import org.microemu.iphone.device.ui.IPhoneCanvasUI;
 import org.robovm.apple.uikit.UIApplication;
 import org.robovm.apple.uikit.UIView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.microedition.lcdui.Image;
 import java.io.ByteArrayOutputStream;
@@ -43,6 +45,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class IPhoneDeviceDisplay implements DeviceDisplay {
+
+	private static final Logger logger = LoggerFactory.getLogger(IPhoneDeviceDisplay.class.getSimpleName());
 	
 	// TODO change this
 	public int displayRectangleWidth;
@@ -213,7 +217,7 @@ public class IPhoneDeviceDisplay implements DeviceDisplay {
 		// Font oldf = g.getFont();
 		if (current instanceof IPhoneCanvasUI) {
 			UIView view = ((IPhoneCanvasUI) current).getCanvasView();
-			System.out.println("Need paint: "+this+" "+view);
+			logger.debug("Need paint: "+this+" "+view);
 			view.setNeedsDisplay();
 //			view.setNeedsDisplayInRect$(new CGRect(x,y,width,height));
 		} else {

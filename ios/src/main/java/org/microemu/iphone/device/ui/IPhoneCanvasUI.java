@@ -103,7 +103,7 @@ public class IPhoneCanvasUI extends AbstractUI<Canvas> implements CanvasUI {
 		
 		@Override
 		public void draw(CGRect arg0) {
-			System.out.println("drawRect: " + canvas + " " + this);
+			logger.debug("drawRect: " + canvas + " " + this);
 			MIDletAccess ma = MIDletBridge.getMIDletAccess();
 			if (ma == null) {
 				return;

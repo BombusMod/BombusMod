@@ -3,14 +3,18 @@ package org.bombusmod.android.service;
 import Client.StaticData;
 import android.content.Context;
 import androidx.annotation.NonNull;
-import android.util.Log;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import com.alsutton.jabber.JabberStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class KeepAliveWorker extends Worker {
 
-    private static final String LOGTAG = KeepAliveWorker.class.getSimpleName();
+    private static final Logger logger = LoggerFactory.getLogger(
+            KeepAliveWorker.class.getSimpleName()
+    );
 
     public KeepAliveWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -23,7 +27,7 @@ public class KeepAliveWorker extends Worker {
         if (stream != null && stream.loggedIn) {
             stream.sendKeepAlive();
         }
-        Log.d(LOGTAG, "Working...");
+        logger.debug("Working...");
         return Result.retry();
     }
 }
