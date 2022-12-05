@@ -5,7 +5,7 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.7.1'
     implementation 'androidx.appcompat:appcompat:1.5.1'
 
-    implementation 'com.github.tony19:logback-android:2.0.0'
+    implementation 'com.github.tony19:logback-android:2.0.1'
 }
 
 android {
