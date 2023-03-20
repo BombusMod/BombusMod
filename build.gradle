@@ -1,7 +1,7 @@
 buildscript {
     ext.slf4j_version = '1.7.36'
     ext.junit_version = '4.13.2'
-    ext.robovm_version = '2.3.18'
+    ext.robovm_version = '2.3.19'
 
     repositories {
         mavenCentral()
