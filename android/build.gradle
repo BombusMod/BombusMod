@@ -16,6 +16,7 @@ android {
         versionCode 1422
         versionName '0.9.1422'
         applicationId "org.bombusmod"
+        namespace "$applicationId"
     }
     lintOptions {
         checkReleaseBuilds false
