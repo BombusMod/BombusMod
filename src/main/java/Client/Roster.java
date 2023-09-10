@@ -562,7 +562,7 @@ public class Roster
 //#endif
                         continue;
                     }
-
+                    c.nick = nick;
                     c.group = group;
                     c.subscr = subscr;
                     c.offline_type = status;
@@ -589,7 +589,7 @@ public class Roster
                 index++;
             }
         }
-        //if (status<0) removeTrash();
+        if (status<0) removeTrash();
     }
 
     private void removeTrash() {
