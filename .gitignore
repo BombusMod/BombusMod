@@ -15,7 +15,7 @@ proguard/
 .idea/**
 .gradle/**
 **/*.iml
-release/**
+**/release/**
 out/**
 /ios/robovm-build/**
 .DS_Store
