@@ -1,5 +1,5 @@
 buildscript {
-    ext.slf4j_version = '2.0.9'
+    ext.slf4j_version = '2.0.10'
     ext.junit_version = '4.13.2'
     ext.robovm_version = '2.3.20'
 
