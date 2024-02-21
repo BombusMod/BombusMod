@@ -19,6 +19,6 @@ jobs:
         java-version: '18'
         cache: 'gradle'
     - name: Setup Android SDK
-      uses: android-actions/setup-android@v2
+      uses: android-actions/setup-android@v3
     - name: Build
       run: ./gradlew --no-daemon check -PenableIOS=true -PenableDesktop=true
