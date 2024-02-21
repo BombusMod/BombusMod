@@ -1,18 +1,86 @@
-name: Update Gradle Wrapper
+name: Upgrade Gradle
 
 on:
+  workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    # * is a special character in YAML so you have to quote this string
+    #        ┌───── minute (0 - 59)
+    #        │ ┌──── hour (0 - 23)
+    #        │ │ ┌─── day of the month (1 - 31)
+    #        │ │ │ ┌── month (1 - 12 or JAN-DEC)
+    #        │ │ │ │ ┌─ day of the week (0 - 6 or SUN-SAT)
+    #        │ │ │ │ │
+    #        * * * * *
+    - cron: "0 6 * * MON-FRI"
 
 jobs:
-  update-gradle-wrapper:
+  upgrade-gradle:
+    name: Upgrade Gradle
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Update Gradle Wrapper
-        uses: gradle-update/update-gradle-wrapper-action@v1
+      - id: latest-gradle-version
+        name: Find the latest released Gradle version
+        uses: actions/github-script@v7
         with:
-          labels: automerge
-        
+          script: |
+            console.log("Finding the latest available Gradle version...");
+
+            const latestRelease = (await github.rest.repos.getLatestRelease({ owner: "gradle", repo: "gradle"})).data;
+            if (!latestRelease) {
+                console.log("The latest Gradle release is not found");
+                return;
+            }
+            console.log(`The latest Gradle version: ${latestRelease.name}`);
+
+            let summary = core.summary;
+            summary = summary.addHeading("The latest Gradle version");
+            summary = summary.addLink(`${latestRelease.name}`, latestRelease.html_url);
+            summary.write();
+
+            core.setOutput("value", latestRelease.name);
+            core.setOutput("description", latestRelease.body);
+
+      - name: Checkout the project
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - id: used-gradle-version
+        name: Get the used Gradle version
+        run: |
+          usedGradleVersion=$(./gradlew -v | grep -oP "^Gradle\ [0-9.]+" | sed "s/Gradle //g")
+
+          echo "# The used Gradle version" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[$usedGradleVersion](https://github.com/<ORG>/<REPO>/blob/master/gradle/wrapper/gradle-wrapper.properties#L3)" >> $GITHUB_STEP_SUMMARY
+
+          echo "result=$usedGradleVersion" >> "$GITHUB_OUTPUT"
+
+      - name: Set up JDK
+        if: ${{ steps.latest-gradle-version.outputs.value != steps.used-gradle-version.outputs.result }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: corretto
+          java-version: '21'
+
+      - name: Upgrade Gradle
+        if: ${{ steps.latest-gradle-version.outputs.value != steps.used-gradle-version.outputs.result }}
+        run: ./gradlew wrapper --gradle-version latest
+
+      - id: create-pr
+        name: Create PR
+        if: ${{ steps.latest-gradle-version.outputs.value != steps.used-gradle-version.outputs.result }}
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: Upgrade Gradle to v${{ steps.latest-gradle-version.outputs.value }}
+          branch: chore/upgrade-gradle-to-v${{ steps.latest-gradle-version.outputs.value }}
+          title: Upgrade Gradle to v${{ steps.latest-gradle-version.outputs.value }}
+          body: ${{ steps.latest-gradle-version.outputs.description }}
+          labels: automerge,dependencies,infrastructure
+
+      - name: Add PR URL to the summary
+        if: ${{ steps.latest-gradle-version.outputs.value != steps.used-gradle-version.outputs.result }}
+        run: |
+          echo "# Created PR" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[${{ steps.create-pr.outputs.pull-request-number }}](${{ steps.create-pr.outputs.pull-request-url }})" >> $GITHUB_STEP_SUMMARY
