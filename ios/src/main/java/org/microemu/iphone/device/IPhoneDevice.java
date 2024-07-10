@@ -140,6 +140,11 @@ public class IPhoneDevice implements Device {
 		return systemProperties;
 	}
 
+	@Override
+	public void minimizeApp() {
+
+	}
+
 	public UIFactory getUIFactory() {
 		return ui;
 	}

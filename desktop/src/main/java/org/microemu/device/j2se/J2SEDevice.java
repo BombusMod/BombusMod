@@ -87,4 +87,9 @@ public class J2SEDevice extends DeviceImpl {
 		return ui;
 	}
 
+	@Override
+	public void minimizeApp() {
+		
+	}
+
 }
