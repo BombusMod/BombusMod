@@ -6,6 +6,8 @@ import org.bombusmod.android.util.AndroidVersion;
 import org.bombusmod.android.util.EventNotify;
 import org.bombusmod.android.util.InternalResource;
 
+import java.io.File;
+
 import Client.StaticData;
 
 public class App extends Application {
@@ -21,10 +23,12 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         // see https://github.com/tony19/logback-android/issues/228
-        System.out.println("External file directory: " + getExternalFilesDir(null));
+        File externalFilesFir = getExternalFilesDir(null);
+        System.out.println("External file directory: " + externalFilesFir);
         StaticData sd = StaticData.getInstance();
         sd.setAssetsLoader(new InternalResource());
         sd.setVersionInfo(new AndroidVersion());
         sd.setEventNotifier(new EventNotify());
+        sd.previousPath = externalFilesFir.getPath();
     }
 }

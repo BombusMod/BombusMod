@@ -30,6 +30,8 @@ package History;
 
 import Client.Config;
 import io.file.FileIO;
+
+import java.io.File;
 import java.util.Vector;
 import util.StringUtils;
 
@@ -50,7 +52,7 @@ public class HistoryStorage {
 //#ifdef DETRANSLIT
        filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
-       filename=cf.msgPath+StringUtils.replaceBadChars(filename)+".txt";
+       filename=new File(cf.msgPath, StringUtils.replaceBadChars(filename)+".txt").getPath();
 
        this.history = loadHistory(filename);
    }
