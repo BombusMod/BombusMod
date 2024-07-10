@@ -21,18 +21,22 @@
  */
 package org.bombusmod;
 
+import static android.Manifest.permission.POST_NOTIFICATIONS;
+
 import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -46,10 +50,11 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.Window;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 
 import org.bombusmod.android.scrobbler.Receiver;
 import org.bombusmod.android.service.XmppService;
@@ -247,6 +252,16 @@ public class BombusModActivity extends AppCompatActivity {
         ClipBoardIO.getInstance();
         Intent intent = new Intent(this, XmppService.class);
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+        if (Build.VERSION.SDK_INT >= 33) {
+            if (ContextCompat.checkSelfPermission(this, POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            ActivityResultLauncher<String> launcher = registerForActivityResult(
+                    new ActivityResultContracts.RequestPermission(), isGranted ->
+                            logger.info("Notifications permissions granted: {}", isGranted)
+            );
+            launcher.launch(POST_NOTIFICATIONS);
+        }
     }
 
     @Override
