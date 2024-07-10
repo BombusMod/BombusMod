@@ -355,7 +355,7 @@ public class BombusModActivity extends AppCompatActivity {
         //Scrobble Droid
         scrobblerIntentFilter.addAction("net.jjc1138.android.scrobbler.action.MUSIC_STATUS");
         musicReceiver = new Receiver();
-        registerReceiver(musicReceiver, scrobblerIntentFilter);
+        ContextCompat.registerReceiver(this, musicReceiver, scrobblerIntentFilter, ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     private boolean ignoreBackKeyUp = false;
