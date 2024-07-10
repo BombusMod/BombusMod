@@ -373,6 +373,8 @@ public class Display {
 				}
 												
 			}));
+		} else {
+			DeviceFactory.getDevice().minimizeApp();
 		}
 	}
 

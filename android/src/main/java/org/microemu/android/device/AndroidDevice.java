@@ -155,6 +155,11 @@ public class AndroidDevice implements Device {
 		return systemProperties;
 	}
 
+	@Override
+	public void minimizeApp() {
+		activity.minimizeApp();
+	}
+
 	public boolean hasPointerEvents() {
 		return true;
 	}

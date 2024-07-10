@@ -68,4 +68,5 @@ public interface Device {
 
 	Map getSystemProperties();
 
+	void minimizeApp();
 }
