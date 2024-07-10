@@ -26,6 +26,12 @@
  */
 package Account;
 
+import javax.microedition.lcdui.Display;
+import javax.microedition.midlet.MIDlet;
+
+import midlet.BombusMod;
+import ui.VirtualCanvas;
+import ui.VirtualList;
 import xmpp.Account;
 import Client.*;
 import locale.SR;
@@ -247,6 +253,17 @@ public class AccountForm
             user = user.substring(0, at);
         }
         if (server.length() == 0 || user.length() == 0 || pass.length() == 0) {
+            new AlertBox(SR.MS_LOGIN_FAILED, SR.MS_LOGIN_FAILED) {
+                @Override
+                public void yes() {
+                    destroyView();
+                }
+
+                @Override
+                public void no() {
+                    destroyView();
+                }
+            };
             return;
         }
 
@@ -307,7 +324,7 @@ public class AccountForm
                 }
             };
         } else {
-            accountSelect.show();
+            BombusMod.getInstance().hideApp(true);
         }
     }
 
