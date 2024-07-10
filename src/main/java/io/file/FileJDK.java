@@ -2,6 +2,8 @@ package io.file;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,12 +19,12 @@ public class FileJDK extends FileIO {
 
     @Override
     public OutputStream openOutputStream() throws IOException {
-        return null;
+        return new FileOutputStream(fileName, false);
     }
 
     @Override
     public InputStream openInputStream() throws IOException {
-        return null;
+        return new FileInputStream(fileName);
     }
 
     @Override
@@ -32,17 +34,17 @@ public class FileJDK extends FileIO {
 
     @Override
     public void delete() throws IOException {
-
+        new File(fileName).delete();
     }
 
     @Override
     public void rename(String newName) throws IOException {
-
+        new File(fileName).renameTo(new File(newName));
     }
 
     @Override
     public long fileSize() {
-        return 0;
+        return new File(fileName).length();
     }
 
     @Override
@@ -66,6 +68,6 @@ public class FileJDK extends FileIO {
 
     @Override
     public OutputStream appendOutputStream() throws IOException {
-        return null;
+        return new FileOutputStream(fileName, true);
     }
 }

@@ -44,7 +44,7 @@ import Client.StaticData;
  */
 public abstract class FileIO {
     
-    public final static int MAX_NAME_LEN=48;
+    public final static int MAX_NAME_LEN=32768;
     
     protected String fileName;
     

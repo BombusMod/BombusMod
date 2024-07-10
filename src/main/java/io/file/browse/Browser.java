@@ -38,6 +38,7 @@ import images.RosterIcons;
 import io.file.FileIO;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -112,10 +113,10 @@ public class Browser extends DefForm {
             if (f.isDirectory()) {
                 destroyView();
                 if (browserListener != null) {
-                    if (f.getName().startsWith("../")) {
+                    if (f.getName().startsWith("..")) {
                         browserListener.BrowserFilePathNotify(path);
                     } else {
-                        browserListener.BrowserFilePathNotify(path + f.getName());
+                        browserListener.BrowserFilePathNotify(f.getPath());
                     }
                 }
                 return;
@@ -133,11 +134,6 @@ public class Browser extends DefForm {
         if (command == cmdExit) {
             destroyView();
         }
-    }
-
-    public void destroyView() {
-        StaticData.getInstance().previousPath = path;
-        super.destroyView();
     }
 
     private boolean chDir(String relativePath) {
@@ -205,7 +201,7 @@ public class Browser extends DefForm {
     public void showFile() {
         FileItem fi = (FileItem) getFocusedObject();
         if (fi.getType() < 4 && fi.getType() > 0)
-            new ShowFile(path + fi.file.getName(), fi.getType());
+            new ShowFile(new File(path, fi.file.getName()).getPath(), fi.getType());
     }
 
     public void eventOk() {
@@ -216,7 +212,7 @@ public class Browser extends DefForm {
                 return;
             }
             destroyView();
-            browserListener.BrowserFilePathNotify(path + f);
+            browserListener.BrowserFilePathNotify(f.getPath());
             return;
         }
         if (!chDir(f.getPath())) {

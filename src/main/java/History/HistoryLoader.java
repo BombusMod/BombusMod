@@ -33,6 +33,8 @@ import Client.Config;
 import Client.Msg;
 import Messages.MessageItem;
 import io.file.FileIO;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -69,7 +71,7 @@ public class HistoryLoader {
 //#ifdef DETRANSLIT
         fileName = util.DeTranslit.getInstance().get_actual_filename(file);
 //#endif
-        fileName = cf.msgPath + StringUtils.replaceBadChars(file) + ".txt";
+        fileName = new File(cf.msgPath, StringUtils.replaceBadChars(file) + ".txt").getPath();
 
         fileSize = getFileSize();
     }

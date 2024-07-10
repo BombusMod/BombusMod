@@ -30,6 +30,8 @@ import Client.Config;
 import Client.Msg;
 import Client.StaticData;
 import io.file.FileIO;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import util.Strconv;
@@ -80,7 +82,7 @@ public class HistoryAppend {
 //#ifdef DETRANSLIT
         filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
-        filename = cf.msgPath + StringUtils.replaceBadChars(filename) + ".txt";
+        filename = new File(cf.msgPath, StringUtils.replaceBadChars(filename) + ".txt").getPath();
 
         file = FileIO.createConnection(filename);        
         file.writeFile(bodyMessage);
@@ -95,7 +97,7 @@ public class HistoryAppend {
 //#ifdef DETRANSLIT
         filename = util.DeTranslit.getInstance().get_actual_filename(filename);
 //#endif
-        filename = cf.msgPath + StringUtils.replaceBadChars(filename) + ".txt";
+        filename = new File(cf.msgPath, StringUtils.replaceBadChars(filename) + ".txt").getPath();
 
         file = FileIO.createConnection(filename);
         file.fileWriteUtf(messages);
