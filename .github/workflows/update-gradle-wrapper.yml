@@ -70,7 +70,7 @@ jobs:
       - id: create-pr
         name: Create PR
         if: ${{ steps.latest-gradle-version.outputs.value != steps.used-gradle-version.outputs.result }}
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           commit-message: Upgrade Gradle to v${{ steps.latest-gradle-version.outputs.value }}
           branch: chore/upgrade-gradle-to-v${{ steps.latest-gradle-version.outputs.value }}
