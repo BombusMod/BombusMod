@@ -16,7 +16,7 @@ on:
 jobs:
   upgrade-gradle:
     name: Upgrade Gradle
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - id: latest-gradle-version
         name: Find the latest released Gradle version
