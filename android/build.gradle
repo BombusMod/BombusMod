@@ -9,10 +9,10 @@ dependencies {
 }
 
 android {
-    compileSdk 34
+    compileSdk 35
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 34
+        minSdkVersion 24
+        targetSdkVersion 35
         versionCode 1426
         versionName "0.9.$versionCode"
         applicationId "org.bombusmod"
