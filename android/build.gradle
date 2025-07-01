@@ -19,7 +19,7 @@ android {
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 35
-        versionCode 1426
+        versionCode 1428
         versionName "0.9.$versionCode"
         applicationId "org.bombusmod"
         namespace "$applicationId"
