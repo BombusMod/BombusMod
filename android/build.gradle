@@ -8,6 +8,12 @@ dependencies {
     implementation 'com.github.tony19:logback-android:3.0.0'
 }
 
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     compileSdk 35
     defaultConfig {
@@ -28,9 +34,18 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['key.alias']
+            keyPassword keystoreProperties['key.alias.password']
+            storeFile keystoreProperties['key.store'] ? file(keystoreProperties['key.store']) : null
+            storePassword keystoreProperties['key.store.password']
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
         }
     }
 }
