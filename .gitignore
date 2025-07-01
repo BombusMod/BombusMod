@@ -20,3 +20,4 @@ out/**
 /ios/robovm-build/**
 .DS_Store
 keystore.properties
+.vscode
