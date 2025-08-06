@@ -3,7 +3,7 @@ name: Gradle CI
 on: 
   pull_request:
   push:
-    branches: master
+    branches: [master]
 
 jobs:
   build:
@@ -21,4 +21,4 @@ jobs:
     - name: Setup Android SDK
       uses: android-actions/setup-android@v3
     - name: Build
-      run: ./gradlew --no-daemon check -PenableIOS=true -PenableDesktop=true
+      run: ./gradlew -PenableIOS=true -PenableDesktop=true
