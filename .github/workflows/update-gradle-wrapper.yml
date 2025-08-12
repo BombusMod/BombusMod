@@ -41,7 +41,7 @@ jobs:
             core.setOutput("description", latestRelease.body);
 
       - name: Checkout the project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: master
 
