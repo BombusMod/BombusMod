@@ -58,7 +58,7 @@ jobs:
 
       - name: Set up JDK
         if: ${{ steps.latest-gradle-version.outputs.value != steps.used-gradle-version.outputs.result }}
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: corretto
           java-version: '21'
