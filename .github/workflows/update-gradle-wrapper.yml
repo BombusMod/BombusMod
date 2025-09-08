@@ -20,7 +20,7 @@ jobs:
     steps:
       - id: latest-gradle-version
         name: Find the latest released Gradle version
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             console.log("Finding the latest available Gradle version...");
