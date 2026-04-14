@@ -35,9 +35,6 @@ public class PepForm extends DefForm {
 //#ifdef PEP_ACTIVITY
    private CheckBox rcvactivity;
 //#endif
-//#ifdef PEP_LOCATION
-   private CheckBox rcvlocation;
-//#endif
 
 //#endif
     DropChoiceBox activity;
@@ -71,24 +68,12 @@ public class PepForm extends DefForm {
                 }
             };
 //#endif
-//#ifdef PEP_LOCATION
-            rcvlocation = new CheckBox("User location", Config.getInstance().rcvloc);
-            itemsList.addElement(rcvlocation);
-//#endif
 
             itemsList.addElement(new SpacerItem(10));
             itemsList.addElement(new SimpleString("Publish events", true));
             itemsList.addElement(updmood);
 //#ifdef PEP_ACTIVITY
             itemsList.addElement(updact);
-//#endif
-//#ifdef PEP_LOCATION            
-            LinkString updloc = new LinkString("Location") {
-                public void doAction() {
-                     new LocationForm(StaticData.getInstance().roster);
-                }
-            };
-            itemsList.addElement(updloc);            
 //#endif
 
 //#ifdef PEP_TUNE
@@ -107,9 +92,6 @@ public class PepForm extends DefForm {
 //#endif
 //#ifdef PEP_ACTIVITY
         Config.getInstance().rcvactivity=rcvactivity.getValue();
-//#endif
-//#ifdef PEP_LOCATION
-        Config.getInstance().rcvloc = rcvlocation.getValue();
 //#endif
 //#ifdef PEP_TUNE
 //#if android
