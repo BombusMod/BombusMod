@@ -37,17 +37,10 @@ public class AccountStorage {
             a.mucOnly = inputStream.readBoolean();
 //#else
 //#             inputStream.readBoolean();
-//#endif            
-
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#             a.setEnableProxy(inputStream.readBoolean());
-//#             a.proxyHostAddr = inputStream.readUTF();
-//#             a.setProxyPort(inputStream.readInt());
-//#else
-            inputStream.readBoolean();
-            inputStream.readUTF();
-            inputStream.readInt();
 //#endif
+            a.setEnableProxy(inputStream.readBoolean());
+            a.proxyHostAddr = inputStream.readUTF();
+            a.setProxyPort(inputStream.readInt());
 
             a.compression = inputStream.readBoolean();
 
@@ -55,13 +48,8 @@ public class AccountStorage {
             a.keepAlivePeriod = inputStream.readInt();
 
             inputStream.readBoolean(); //firstrun // was dnsresolver
-//#ifdef HTTPCONNECT
-//#             a.setProxyUser(inputStream.readUTF());
-//#             a.setProxyPass(inputStream.readUTF());
-//#else
-            inputStream.readUTF();
-            inputStream.readUTF();
-//#endif
+            a.setProxyUser(inputStream.readUTF());
+            a.setProxyPass(inputStream.readUTF());
         } catch (IOException e) { /*
              * e.printStackTrace();
              */ }
@@ -74,11 +62,9 @@ public class AccountStorage {
         if (account.hostAddr == null) {
             account.hostAddr = "";
         }
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#         if (account.proxyHostAddr == null) {
-//#             account.proxyHostAddr = "";
-//#         }
-//#endif
+        if (account.proxyHostAddr == null) {
+            account.proxyHostAddr = "";
+        }
 
         try {
             outputStream.writeByte(7);
@@ -96,15 +82,9 @@ public class AccountStorage {
 
             outputStream.writeBoolean(account.mucOnly);
 
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#             outputStream.writeBoolean(account.isEnableProxy());
-//#             outputStream.writeUTF(account.proxyHostAddr);
-//#             outputStream.writeInt(account.getProxyPort());
-//#else
-            outputStream.writeBoolean(false);
-            outputStream.writeUTF("");
-            outputStream.writeInt(0);
-//#endif
+            outputStream.writeBoolean(account.isEnableProxy());
+            outputStream.writeUTF(account.proxyHostAddr);
+            outputStream.writeInt(account.getProxyPort());
 
             outputStream.writeBoolean(account.compression);
 
@@ -112,13 +92,8 @@ public class AccountStorage {
             outputStream.writeInt(account.keepAlivePeriod);
 
             outputStream.writeBoolean(true);  //firstrun // dns-resolver
-//#ifdef HTTPCONNECT
-//#             outputStream.writeUTF(account.getProxyUser());
-//#             outputStream.writeUTF(account.getProxyPass());
-//#else
-            outputStream.writeUTF("");
-            outputStream.writeUTF("");
-//#endif
+            outputStream.writeUTF(account.getProxyUser());
+            outputStream.writeUTF(account.getProxyPass());
 
         } catch (IOException e) {
             //e.printStackTrace();

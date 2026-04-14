@@ -41,11 +41,8 @@ import Client.StaticData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-//#if android
 import java.net.Socket;
-//#else
-//# import javax.microedition.io.*;
-//#endif
+
 import util.Strconv;
 
 /**
@@ -53,11 +50,7 @@ import util.Strconv;
  * @author EvgS
  */
 public class Utf8IOStream {
-//#if android
     private Socket connection;
-//#else    
-//#     private StreamConnection connection;
-//#endif    
     private InputStream inpStream;
     private OutputStream outStream;
     
@@ -88,9 +81,7 @@ public class Utf8IOStream {
         tlsExclusive = false;
         length = pbyte = 0;
     }
-//#endif    
-//#if android
-/** Creates a new instance of Utf8IOStream */
+//#endif
     public Utf8IOStream(Socket connection) throws IOException {
         this.connection = connection;
         try {
@@ -105,24 +96,15 @@ public class Utf8IOStream {
         
         length=0;
         pbyte=0;
-    }    
-//#else    
-//#     /** Creates a new instance of Utf8IOStream */
-//#     public Utf8IOStream(StreamConnection connection) throws IOException {
-//#         this.connection=connection;
-//#         try {
-//#             SocketConnection sc=(SocketConnection)connection;
-//#             sc.setSocketOption(SocketConnection.KEEPALIVE, 1);
-//#             sc.setSocketOption(SocketConnection.LINGER, 300);
-//#         } catch (Exception e) {}
-//#         
-//#         inpStream = connection.openInputStream();
-//#         outStream = connection.openOutputStream();
-//#         
-//#         length=0;
-//#         pbyte=0;
-//#     }
-//#endif    
+    }
+
+    public Utf8IOStream(HttpProxyConnection proxy) throws IOException {
+        this.connection = proxy.getSocket();
+        inpStream = proxy.openInputStream();
+        outStream = proxy.openOutputStream();
+        length=0;
+        pbyte=0;
+    }
     
     public void send(String data) throws IOException {
         synchronized (outStream) {

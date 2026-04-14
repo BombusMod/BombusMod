@@ -191,9 +191,7 @@ public class InfoWindow
 //#ifdef HTTPBIND
 //#         abilitiesList.addElement("HTTPBIND");
 //#endif
-//#ifdef HTTPCONNECT
-//#         abilitiesList.addElement("HTTPCONNECT");
-//#endif
+        abilitiesList.addElement("HTTPCONNECT");
 //#ifdef HTTPPOLL
 //#         abilitiesList.addElement("HTTPPOLL");
 //#endif

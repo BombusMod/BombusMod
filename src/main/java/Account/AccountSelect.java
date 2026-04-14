@@ -120,10 +120,10 @@ public class AccountSelect extends DefForm {
             switchAccount(false);
         }
         if (c == cmdEdit) {
-            new AccountForm(this, ((AccountItem) getFocusedObject())).show();
+            new AccountForm(this, ((AccountItem) getFocusedObject()));
         }
         if (c == cmdAdd) {
-            new AccountForm(this, null).show();
+            new AccountForm(this, null);
         }
         if (c == cmdDel) {
             if (cursor == cf.accountIndex && StaticData.getInstance().roster.isLoggedIn()) {

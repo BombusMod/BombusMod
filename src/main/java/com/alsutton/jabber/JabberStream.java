@@ -42,11 +42,8 @@ import com.alsutton.jabber.datablocks.Presence;
 import io.Utf8IOStream;
 import java.io.*;
 import java.util.*;
-//#if android
 import java.net.Socket;
-//#else
-//# import javax.microedition.io.*;
-//#endif
+
 import xml.*;
 import locale.SR;
 import xmpp.MessageDispatcher;
@@ -67,40 +64,26 @@ public class JabberStream implements XMLEventListener, Runnable {
     private String sessionId;
     private boolean secured;
     public Vector outgoingQueries = new Vector();
-//#if android
     private Socket connection;
-//#else
-//#     private StreamConnection connection;
-//#endif
 
     /**
      * Constructor. Connects to the server and sends the jabber welcome message.
      *
      */
-    public JabberStream(String server, String host, int port, String proxy) throws IOException {
+    public JabberStream(String server, String host, int port, String proxy, int proxyPort) throws IOException {
         this.server = server;
 
         boolean waiting = Config.getInstance().istreamWaiting;
 
         if (proxy == null) {
-//#if android
-	    connection = new Socket(host, port);
-//#else                    
-//#             connection = (StreamConnection) Connector.open(host + ":" + port);
-//#endif            
+            connection = new Socket(host, port);
+            iostream = new Utf8IOStream(connection);
         } else {
-//#if HTTPCONNECT
-//#             connection = io.HttpProxyConnection.open(host, port, proxy, StaticData.getInstance().account.getProxyUser(), StaticData.getInstance().account.getProxyPass());
-//#elif HTTPPOLL
-//#             connection = new io.HttpPollConnection(server, proxy);
-//#elif HTTPBIND
-//#             connection = new io.HttpBindConnection(server, host);
-//#else            
-            throw new IllegalArgumentException("no proxy supported");
-//#endif            
+            io.HttpProxyConnection proxyConnection = io.HttpProxyConnection.open(host, port, proxy, proxyPort,
+                    StaticData.getInstance().account.getProxyUser(),
+                    StaticData.getInstance().account.getProxyPass());
+            iostream = new Utf8IOStream(proxyConnection);
         }
-
-        iostream = new Utf8IOStream(connection);
     }
 
     public void initiateStream() throws IOException {

@@ -47,9 +47,7 @@ import ui.controls.form.TextInput;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
-//#if HTTPCONNECT || HTTPPOLL || HTTPBIND
-//# import javax.microedition.lcdui.TextField;
-//#endif
+import javax.microedition.lcdui.TextField;
 import xmpp.Jid;
 
 /**
@@ -79,13 +77,11 @@ public class AccountForm
     private LinkString linkImport;
 //#endif
     private NumberInput keepAlive;
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#     private TextInput proxyHost;
-//#     private TextInput proxyPort;
-//#     private TextInput proxyUser;
-//#     private TextInput proxyPass;
-//#     private CheckBox proxybox;
-//#endif
+    private TextInput proxyHost;
+    private TextInput proxyPort;
+    private TextInput proxyUser;
+    private TextInput proxyPass;
+    private CheckBox proxybox;
     AccountItem item;
     boolean newaccount;
     boolean showExtended;
@@ -178,10 +174,9 @@ public class AccountForm
 //#ifndef WMUC        
         confOnlybox = new CheckBox(SR.MS_CONFERENCES_ONLY, item.account.mucOnly);
 //#endif        
-//#if HTTPCONNECT
-//#         proxybox = new CheckBox(/*
-//#                  * SR.MS_PROXY_ENABLE
-//#                  */"Proxy connect", item.account.isEnableProxy());
+        proxybox = new CheckBox(/*
+                 * SR.MS_PROXY_ENABLE
+                 */"Proxy connect", item.account.isEnableProxy());
 //#elif HTTPPOLL        
 //#        proxybox = new CheckBox("HTTP Polling", item.account.isEnableProxy());
 //#elif HTTPBIND
@@ -192,10 +187,8 @@ public class AccountForm
         itemsList.addElement(compressionBox);
 //#ifndef WMUC        
         itemsList.addElement(confOnlybox);
-//#endif        
-//#if HTTPCONNECT || HTTPBIND || HTTPPOLL
-//#         itemsList.addElement(proxybox);
 //#endif
+        itemsList.addElement(proxybox);
 
 //#ifndef HTTPBIND
         keepAlive = new NumberInput(SR.MS_KEEPALIVE_PERIOD, Integer.toString(item.account.keepAlivePeriod), 10, 2048);//10, 2096        
@@ -203,19 +196,18 @@ public class AccountForm
         resourcebox = new TextInput(SR.MS_RESOURCE, newaccount ? StaticData.getInstance().getVersionInfo().getName() :
                 item.account.JID.resource, null);
 
-//#if HTTPCONNECT
-//#         proxyHost = new TextInput(/*
-//#                  * SR.MS_PROXY_HOST
-//#                  */"Proxy name/IP", item.account.proxyHostAddr, null, TextField.URL);
-//#         proxyPort = new NumberInput(/*
-//#                  * SR.MS_PROXY_PORT
-//#                  */"Proxy port", Integer.toString(item.account.getProxyPort()), 0, 65535);
-//#         proxyUser = new TextInput(/*
-//#                  * SR.MS_PROXY_HOST
-//#                  */"Proxy user", item.account.getProxyUser(), null, TextField.URL);
-//#         proxyPass = new TextInput(/*
-//#                  * SR.MS_PROXY_HOST
-//#                  */"Proxy pass", item.account.getProxyPass(), null, TextField.URL);
+        proxyHost = new TextInput(/*
+             * SR.MS_PROXY_HOST
+             */"Proxy name/IP", item.account.proxyHostAddr, null, TextField.URL);
+        proxyPort = new NumberInput(/*
+                 * SR.MS_PROXY_PORT
+                 */"Proxy port", Integer.toString(item.account.getProxyPort()), 0, 65535);
+        proxyUser = new TextInput(/*
+                 * SR.MS_PROXY_HOST
+                 */"Proxy user", item.account.getProxyUser(), null, TextField.URL);
+        proxyPass = new TextInput(/*
+                 * SR.MS_PROXY_HOST
+                 */"Proxy pass", item.account.getProxyPass(), null, TextField.URL);
 //#elif HTTPPOLL        
 //# 	proxyHost = new TextInput("HTTP Polling URL (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
 //#elif HTTPBIND
@@ -229,11 +221,10 @@ public class AccountForm
 //#endif
         itemsList.addElement(resourcebox);
 
-//#if HTTPCONNECT
-//#         itemsList.addElement(proxyHost);
-//#         itemsList.addElement(proxyPort);
-//#         itemsList.addElement(proxyUser);
-//#         itemsList.addElement(proxyPass);
+        itemsList.addElement(proxyHost);
+        itemsList.addElement(proxyPort);
+        itemsList.addElement(proxyUser);
+        itemsList.addElement(proxyPass);
 //#elif HTTPPOLL || HTTPBIND
 //#         itemsList.addElement(proxyHost);
 //#endif
@@ -280,19 +271,13 @@ public class AccountForm
 //#ifndef WMUC            
             item.account.mucOnly = confOnlybox.getValue();
 //#endif            
-//#if HTTPCONNECT || HTTPPOLL || HTTPBIND
-//#             item.account.setEnableProxy(proxybox.getValue());
-//#endif
+            item.account.setEnableProxy(proxybox.getValue());
 
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#             item.account.proxyHostAddr = proxyHost.getValue();
-//#if HTTPCONNECT
-//#             item.account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
-//# 
-//#             item.account.setProxyUser(proxyUser.getValue());
-//#             item.account.setProxyPass(proxyPass.getValue());
-//#endif
-//#endif
+            item.account.proxyHostAddr = proxyHost.getValue();
+            item.account.setProxyPort(Integer.parseInt(proxyPort.getValue()));
+
+            item.account.setProxyUser(proxyUser.getValue());
+            item.account.setProxyPass(proxyPass.getValue());
 //#ifndef HTTPBIND
             item.account.keepAlivePeriod = Integer.parseInt(keepAlive.getValue());
 //#endif
@@ -306,7 +291,6 @@ public class AccountForm
 
         doConnect = true;
         destroyView();
-        item = null;
     }
 
     public void destroyView() {
@@ -324,7 +308,7 @@ public class AccountForm
                 }
             };
         } else {
-            BombusMod.getInstance().hideApp(true);
+            super.destroyView();
         }
     }
 

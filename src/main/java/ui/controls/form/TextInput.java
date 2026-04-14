@@ -132,7 +132,9 @@ public class TextInput
         new EditBox(homeList, caption, text, this, boxType); 
     }
     
-    public String getValue() { return (text==null)?"":text; }
+    public String getValue() {
+        return (text==null)?"":text;
+    }
 
     public void setValue(String text) { this.text=(text==null)?"":text; }
     

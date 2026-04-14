@@ -43,16 +43,12 @@ public class Account {
     public boolean compression = true;
     public boolean plainAuth;
     public boolean mucOnly;
-    public String nick = "";    
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#     private boolean enableProxy;
-//#     public String proxyHostAddr = "";
-//#     private int proxyPort;
-//#endif
-//#ifdef HTTPCONNECT
-//#     private String proxyUser = "";
-//#     private String proxyPass = "";
-//#endif
+    public String nick = "";
+    private boolean enableProxy;
+    public String proxyHostAddr = "";
+    private int proxyPort;
+    private String proxyUser = "";
+    private String proxyPass = "";
     public int keepAlivePeriod = 120;
     private static StaticData sd = StaticData.getInstance();    
     
@@ -71,88 +67,55 @@ public class Account {
         if (hostAddr != null && hostAddr.length() > 0) {
             host = hostAddr;
             resolveHostname = false;
-        } 
-//#if HTTPCONNECT || HTTPBIND || HTTPPOLL                    
-//#         if (proxyHostAddr != null && proxyHostAddr.length() > 0) {
-//#             resolveHostname = false;
-//#         }
-//#endif        
+        }
+        if (proxyHostAddr == null || proxyHostAddr.isEmpty()) {
+            proxyHostAddr = System.getProperty("http.proxyHost");
+            proxyPort = Integer.getInteger("http.proxyPort", 1081);
+        }
         if (resolveHostname) {
             DnsSrvResolver dns = new DnsSrvResolver();
-//#if HTTPCONNECT || HTTPBIND || HTTPPOLL                    
-//#             if (enableProxy) {
-//#ifdef HTTPBIND
-//#                 type = DnsSrvResolver.XMPP_HTTPBIND;
-//#endif            
-//#ifdef HTTPPOLL
-//#                 type = DnsSrvResolver.XMPP_HTTPPOLL;
-//#endif            
-//#             }
-//#endif            
             if (dns.getSrv(JID.getServer())) {
                 host = dns.getHost();
                 tempPort = dns.getPort();
-//#if HTTPBIND || HTTPPOLL
-//#                 proxyHostAddr = host;
-//#endif                
             }
         }
 
-        StringBuffer url = new StringBuffer(host);
-
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#         if (!isEnableProxy()) {
-//#             url.insert(0, "socket://");
-//#         } else {
-//#if HTTPPOLL || HTTPBIND
-//#              proxy = proxyHostAddr;
-//#elif HTTPCONNECT
-//#             proxy = "socket://" + proxyHostAddr + ':' + getProxyPort();
-//#endif
-//#         }
-//#else
-//#if !(android)        
-//#             url.insert(0, "socket://");
-//#endif            
-//#endif
-        return new JabberStream(JID.getServer(), url.toString(), tempPort, proxy);
+        if (isEnableProxy()) {
+            proxy = proxyHostAddr;
+        }
+        return new JabberStream(JID.getServer(), host, tempPort, proxy, proxyPort);
     }
+     public boolean isEnableProxy() {
+         return enableProxy;
+     }
 
-//#if HTTPPOLL || HTTPCONNECT || HTTPBIND
-//#     public boolean isEnableProxy() {
-//#         return enableProxy;
-//#     }
-//# 
-//#     public void setEnableProxy(boolean enableProxy) {
-//#         this.enableProxy = enableProxy;
-//#     }
-//# 
-//#     public int getProxyPort() {
-//#         return proxyPort;
-//#     }
-//# 
-//#     public void setProxyPort(int proxyPort) {
-//#         this.proxyPort = proxyPort;
-//#     }
-//#ifdef HTTPCONNECT
-//# 
-//#     public String getProxyUser() {
-//#         return proxyUser;
-//#     }
-//# 
-//#     public void setProxyUser(String UserName) {
-//#         this.proxyUser = UserName;
-//#     }
-//# 
-//#     public String getProxyPass() {
-//#         return proxyPass;
-//#     }
-//# 
-//#     public void setProxyPass(String Password) {
-//#         this.proxyPass = Password;
-//#     }
-//#endif
-//#endif 
+     public void setEnableProxy(boolean enableProxy) {
+         this.enableProxy = enableProxy;
+     }
+
+     public int getProxyPort() {
+         return proxyPort;
+     }
+
+     public void setProxyPort(int proxyPort) {
+         this.proxyPort = proxyPort;
+     }
+
+     public String getProxyUser() {
+         return proxyUser;
+     }
+
+     public void setProxyUser(String UserName) {
+         this.proxyUser = UserName;
+     }
+
+     public String getProxyPass() {
+         return proxyPass;
+     }
+
+     public void setProxyPass(String Password) {
+         this.proxyPass = Password;
+     }
 
     public boolean useCompression() {
         return compression;
