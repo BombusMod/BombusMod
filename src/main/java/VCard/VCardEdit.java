@@ -26,6 +26,10 @@ import ui.VirtualList;
 
 import util.StringUtils;
 
+import ui.NativeScreenCommand;
+import ui.NativeScreenItem;
+import ui.NativeScreenModel;
+import ui.VirtualListController;
 import ui.controls.form.ImageItem;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
@@ -79,6 +83,7 @@ public class VCardEdit
     public VCardEdit(VCard vcard) {
         super(SR.MS_VCARD + " " + StaticData.getInstance().account.JID.getBare());
         this.vcard = vcard;
+        if (!buildNativeModel(vcard)) return;
 
         for (int index=0; index<vcard.getCount(); index++) {
             String data=vcard.getVCardData(index);
@@ -220,6 +225,29 @@ public class VCardEdit
 //#         if (cameraAvailable!=null) if (cameraAvailable.startsWith("true"))
 //#             addMenuCommand(cmdCamera);
 //#endif  
-        addMenuCommand(cmdDelPhoto);        
-    }    
+        addMenuCommand(cmdDelPhoto);
+    }
+
+    private boolean buildNativeModel(VCard vcard) {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        NativeScreenModel m = new NativeScreenModel();
+        for (int i = 0; i < vcard.getCount(); i++) {
+            String data = vcard.getVCardData(i);
+            String name = (String) VCard.vCardLabels.elementAt(i);
+            if (data != null && data.length() > 500) data = data.substring(0, 494) + "<...>";
+            final int idx = i;
+            NativeScreenItem item = new NativeScreenItem();
+            item.setAsInput("vc" + i, name, data != null ? data : "");
+            m.addPar(item);
+        }
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        final VCardEdit self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption(SR.MS_VCARD + " " + StaticData.getInstance().account.JID.getBare());
+        VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
+        return false;
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
  }

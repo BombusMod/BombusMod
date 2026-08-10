@@ -243,6 +243,7 @@ public class AlertCustomizeForm
         VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
         VirtualListController.getInstance().setCaption(SR.MS_NOTICES_OPTIONS);
         VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
         return false;
     }
     public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }

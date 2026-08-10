@@ -154,6 +154,7 @@ public class StatsWindow
         VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
         VirtualListController.getInstance().setCaption(SR.MS_STATS);
         VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
         return false;
     }
 

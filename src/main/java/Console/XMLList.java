@@ -171,11 +171,19 @@ public final class XMLList
     private boolean buildNativeModel() {
         if (!VirtualListController.getInstance().isActive()) return true;
         NativeScreenModel m = new NativeScreenModel();
+        StanzasList sl = StanzasList.getInstance();
+        for (int i = 0; i < sl.size(); i++) {
+            NativeScreenItem item = new NativeScreenItem();
+            item.selectable = true;
+            item.description = String.valueOf(sl.msg(i));
+            m.addPar(item);
+        }
         m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
         final XMLList self = this;
         VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
         VirtualListController.getInstance().setCaption(SR.MS_XML_CONSOLE);
         VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
         return false;
     }
     public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }

@@ -169,11 +169,23 @@ public class ColorsList extends DefForm
     private boolean buildNativeModel() {
         if (!VirtualListController.getInstance().isActive()) return true;
         NativeScreenModel m = new NativeScreenModel();
+        int cnt = 0;
+        for (java.util.Enumeration r = ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
+            ColorItem c = (ColorItem) r.nextElement();
+            final int index = cnt;
+            NativeScreenItem item = new NativeScreenItem();
+            item.selectable = true;
+            item.label = c.name;
+            item.description = NAMES[cnt];
+            m.addPar(item);
+            cnt++;
+        }
         m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
         final ColorsList self = this;
         VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
         VirtualListController.getInstance().setCaption(SR.MS_COLOR_TUNE);
         VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
         return false;
     }
     public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }

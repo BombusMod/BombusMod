@@ -192,6 +192,7 @@ public class IEMenu
         VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
         VirtualListController.getInstance().setCaption(SR.MS_IMPORT_EXPORT);
         VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
         return false;
     }
     public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }

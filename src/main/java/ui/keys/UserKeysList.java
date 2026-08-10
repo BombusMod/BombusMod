@@ -60,11 +60,19 @@ public class UserKeysList extends DefForm {
     private boolean buildNativeModel() {
         if (!VirtualListController.getInstance().isActive()) return true;
         NativeScreenModel m = new NativeScreenModel();
+        java.util.Vector keys = keyScheme.getFullKeysList();
+        for (int i = 0; i < keys.size(); i++) {
+            NativeScreenItem item = new NativeScreenItem();
+            item.selectable = true;
+            item.label = String.valueOf(keys.elementAt(i));
+            m.addPar(item);
+        }
         m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
         final UserKeysList self = this;
         VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
         VirtualListController.getInstance().setCaption(SR.MS_CUSTOM_KEYS);
         VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
         return false;
     }
     public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }

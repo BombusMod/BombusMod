@@ -45,6 +45,7 @@ import java.util.List;
 import locale.SR;
 import ui.IconTextElement;
 import ui.VirtualList;
+import ui.VirtualListController;
 import ui.controls.form.DefForm;
 
 /**
@@ -69,7 +70,7 @@ public class Browser extends DefForm {
      */
     public Browser(String path, BrowserListener browserListener, boolean getDirectory) {
         super(null);
-
+        if (!buildNativeModel()) return;
         this.browserListener = browserListener;
         this.getDirectory = getDirectory;
         this.path = (path == null) ? StaticData.getInstance().previousPath : path;
@@ -297,6 +298,19 @@ public class Browser extends DefForm {
         addMenuCommand(cmdExit);
         addMenuCommand(cmdCancel);
     }
+    private boolean buildNativeModel() {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        ui.NativeScreenModel m = new ui.NativeScreenModel();
+        m.addCommand("ok", "OK", ui.NativeScreenCommand.OK, -1);
+        final Browser self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption("File Manager");
+        VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
+        return false;
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

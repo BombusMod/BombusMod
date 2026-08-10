@@ -514,6 +514,7 @@ public class ConfigForm
         }});
         VirtualListController.getInstance().setCaption(SR.MS_OPTIONS);
         VirtualListController.getInstance().setModel(m);
+        VirtualListController.getInstance().notifyUpdate();
         return false;
     }
     public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
