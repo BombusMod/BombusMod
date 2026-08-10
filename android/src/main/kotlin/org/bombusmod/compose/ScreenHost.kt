@@ -40,6 +40,7 @@ fun ScreenHost(legacyView: View? = null) {
 
     val model = controller.model
     @Suppress("UNUSED_EXPRESSION") updateVersion
+    android.util.Log.e("BMB", "ScreenHost: model=${model}, items=${model?.elements?.size}, version=$updateVersion")
     val caption = controller.caption ?: "BombusMod"
 
     if (model == null || model.elements.isEmpty()) {
@@ -171,8 +172,13 @@ private fun RenderItem(item: NativeScreenItem, index: Int, controller: VirtualLi
             Surface(color = MyColors.LIST_BGND, modifier = Modifier.fillMaxWidth()
                 .clickable(enabled = item.selectable,
                     onClick = { controller.clickListListener?.itemSelected(null, index) })) {
-                Row(modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                Row(modifier = Modifier.padding(start = 4.dp, top = 6.dp, bottom = 6.dp, end = 8.dp),
                     verticalAlignment = Alignment.CenterVertically) {
+                    if (item.imageIndex >= 0) {
+                        MySpriteIcon(imageIndex = item.imageIndex, iconSize = 28.dp,
+                            modifier = Modifier.padding(end = 4.dp))
+                        Spacer(Modifier.width(6.dp))
+                    }
                     Column(modifier = Modifier.weight(1f)) {
                         if (item.label != null) Text(item.label, color = MyColors.LIST_INK,
                             style = MaterialTheme.typography.bodyLarge)

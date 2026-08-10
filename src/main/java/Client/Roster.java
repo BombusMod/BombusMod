@@ -166,7 +166,6 @@ public class Roster
 
     public Roster() {
         super(null, false);
-
         //splash = SplashScreen.getInstance();
 
         sl = StatusList.getInstance();
@@ -308,6 +307,8 @@ public class Roster
     }
 
     public void show() {
+        // Build native model from contacts BEFORE super.show()
+        buildNativeModel();
         super.show();
         countNewMsgs();
     }
@@ -515,6 +516,12 @@ public class Roster
             reEnumerator = new ReEnumerator();
         }
         reEnumerator.queueEnum();
+        // Refresh native model when contacts change
+        System.out.println("Roster.reEnumRoster: items=" + getItemCount());
+        if (VirtualListController.getInstance().isActive()) {
+            buildNativeModel();
+            VirtualListController.getInstance().notifyUpdate();
+        }
     }
 
     public void updateContact(String nick, String jid, String grpName, String subscr, boolean ask) {
@@ -2152,6 +2159,8 @@ public class Roster
     }
 
     public void destroyView() {
+        VirtualListController.getInstance().setModel(null);
+        VirtualListController.getInstance().notifyUpdate();
         cmdMinimize();
     }
 
@@ -2502,7 +2511,46 @@ public class Roster
                 }
             } catch (Exception e) {
             }
-            //thread=null;            
+            //thread=null;
         }
     }
+
+    private void buildNativeModel() {
+        NativeScreenModel m = new NativeScreenModel();
+        // Read from itemsList first (includes groups), fall back to hContacts
+        int count = getItemCount();
+        if (count > 0) {
+            for (int i = 0; i < count; i++) {
+                ui.VirtualElement el = getItemRef(i);
+                if (el == null) continue;
+                NativeScreenItem item = new NativeScreenItem(el.isSelectable());
+                item.label = el.toString();
+                if (el instanceof ui.IconTextElement)
+                    item.imageIndex = ((ui.IconTextElement) el).getImageIndex();
+                m.addPar(item);
+            }
+        } else {
+            java.util.Vector contacts = hContacts;
+            synchronized (contacts) {
+                for (int i = 0; i < contacts.size(); i++) {
+                    Contact c = (Contact) contacts.elementAt(i);
+                    NativeScreenItem item = new NativeScreenItem(true);
+                    item.label = c.nick != null ? c.nick : c.jid.getBare();
+                    item.description = c.statusString;
+                    item.imageIndex = c.getImageIndex();
+                    m.addPar(item);
+                }
+            }
+        }
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        final Roster self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() {
+            VirtualListController.getInstance().setModel(null);
+            VirtualListController.getInstance().notifyUpdate();
+            destroyView();
+        }});
+        VirtualListController.getInstance().setCaption("BombusMod");
+        VirtualListController.getInstance().setModel(m);
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
 }

@@ -15,6 +15,10 @@ object NativeUiBridge {
         WindowCompat.getInsetsController(
             activity.window, activity.window.decorView
         ).isAppearanceLightStatusBars = false
+        // Create ComposeView immediately — no CanvasView fallback
+        activity.setContentView(ComposeView(activity).apply {
+            setContent { MyTheme { ScreenHost() } }
+        })
     }
 
     @JvmStatic

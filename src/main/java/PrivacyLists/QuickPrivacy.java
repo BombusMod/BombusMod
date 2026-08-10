@@ -37,7 +37,6 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
 
     public QuickPrivacy() {
         super("Privacy", false);
-        if (!buildNativeModel()) return;
         usePrivacy = new CheckBox("Enable privacy settings", cf.useQuickPrivacy);
         itemsList.addElement(usePrivacy);
         itemsList.addElement(new SpacerItem(10));
@@ -140,8 +139,15 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         PrivacyList.privacyListRq(true, qList, "quicklst");
     }
 
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
+    public void show() {
+        super.show();
+        if (VirtualListController.getInstance().isActive()) {
+            buildNativeModel();
+            VirtualListController.getInstance().notifyUpdate();
+        }
+    }
+
+    private void buildNativeModel() {
         NativeScreenModel m = new NativeScreenModel();
         m.addPar(new NativeScreenItem() {{ setAsCheckBox("Enable privacy settings", cf.useQuickPrivacy); }});
         m.addPar(new NativeScreenItem() {{ setAsSpacer(10); }});
@@ -151,8 +157,6 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
         VirtualListController.getInstance().setCaption("Privacy");
         VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
     }
     public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
     public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }

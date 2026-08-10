@@ -421,15 +421,63 @@ public abstract class VirtualList {
     
     public void show() {
         parentView = VirtualCanvas.getInstance().getList();
-        // Route through native controller if active; otherwise legacy path
-        if (VirtualListController.getInstance().isActive()) {
-            // Convert this VirtualList to a NativeScreenModel for native rendering
-            VirtualListController ctrl = VirtualListController.getInstance();
-            // Store the legacy VirtualList ref so the bridge can render it
-            VirtualCanvas.getInstance().show(this);
-        } else {
-            VirtualCanvas.getInstance().show(this);
+        if (VirtualListController.getInstance().isActive()
+                && VirtualListController.getInstance().getModel() != null) {
+            VirtualListController.getInstance().notifyUpdate();
         }
+     }
+
+     public void buildNativeModelFromItems() {
+         int count = getItemCount();
+         if (count == 0) return;
+         NativeScreenModel m = new NativeScreenModel();
+         for (int i = 0; i < count; i++) {
+             VirtualElement el = getItemRef(i);
+             if (el == null) continue;
+             NativeScreenItem item = new NativeScreenItem(el.isSelectable());
+             item.label = el != null ? el.toString() : "";
+             if (el instanceof IconTextElement)
+                 item.imageIndex = ((IconTextElement) el).getImageIndex();
+             m.addPar(item);
+         }
+         VirtualListController.getInstance().setCaption(
+             mainbar != null ? mainbar.toString() : "");
+         final VirtualList self = this;
+         VirtualListController.getInstance().setModel(m);
+         VirtualListController.getInstance().setOnDismiss(new Runnable() {
+             public void run() {
+                 VirtualListController.getInstance().setModel(null);
+                 VirtualListController.getInstance().notifyUpdate();
+                 destroyView();
+             }
+         });
+     }
+
+     private void buildNativeModel() {
+         int count = getItemCount();
+         if (count == 0) return;
+         NativeScreenModel m = new NativeScreenModel();
+         for (int i = 0; i < count; i++) {
+             VirtualElement el = getItemRef(i);
+             if (el == null) continue;
+             NativeScreenItem item = new NativeScreenItem(el.isSelectable());
+             item.label = el.toString();
+             if (el instanceof IconTextElement) {
+                 item.imageIndex = ((IconTextElement) el).getImageIndex();
+             }
+             m.addPar(item);
+         }
+         VirtualListController.getInstance().setCaption(
+             mainbar != null ? mainbar.toString() : "");
+         VirtualListController.getInstance().setModel(m);
+         final VirtualList self = this;
+         VirtualListController.getInstance().setOnDismiss(new Runnable() {
+             public void run() {
+                 VirtualListController.getInstance().setModel(null);
+                 VirtualListController.getInstance().notifyUpdate();
+                 destroyView();
+             }
+         });
      }
 
     public void redraw() {

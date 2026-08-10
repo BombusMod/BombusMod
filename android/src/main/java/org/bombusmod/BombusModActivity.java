@@ -128,6 +128,7 @@ public class BombusModActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         org.bombusmod.compose.NativeUiBridge.init(this);
 
@@ -199,8 +200,6 @@ public class BombusModActivity extends AppCompatActivity {
         activityThread = Thread.currentThread();
 
         instance = this;
-
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -669,10 +668,10 @@ public class BombusModActivity extends AppCompatActivity {
     public void setContentView(View view) {
         logger.debug("set content view: " + view);
         contentView = view;
-        // Wrap in ComposeView: shows native ScreenHost when model is set,
-        // otherwise shows the legacy J2ME CanvasView
-        super.setContentView(
-            org.bombusmod.compose.NativeUiBridge.wrap(this, view));
+        // CanvasView: ignore. ComposeView: set as content.
+        if (view instanceof androidx.compose.ui.platform.ComposeView) {
+            super.setContentView(view);
+        }
     }
 
     @Override
