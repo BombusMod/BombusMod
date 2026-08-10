@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
+import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat
 import org.bombusmod.android.service.XmppService
+import org.bombusmod.compose.theme.MyTheme
 import ui.NativeScreenCommand
 import ui.NativeScreenModel
 import ui.VirtualListController
@@ -67,9 +69,15 @@ class ComposeHostActivity : ComponentActivity() {
         val intent = Intent(this, XmppService::class.java)
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
 
+        // Edge-to-edge: bars draw behind system status/nav bars
+        enableEdgeToEdge()
+        // White status bar icons (dark red background)
+        WindowCompat.getInsetsController(window, window.decorView)
+            .isAppearanceLightStatusBars = false
+
         // Set Compose content
         setContent {
-            MaterialTheme {
+            MyTheme {
                 ScreenHost()
             }
         }
