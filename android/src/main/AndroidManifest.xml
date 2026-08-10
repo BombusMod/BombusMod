@@ -29,16 +29,9 @@
             android:name=".compose.ComposeHostActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
-            android:label="BombusMod Native (Test)"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:windowSoftInputMode="adjustResize">
-            <!-- TEMPORARY: second launcher icon for testing Phase 1 -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
         <service
             android:name=".android.service.XmppService"
             android:enabled="true"
