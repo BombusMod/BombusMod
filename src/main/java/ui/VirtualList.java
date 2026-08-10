@@ -435,9 +435,16 @@ public abstract class VirtualList {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < mainbar.size(); i++) {
             Object el = mainbar.elementAt(i);
-            if (el != null) {
+            if (el instanceof String) {
+                sb.append((String) el);
+            } else if (el instanceof Integer) {
+                // skip numeric elements (color codes, progress indices)
+            } else if (el != null) {
                 String s = el.toString();
-                if (s != null && !s.isEmpty()) sb.append(s);
+                // Filter out pure numeric junk
+                if (s != null && !s.matches("\\d+")) {
+                    sb.append(s);
+                }
             }
         }
         return sb.toString();

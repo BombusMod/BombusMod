@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import Menu.MenuCommand
+import Client.Group
+import Client.Contact
 import org.bombusmod.compose.controls.*
 import org.bombusmod.compose.theme.MyColors
 import ui.*
@@ -269,7 +271,101 @@ private fun RenderVirtualElement(
             MyTextLine(text = el.toString())
         }
 
-        // ─── Default: selectable row with optional icon
+        // ─── Roster: Group header ────────────────────
+        el is Client.Group -> {
+            Surface(
+                color = MyColors.LIST_BGND_EVEN,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        el.onSelect()
+                        controller.notifyUpdate()
+                    }
+            ) {
+                Row(
+                    modifier = Modifier.padding(start = 4.dp, top = 8.dp, bottom = 8.dp, end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    MySpriteIcon(
+                        imageIndex = el.getImageIndex(),
+                        iconSize = 18.dp,
+                        modifier = Modifier.padding(end = 4.dp)
+                    )
+                    Text(
+                        el.toString(),
+                        color = MyColors.LIST_INK,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    if (el.unreadMessages > 0) {
+                        Spacer(Modifier.weight(1f))
+                        Surface(
+                            color = MyColors.CONTROL_ITEM,
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(
+                                " ${el.unreadMessages} ",
+                                color = MyColors.BAR_INK,
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        // ─── Roster: Contact ──────────────────────────
+        el is Client.Contact -> {
+            val unread = el.getNewMsgsCount()
+            Surface(
+                color = MyColors.LIST_BGND,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        el.onSelect()
+                        controller.notifyUpdate()
+                    }
+            ) {
+                Row(
+                    modifier = Modifier.padding(start = 4.dp, top = 6.dp, bottom = 6.dp, end = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    MySpriteIcon(
+                        imageIndex = el.getImageIndex(),
+                        iconSize = 28.dp,
+                        modifier = Modifier.padding(end = 4.dp)
+                    )
+                    Spacer(Modifier.width(6.dp))
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            el.toString(),
+                            color = MyColors.LIST_INK,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        if (el.statusString != null && el.statusString.isNotEmpty()) {
+                            Text(
+                                el.statusString,
+                                color = MyColors.SECOND_LINE,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
+                    }
+                    if (unread > 0) {
+                        Surface(
+                            color = MyColors.CONTROL_ITEM,
+                            shape = MaterialTheme.shapes.small
+                        ) {
+                            Text(
+                                " $unread ",
+                                color = MyColors.BAR_INK,
+                                style = MaterialTheme.typography.labelSmall
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        // ─── Default: selectable row with optional icon ─
         else -> {
             val selectable = el.isSelectable()
             val label = el.toString()
