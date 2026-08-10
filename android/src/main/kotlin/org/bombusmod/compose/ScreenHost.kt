@@ -44,18 +44,7 @@ fun ScreenHost(legacyView: View? = null) {
 
     if (model == null || model.elements.isEmpty()) {
         if (legacyView != null) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                val statusBarDp = WindowInsets.statusBars
-                    .asPaddingValues().calculateTopPadding()
-                Surface(
-                    color = MyColors.BAR_BGND,
-                    modifier = Modifier.fillMaxWidth().height(statusBarDp)
-                ) {}
-                AndroidView(
-                    factory = { legacyView },
-                    modifier = Modifier.fillMaxSize().statusBarsPadding()
-                )
-            }
+            AndroidView(factory = { legacyView }, modifier = Modifier.fillMaxSize())
         }
         return
     }
