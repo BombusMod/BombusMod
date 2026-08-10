@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import Menu.MenuCommand
@@ -46,6 +47,7 @@ fun ScreenHost(legacyView: View? = null) {
     val list = controller.currentList
     @Suppress("UNUSED_EXPRESSION") updateVersion
     val caption = controller.caption
+
 
 
     // Reconnect overlay — check every recomposition
@@ -328,8 +330,8 @@ private fun RenderVirtualElement(
                     .fillMaxWidth()
                     .clickable {
                         el.onSelect()
-                        // Rebuild roster items to reflect collapsed state
                         Client.StaticData.getInstance().roster.reEnumRoster()
+                        controller.notifyUpdate()
                     }
             ) {
                 Row(
