@@ -65,6 +65,7 @@ public class CheckBox
     public String getImgAlt(){ return state?"+ ":"  "; }
     
     public boolean getValue() { return state; }
+    public void setValue(boolean v) { state = v; }
     
     public boolean isSelectable() { return selectable; }   
     

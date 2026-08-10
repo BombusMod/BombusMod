@@ -3,7 +3,6 @@
 package org.bombusmod.compose
 
 import android.view.View
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,12 +13,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import Menu.MenuCommand
 import org.bombusmod.compose.controls.*
 import org.bombusmod.compose.theme.MyColors
-import ui.NativeScreenCommand
-import ui.NativeScreenItem
-import ui.NativeScreenModel
-import ui.VirtualListController
+import ui.*
+import ui.controls.form.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,7 +28,11 @@ fun ScreenHost(legacyView: View? = null) {
     DisposableEffect(Unit) {
         val listener = object : VirtualListController.OnUpdateListener {
             override fun update() { updateVersion++ }
-            override fun back() {}
+            override fun back() {
+                if (!controller.popStack()) {
+                    controller.onCancel?.run()
+                }
+            }
             override fun getCurrItem() = 0
             override fun setCurrentItemIndex(i: Int, sel: Boolean) {}
         }
@@ -38,12 +40,11 @@ fun ScreenHost(legacyView: View? = null) {
         onDispose { controller.setUpdateListener(null) }
     }
 
-    val model = controller.model
+    val list = controller.currentList
     @Suppress("UNUSED_EXPRESSION") updateVersion
-    android.util.Log.e("BMB", "ScreenHost: model=${model}, items=${model?.elements?.size}, version=$updateVersion")
-    val caption = controller.caption ?: "BombusMod"
+    val caption = controller.caption
 
-    if (model == null || model.elements.isEmpty()) {
+    if (list == null || list.getItemCount() == 0) {
         if (legacyView != null) {
             AndroidView(factory = { legacyView }, modifier = Modifier.fillMaxSize())
         }
@@ -51,6 +52,11 @@ fun ScreenHost(legacyView: View? = null) {
     }
 
     var showMenu by remember { mutableStateOf(false) }
+
+    // SCREEN-type menu commands from DefForm
+    val menuCommands = remember(list, updateVersion) {
+        controller.getMenuCommands().filter { it.map == MenuCommand.SCREEN }
+    }
 
     Scaffold(
         topBar = {
@@ -61,9 +67,7 @@ fun ScreenHost(legacyView: View? = null) {
                     titleContentColor = MyColors.BAR_INK
                 ),
                 actions = {
-                    val commands = model?.commands ?: emptyList()
-                    val screenCmds = commands.filter { it.type == NativeScreenCommand.SCREEN }
-                    if (screenCmds.isNotEmpty()) {
+                    if (menuCommands.isNotEmpty()) {
                         Box {
                             TextButton(onClick = { showMenu = true }) {
                                 Text("Menu", color = MyColors.BAR_INK)
@@ -72,13 +76,14 @@ fun ScreenHost(legacyView: View? = null) {
                                 expanded = showMenu,
                                 onDismissRequest = { showMenu = false }
                             ) {
-                                screenCmds.forEach { cmd ->
+                                menuCommands.forEach { cmd ->
                                     DropdownMenuItem(
-                                        text = { Text(cmd.label) },
+                                        text = { Text(cmd.name) },
                                         onClick = {
                                             showMenu = false
-                                            controller.buildOptionsMenu
-                                                ?.onOptionsItemSelected(null, cmd.key)
+                                            if (list is DefForm) {
+                                                (list as DefForm).menuAction(cmd, list)
+                                            }
                                         }
                                     )
                                 }
@@ -89,26 +94,30 @@ fun ScreenHost(legacyView: View? = null) {
             )
         },
         bottomBar = {
-            val commands = model?.commands ?: emptyList()
-            if (commands.isNotEmpty()) {
-                Surface(color = MyColors.BAR_BGND) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 6.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        val okCmd = commands.firstOrNull { it.type == NativeScreenCommand.OK }
-                        TextButton(onClick = { controller.onDismiss?.run() }) {
-                            Text(okCmd?.label ?: "OK", color = MyColors.BAR_INK)
+            Surface(color = MyColors.BAR_BGND) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp, vertical = 6.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    // Left button
+                    val leftLabel = controller.getLeftCommand()
+                    TextButton(onClick = {
+                        if (list is DefForm) {
+                            (list as DefForm).touchLeftPressed()
                         }
-                        val backCmd = commands.firstOrNull {
-                            it.type == NativeScreenCommand.BACK
-                                || it.type == NativeScreenCommand.CANCEL
+                    }) {
+                        Text(leftLabel, color = MyColors.BAR_INK)
+                    }
+                    // Right button
+                    val rightLabel = controller.getRightCommand()
+                    TextButton(onClick = {
+                        if (list is DefForm) {
+                            (list as DefForm).touchRightPressed()
                         }
-                        TextButton(onClick = { controller.onDismiss?.run() }) {
-                            Text(backCmd?.label ?: "Back", color = MyColors.BAR_INK)
-                        }
+                    }) {
+                        Text(rightLabel, color = MyColors.BAR_INK)
                     }
                 }
             }
@@ -117,73 +126,193 @@ fun ScreenHost(legacyView: View? = null) {
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding).imePadding()
         ) {
-            itemsIndexed(model.elements) { index, item ->
-                RenderItem(item, index, controller)
+            val itemCount = list.getItemCount()
+            items(itemCount) { index ->
+                key("item_$index") {
+                    RenderVirtualElement(list.getItemRef(index), index, controller)
+                }
             }
         }
     }
 }
 
 @Composable
-private fun RenderItem(item: NativeScreenItem, index: Int, controller: VirtualListController) {
-    when (item.controlType) {
-        NativeScreenItem.TYPE_CHECKBOX -> {
-            var checked by remember(item.key, item.checked) { mutableStateOf(item.checked) }
-            MyCheckBox(label = item.label ?: "", checked = checked,
-                onCheckedChange = { c -> checked = c; item.checked = c
-                    controller.clickListListener?.itemSelected(null, index) })
+private fun RenderVirtualElement(
+    el: VirtualElement?,
+    index: Int,
+    controller: VirtualListController
+) {
+    if (el == null) return
+    val list = controller.currentList ?: return
+
+    when {
+        // ─── CheckBox ──────────────────────────────────
+        el is CheckBox -> {
+            var checked by remember("cb_$index", el.getValue()) { mutableStateOf(el.getValue()) }
+            MyCheckBox(
+                label = el.toString(),
+                checked = checked,
+                onCheckedChange = { c ->
+                    checked = c
+                    el.setValue(c)
+                }
+            )
         }
-        NativeScreenItem.TYPE_INPUT -> {
-            var text by remember(item.key, item.textValue) { mutableStateOf(item.textValue ?: "") }
-            MyTextField(caption = item.label ?: "", value = text,
-                onValueChange = { t -> text = t; item.textValue = t })
+
+        // ─── DropChoiceBox ────────────────────────────
+        el is DropChoiceBox -> {
+            val size = el.size()
+            val options = (0 until size).map { i ->
+                val saved = el.getSelectedIndex()
+                el.setSelectedIndex(i)
+                val text = el.toString()
+                el.setSelectedIndex(saved)
+                text
+            }
+            var sel by remember("dc_$index", el.getSelectedIndex()) {
+                mutableStateOf(el.getSelectedIndex())
+            }
+            MyDropdown(
+                caption = el.toString(),
+                options = options,
+                selectedIndex = sel,
+                onSelect = { s ->
+                    sel = s
+                    el.setSelectedIndex(s)
+                }
+            )
         }
-        NativeScreenItem.TYPE_NUMBER -> {
-            var num by remember(item.key, item.intValue) { mutableStateOf(item.intValue) }
-            MyNumberInput(caption = item.label ?: "", value = num,
-                onValueChange = { n -> num = n; item.intValue = n })
+
+        // ─── TextInput ────────────────────────────────
+        el is TextInput -> {
+            var text by remember("ti_$index", el.getValue()) { mutableStateOf(el.getValue()) }
+            MyTextField(
+                caption = el.caption ?: "",
+                value = text,
+                onValueChange = { t -> text = t; el.setValue(t) }
+            )
         }
-        NativeScreenItem.TYPE_PASSWORD -> {
-            var pass by remember(item.key, item.textValue) { mutableStateOf(item.textValue ?: "") }
-            MyPasswordInput(caption = item.label ?: "", value = pass,
-                onValueChange = { p -> pass = p; item.textValue = p })
+
+        // ─── PasswordInput ────────────────────────────
+        el is PasswordInput -> {
+            var pass by remember("pw_$index", el.getText()) { mutableStateOf(el.getText()) }
+            MyPasswordInput(
+                caption = "",
+                value = pass,
+                onValueChange = { p -> pass = p; el.setValue(p) }
+            )
         }
-        NativeScreenItem.TYPE_DROPDOWN -> {
-            val options = item.options ?: emptyArray()
-            var sel by remember(item.key, item.intValue) { mutableStateOf(item.intValue) }
-            MyDropdown(caption = item.label ?: "", options = options.toList(),
-                selectedIndex = sel, onSelect = { s -> sel = s; item.intValue = s })
+
+        // ─── NumberInput ──────────────────────────────
+        el is NumberInput -> {
+            var num by remember("ni_$index", el.getValue()) {
+                mutableStateOf(el.getValue().toIntOrNull() ?: 0)
+            }
+            MyNumberInput(
+                caption = el.toString(),
+                value = num,
+                onValueChange = { n ->
+                    num = n
+                    el.setValue(n.toString())
+                }
+            )
         }
-        NativeScreenItem.TYPE_SLIDER -> {
-            var v by remember(item.key, item.floatValue) { mutableStateOf(item.floatValue) }
-            MySlider(caption = item.label ?: "", value = v,
-                onValueChange = { s -> v = s; item.floatValue = s },
-                valueRange = item.sliderMin..item.sliderMax)
+
+        // ─── TrackItem (slider) ───────────────────────
+        el is TrackItem -> {
+            var v by remember("sl_$index", el.getValue()) { mutableStateOf(el.getValue().toFloat()) }
+            MySlider(
+                caption = "",
+                value = v,
+                onValueChange = { s -> v = s; el.setValue(s.toInt()) }
+            )
         }
-        NativeScreenItem.TYPE_HEADER -> MyHeader(text = item.label ?: "")
-        NativeScreenItem.TYPE_LINK -> MyLinkText(text = item.label ?: "",
-            onClick = { controller.clickListListener?.itemSelected(null, index) })
-        NativeScreenItem.TYPE_MULTILINE ->
-            MyMultilineText(text = item.description ?: item.label ?: "")
-        NativeScreenItem.TYPE_SPACER ->
-            MySpacer(heightDp = item.intValue.coerceAtLeast(4))
-        NativeScreenItem.TYPE_IMAGE -> MyTextLine(text = "[image:${item.imageIndex}]")
+
+        // ─── SimpleString ─────────────────────────────
+        el is SimpleString -> {
+            MyTextLine(text = el.toString())
+        }
+
+        // ─── LinkString ───────────────────────────────
+        el is LinkString -> {
+            MyLinkText(
+                text = el.toString(),
+                onClick = {
+                    el.onSelect()
+                    controller.notifyUpdate()
+                }
+            )
+        }
+
+        // ─── MultiLine ────────────────────────────────
+        el is MultiLine -> {
+            MyMultilineText(text = el.getValue())
+        }
+
+        // ─── SpacerItem ───────────────────────────────
+        el is SpacerItem -> {
+            MySpacer(heightDp = (el.getVHeight() / 3).coerceAtLeast(4))
+        }
+
+        // ─── ItemsGroupHeader (section header) ──────────
+        el is ItemsGroup.ItemsGroupHeader -> {
+            MyHeader(text = el.name ?: el.toString())
+        }
+
+        // ─── ImageItem ────────────────────────────────
+        el is ImageItem -> {
+            MyTextLine(text = el.altText ?: "[image]")
+        }
+
+        // ─── KeyInput ─────────────────────────────────
+        el is KeyInput -> {
+            MyTextLine(text = el.toString())
+        }
+
+        // ─── Default: selectable row with optional icon
         else -> {
-            Surface(color = MyColors.LIST_BGND, modifier = Modifier.fillMaxWidth()
-                .clickable(enabled = item.selectable,
-                    onClick = { controller.clickListListener?.itemSelected(null, index) })) {
-                Row(modifier = Modifier.padding(start = 4.dp, top = 6.dp, bottom = 6.dp, end = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically) {
-                    if (item.imageIndex >= 0) {
-                        MySpriteIcon(imageIndex = item.imageIndex, iconSize = 28.dp,
-                            modifier = Modifier.padding(end = 4.dp))
+            val selectable = el.isSelectable()
+            val label = el.toString()
+            val desc = el.getTipString()
+            val imageIndex = if (el is IconTextElement)
+                (el as IconTextElement).getImageIndex() else -1
+
+            Surface(
+                color = MyColors.LIST_BGND,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(enabled = selectable) {
+                        el.onSelect()
+                        controller.notifyUpdate()
+                    }
+            ) {
+                Row(
+                    modifier = Modifier.padding(
+                        start = 4.dp, top = 6.dp, bottom = 6.dp, end = 8.dp
+                    ),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (imageIndex >= 0) {
+                        MySpriteIcon(
+                            imageIndex = imageIndex,
+                            iconSize = 28.dp,
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
                         Spacer(Modifier.width(6.dp))
                     }
                     Column(modifier = Modifier.weight(1f)) {
-                        if (item.label != null) Text(item.label, color = MyColors.LIST_INK,
-                            style = MaterialTheme.typography.bodyLarge)
-                        if (item.description != null) Text(item.description,
-                            color = MyColors.SECOND_LINE, style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            label ?: "",
+                            color = MyColors.LIST_INK,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        if (!desc.isNullOrEmpty()) {
+                            Text(
+                                desc,
+                                color = MyColors.SECOND_LINE,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
                 }
             }

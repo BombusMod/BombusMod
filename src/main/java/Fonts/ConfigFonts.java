@@ -27,10 +27,6 @@
 package Fonts;
 import Client.Config;
 import locale.SR;
-import ui.NativeScreenCommand;
-import ui.NativeScreenItem;
-import ui.NativeScreenModel;
-import ui.VirtualListController;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
@@ -50,7 +46,6 @@ public class ConfigFonts
      */
     public ConfigFonts() {
         super(SR.MS_FONTS_OPTIONS);
-        if (!buildNativeModel()) return;
         cf=Config.getInstance();
 
         font1=new DropChoiceBox(SR.MS_ROSTER_FONT);
@@ -101,25 +96,4 @@ public class ConfigFonts
         sd.roster.reEnumRoster();
         destroyView();
     }
-
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        NativeScreenModel m = new NativeScreenModel();
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("f1", SR.MS_ROSTER_FONT, new String[]{SR.MS_FONTSIZE_NORMAL, SR.MS_FONTSIZE_SMALL, SR.MS_FONTSIZE_LARGE}, Config.getInstance().rosterFont/8); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("f2", SR.MS_MESSAGE_FONT, new String[]{SR.MS_FONTSIZE_NORMAL, SR.MS_FONTSIZE_SMALL, SR.MS_FONTSIZE_LARGE}, Config.getInstance().msgFont/8); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("f3", SR.MS_BAR_FONT, new String[]{SR.MS_FONTSIZE_NORMAL, SR.MS_FONTSIZE_SMALL, SR.MS_FONTSIZE_LARGE}, Config.getInstance().barFont/8); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("f4", SR.MS_POPUP_FONT, new String[]{SR.MS_FONTSIZE_NORMAL, SR.MS_FONTSIZE_SMALL, SR.MS_FONTSIZE_LARGE}, Config.getInstance().baloonFont/8); }});
-        m.addPar(new NativeScreenItem() {{ setAsSpacer(10); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox("Shadowed font", Config.getInstance().shadowed); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox("Force bold font", Config.getInstance().forceBoldFont); }});
-        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
-        final ConfigFonts self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption(SR.MS_FONTS_OPTIONS);
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
-    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }

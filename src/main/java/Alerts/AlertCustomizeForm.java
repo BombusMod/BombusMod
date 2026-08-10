@@ -33,10 +33,6 @@ import locale.SR;
 import java.util.Vector;
 
 import org.bombusmod.util.EventNotifier;
-import ui.NativeScreenCommand;
-import ui.NativeScreenItem;
-import ui.NativeScreenModel;
-import ui.VirtualListController;
 import ui.controls.form.SimpleString;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
@@ -86,7 +82,7 @@ public class AlertCustomizeForm
      */
     public AlertCustomizeForm() {
         super(SR.MS_NOTICES_OPTIONS);
-        if (!buildNativeModel()) return;
+        
         ac=AlertCustomize.getInstance();
         cf=Config.getInstance();
         
@@ -216,36 +212,4 @@ public class AlertCustomizeForm
             addMenuCommand(cmdTest);
         addMenuCommand(cmdSave);
     }
-
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        NativeScreenModel m = new NativeScreenModel();
-        AlertCustomize ac = AlertCustomize.getInstance();
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("msg", SR.MS_MESSAGE_SOUND, new String[]{}, ac.soundsMsgIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("online", SR.MS_ONLINE_SOUND, new String[]{}, ac.soundOnlineIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("offline", SR.MS_OFFLINE_SOUND, new String[]{}, ac.soundOfflineIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("foryou", SR.MS_MESSAGE_FOR_ME_SOUND, new String[]{}, ac.soundForYouIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("composing", SR.MS_COMPOSING_SOUND, new String[]{}, ac.soundComposingIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("conf", SR.MS_CONFERENCE_SOUND, new String[]{}, ac.soundConferenceIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("startup", SR.MS_STARTUP_SOUND, new String[]{}, ac.soundStartUpIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("out", SR.MS_OUTGOING_SOUND, new String[]{}, ac.soundOutgoingIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsDropdown("vip", SR.MS_VIP_SOUND, new String[]{}, ac.soundVIPIndex); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_STATUS, Config.getInstance().notifyPicture); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_BLINKING, Config.getInstance().notifyBlink); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_SOUND, Config.getInstance().notifySound); }});
-        m.addPar(new NativeScreenItem() {{ setAsSpacer(10); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_VIBRATE_ONLY_HIGHLITED, ac.vibrateOnlyHighlited); }});
-        m.addPar(new NativeScreenItem() {{ setAsSlider("vol", SR.MS_SOUND_VOLUME, ac.soundVol/10f, 0f, 10f); }});
-        m.addPar(new NativeScreenItem() {{ setAsSpacer(10); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_SHOW_IQ_REQUESTS, Config.getInstance().IQNotify); }});
-        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
-        final AlertCustomizeForm self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption(SR.MS_NOTICES_OPTIONS);
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
-    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }

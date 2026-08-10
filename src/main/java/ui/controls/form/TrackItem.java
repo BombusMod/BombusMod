@@ -52,6 +52,7 @@ public class TrackItem
     }
     
     public int getValue() { return value; }
+    public void setValue(int v) { value = v; }
     
     public void drawItem(Graphics g, int ofs, boolean sel) {
         int width=g.getClipWidth();

@@ -5,10 +5,6 @@
 
 package Client;
 
-import ui.NativeScreenCommand;
-import ui.NativeScreenItem;
-import ui.NativeScreenModel;
-import ui.VirtualListController;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
 import io.NvStorage;
@@ -29,7 +25,7 @@ public class JuickConfig extends DefForm {
 
     public JuickConfig(String caption) {
         super(caption);
-        if (!buildNativeModel(caption)) return;
+
         if (records.isEmpty()) {
             records.readFromStorage();
         }
@@ -149,30 +145,6 @@ public class JuickConfig extends DefForm {
             } catch (Exception e) {  }
         }
     }
-
-    private boolean buildNativeModel(String caption) {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        NativeScreenModel m = new NativeScreenModel();
-        if (sdata.roster.juickContacts.size() > 1) {
-            java.util.Vector names = new java.util.Vector();
-            for (java.util.Enumeration e = sdata.roster.juickContacts.elements(); e.hasMoreElements();) {
-                Contact c = (Contact) e.nextElement();
-                NativeScreenItem item = new NativeScreenItem();
-                item.selectable = true;
-                item.label = c.jid.getBare();
-                m.addPar(item);
-            }
-        }
-        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
-        final JuickConfig self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption(caption);
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
-    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 /*            if ((sd != null) && (sd.roster != null)) {
                 if ((!a.juickJID.equals("")) && sd.roster.juickContacts.size()<2) {

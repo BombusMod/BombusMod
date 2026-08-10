@@ -32,10 +32,6 @@ package IE;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import locale.SR;
-import ui.NativeScreenCommand;
-import ui.NativeScreenItem;
-import ui.NativeScreenModel;
-import ui.VirtualListController;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.SimpleString;
@@ -58,7 +54,6 @@ public class IEMenu
     
     public IEMenu() {
         super(SR.MS_IMPORT_EXPORT);
-        if (!buildNativeModel()) return;
         itemsList.addElement(new SimpleString(SR.MS_OPTIONS, true));
         itemsList.addElement(new LinkString(SR.MS_LOAD_FROM_FILE) {
             public void doAction() {
@@ -181,22 +176,6 @@ public class IEMenu
                 break;
         }
     }
-
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        NativeScreenModel m = new NativeScreenModel();
-        m.addPar(new NativeScreenItem() {{ setAsLink(SR.MS_LOAD_FROM_FILE); }});
-        m.addPar(new NativeScreenItem() {{ setAsLink(SR.MS_SAVE_TO_FILE); }});
-        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
-        final IEMenu self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption(SR.MS_IMPORT_EXPORT);
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
-    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

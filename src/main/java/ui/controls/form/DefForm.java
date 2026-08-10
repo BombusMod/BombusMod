@@ -66,7 +66,7 @@ public class DefForm
         }
     }
 
-    protected int getItemCount() {
+    public int getItemCount() {
         return itemsList.size();
     }
 

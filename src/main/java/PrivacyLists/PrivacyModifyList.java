@@ -101,7 +101,7 @@ public class PrivacyModifyList extends DefForm
         PrivacyList.privacyListRq(false, list, "getlistitems");
     }*/
     
-    protected int getItemCount() { return plist.rules.size(); }
+    public int getItemCount() { return plist.rules.size(); }
     public VirtualElement getItemRef(int index) {
         if (index >= plist.rules.size()) return null;
         return (VirtualElement) plist.rules.elementAt(index);

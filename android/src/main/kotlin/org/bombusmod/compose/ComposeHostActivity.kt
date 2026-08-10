@@ -15,13 +15,8 @@ import org.bombusmod.compose.theme.MyTheme
 import ui.VirtualListController
 
 /**
- * Compose-based Activity that hosts the native UI migration.
- *
- * Relies on BombusModActivity for MicroEmulator initialization and MIDlet lifecycle.
- * This Activity hosts only the Compose rendering layer — the XMPP core runs
- * in the XmppService (background) and BombusModActivity (MIDlet host).
- *
- * A feature flag (Config.useNativeUI) controls which Activity launches.
+ * Standalone Compose Activity for native UI testing via adb.
+ * The main launcher is BombusModActivity.
  */
 class ComposeHostActivity : ComponentActivity() {
 
@@ -33,7 +28,6 @@ class ComposeHostActivity : ComponentActivity() {
             Client.StaticData.getInstance().service = binder.getService()
             serviceBound = true
         }
-
         override fun onServiceDisconnected(arg0: ComponentName) {
             serviceBound = false
         }
@@ -42,26 +36,15 @@ class ComposeHostActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Activate native UI mode
-        val controller = VirtualListController.getInstance()
-        controller.setActive(true)
+        VirtualListController.getInstance().setActive(true)
 
-        // ===== Load real InfoScreen =====
-        val infoScreen = org.bombusmod.screens.InfoScreen(this)
-        infoScreen.show()
-        // ===== END TEST =====
-
-        // Bind to XMPP service
         val intent = Intent(this, XmppService::class.java)
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
 
-        // Edge-to-edge: bars draw behind system status/nav bars
         enableEdgeToEdge()
-        // White status bar icons (dark red background)
         WindowCompat.getInsetsController(window, window.decorView)
             .isAppearanceLightStatusBars = false
 
-        // Set Compose content
         setContent {
             MyTheme {
                 ScreenHost()

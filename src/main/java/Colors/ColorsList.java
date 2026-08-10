@@ -34,11 +34,7 @@ import java.util.Enumeration;
 import images.RosterIcons;
 
 import locale.SR;
-import ui.NativeScreenCommand;
-import ui.NativeScreenItem;
-import ui.NativeScreenModel;
 import ui.VirtualList;
-import ui.VirtualListController;
 import ui.controls.form.DefForm;
 
 /**
@@ -61,9 +57,8 @@ public class ColorsList extends DefForm
      * Creates a new instance of ColorsList
      */
     public ColorsList() {
-        super(SR.MS_COLOR_TUNE);
-        if (!buildNativeModel()) return;
-
+        super(SR.MS_COLOR_TUNE);       
+        
         int cnt=0;
         itemsList.removeAllElements();
         for (Enumeration r = ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
@@ -165,31 +160,6 @@ public class ColorsList extends DefForm
 
             SR.MS_CONTROL_ITEM,
         };
-
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        NativeScreenModel m = new NativeScreenModel();
-        int cnt = 0;
-        for (java.util.Enumeration r = ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
-            ColorItem c = (ColorItem) r.nextElement();
-            final int index = cnt;
-            NativeScreenItem item = new NativeScreenItem();
-            item.selectable = true;
-            item.label = c.name;
-            item.description = NAMES[cnt];
-            m.addPar(item);
-            cnt++;
-        }
-        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
-        final ColorsList self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption(SR.MS_COLOR_TUNE);
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
-    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

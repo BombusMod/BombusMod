@@ -33,11 +33,7 @@ import Menu.MenuCommand;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 import locale.SR;
-import ui.NativeScreenCommand;
-import ui.NativeScreenItem;
-import ui.NativeScreenModel;
 import ui.VirtualList;
-import ui.VirtualListController;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
@@ -69,7 +65,6 @@ public class HistoryConfig
     /** Creates a new instance of HistoryConfig */
     public HistoryConfig() {
         super(SR.MS_HISTORY_OPTIONS);
-        if (!buildNativeModel()) return;
         
 //#ifdef LAST_MESSAGES
         loadHistory = new CheckBox(SR.MS_LAST_MESSAGES, cf.lastMessages); itemsList.addElement(loadHistory);
@@ -122,27 +117,8 @@ public class HistoryConfig
     }
     public void commandState() {
         super.commandState();
-        addMenuCommand(cmdPath);
+        addMenuCommand(cmdPath);        
     }
-
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        NativeScreenModel m = new NativeScreenModel();
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_SAVE_HISTORY, cf.msgLog); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_SAVE_PRESENCES, cf.msgLogPresence); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_SAVE_HISTORY_CONF, cf.msgLogConf); }});
-        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_SAVE_PRESENCES_CONF, cf.msgLogConfPresence); }});
-        m.addPar(new NativeScreenItem() {{ setAsInput("path", SR.MS_HISTORY_FOLDER, cf.msgPath); }});
-        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
-        final HistoryConfig self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption(SR.MS_HISTORY_OPTIONS);
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
-    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

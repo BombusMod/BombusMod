@@ -35,7 +35,6 @@ import Messages.notification.Notification;
 import images.RosterIcons;
 import locale.SR;
 import ui.Time;
-import ui.VirtualListController;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
 
@@ -56,8 +55,7 @@ public class TransferManager
     /** Creates a new instance of TransferManager
      */
     public TransferManager() {
-        super(SR.MS_TRANSFERS);
-        if (!buildNativeModel()) return;
+        super(SR.MS_TRANSFERS);        
         loadItemsFrom(TransferDispatcher.getInstance().getTaskList());
     }    
     
@@ -145,20 +143,6 @@ public class TransferManager
             Notification.getNotificator().sendNotify(null, info.toString());
         }
     }
-
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        ui.NativeScreenModel m = new ui.NativeScreenModel();
-        m.addCommand("ok", "OK", ui.NativeScreenCommand.OK, -1);
-        final TransferManager self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption(SR.MS_TRANSFERS);
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
-    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

@@ -37,7 +37,6 @@ import locale.SR;
 import ui.VirtualCanvas;
 import ui.VirtualElement;
 import ui.VirtualList;
-import ui.VirtualListController;
 import ui.controls.form.DefForm;
 import org.bombusmod.util.ClipBoardIO;
 
@@ -60,7 +59,6 @@ public abstract class MessageList extends DefForm
     public MessageList(Vector messages) {
         super("");
         this.messages = messages;
-        if (!buildNativeModel()) return;
         cf = Config.getInstance();
         
 //#ifdef SMILES
@@ -227,25 +225,4 @@ public abstract class MessageList extends DefForm
 
         return super.doUserKeyAction(command_id);
     }
-
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        ui.NativeScreenModel m = new ui.NativeScreenModel();
-        for (int i = 0; messages != null && i < messages.size(); i++) {
-            Object obj = messages.elementAt(i);
-            ui.NativeScreenItem item = new ui.NativeScreenItem();
-            item.selectable = true;
-            item.description = obj != null ? obj.toString() : "";
-            m.addPar(item);
-        }
-        m.addCommand("ok", "OK", ui.NativeScreenCommand.OK, -1);
-        final MessageList self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption("");
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
-    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }

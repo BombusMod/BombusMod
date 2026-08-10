@@ -56,7 +56,7 @@ public class ComplexForm
             show();
     }
 
-    protected int getItemCount() {
+    public int getItemCount() {
         if (getFlatList() == null)
             return 0;
         return getFlatList().size();

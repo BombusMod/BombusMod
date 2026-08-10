@@ -35,7 +35,6 @@ import Menu.MenuCommand;
 import locale.SR;
 import Colors.ColorTheme;
 import ui.*;
-import ui.VirtualListController;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
 import Client.*;
@@ -88,7 +87,7 @@ public class ServiceDiscovery
     /** Creates a new instance of ServiceDiscovery */
     public ServiceDiscovery(String service, String node, boolean search) {
         super(null);
-        if (!buildNativeModel(service, node)) return;
+
         mainbar = new MainBar(3, null, null, false);
         mainbar.addRAlign();
         mainbar.addElement(null);
@@ -405,9 +404,7 @@ public class ServiceDiscovery
 
     
     public void destroyView()	{
-        VirtualListController.getInstance().setModel(null);
-        VirtualListController.getInstance().notifyUpdate();
-        exitDiscovery(false);
+        exitDiscovery(false);        
     }
     
     public void OkNotify(String selectedServer) {
@@ -466,22 +463,9 @@ public class ServiceDiscovery
         addMenuCommand(cmdSrv);
         addMenuCommand(cmdFeatures);
         //addCommand(cmdAdd);
-        addMenuCommand(cmdCancel);
+        addMenuCommand(cmdCancel);        
     }
-
-    private boolean buildNativeModel(String service, String node) {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        ui.NativeScreenModel m = new ui.NativeScreenModel();
-        String title = service != null ? "Disco: " + service : "Service Discovery";
-        m.addCommand("ok", "OK", ui.NativeScreenCommand.OK, -1);
-        final ServiceDiscovery self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
-        VirtualListController.getInstance().setCaption(title);
-        VirtualListController.getInstance().setModel(m);
-        VirtualListController.getInstance().notifyUpdate();
-        return false;
-    }
-    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+   
 
 }
 class State{

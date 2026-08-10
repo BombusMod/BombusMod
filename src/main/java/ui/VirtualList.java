@@ -62,7 +62,7 @@ public abstract class VirtualList {
      * эта функция абстрактная, должна быть переопределена при наследовании
      * @return число элементов списка, исключая заголовок
      */
-    abstract protected int getItemCount();
+    abstract public int getItemCount();
 
     /**
      * элемент виртуального списка
@@ -72,7 +72,7 @@ public abstract class VirtualList {
      */
     abstract public VirtualElement getItemRef(int index);
 
-    protected int getMainBarBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
+    public int getMainBarBGnd() { return ColorTheme.getColor(ColorTheme.BAR_BGND);} 
     protected int getMainBarBGndBottom() { return ColorTheme.getColor(ColorTheme.BAR_BGND_BOTTOM);}
     
     protected StaticData sd=StaticData.getInstance();
@@ -421,70 +421,34 @@ public abstract class VirtualList {
     
     public void show() {
         parentView = VirtualCanvas.getInstance().getList();
-        if (VirtualListController.getInstance().isActive()
-                && VirtualListController.getInstance().getModel() != null) {
+        if (VirtualListController.getInstance().isActive()) {
+            VirtualListController.getInstance().setCurrentList(this);
             VirtualListController.getInstance().notifyUpdate();
+        } else {
+            VirtualCanvas.getInstance().show(this);
         }
      }
 
-     public void buildNativeModelFromItems() {
-         int count = getItemCount();
-         if (count == 0) return;
-         NativeScreenModel m = new NativeScreenModel();
-         for (int i = 0; i < count; i++) {
-             VirtualElement el = getItemRef(i);
-             if (el == null) continue;
-             NativeScreenItem item = new NativeScreenItem(el.isSelectable());
-             item.label = el != null ? el.toString() : "";
-             if (el instanceof IconTextElement)
-                 item.imageIndex = ((IconTextElement) el).getImageIndex();
-             m.addPar(item);
-         }
-         VirtualListController.getInstance().setCaption(
-             mainbar != null ? mainbar.toString() : "");
-         final VirtualList self = this;
-         VirtualListController.getInstance().setModel(m);
-         VirtualListController.getInstance().setOnDismiss(new Runnable() {
-             public void run() {
-                 VirtualListController.getInstance().setModel(null);
-                 VirtualListController.getInstance().notifyUpdate();
-                 destroyView();
-             }
-         });
-     }
-
-     private void buildNativeModel() {
-         int count = getItemCount();
-         if (count == 0) return;
-         NativeScreenModel m = new NativeScreenModel();
-         for (int i = 0; i < count; i++) {
-             VirtualElement el = getItemRef(i);
-             if (el == null) continue;
-             NativeScreenItem item = new NativeScreenItem(el.isSelectable());
-             item.label = el.toString();
-             if (el instanceof IconTextElement) {
-                 item.imageIndex = ((IconTextElement) el).getImageIndex();
-             }
-             m.addPar(item);
-         }
-         VirtualListController.getInstance().setCaption(
-             mainbar != null ? mainbar.toString() : "");
-         VirtualListController.getInstance().setModel(m);
-         final VirtualList self = this;
-         VirtualListController.getInstance().setOnDismiss(new Runnable() {
-             public void run() {
-                 VirtualListController.getInstance().setModel(null);
-                 VirtualListController.getInstance().notifyUpdate();
-                 destroyView();
-             }
-         });
-     }
+    /** Caption text for Compose top bar */
+    public String getMainBarText() {
+        if (mainbar == null) return null;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mainbar.size(); i++) {
+            Object el = mainbar.elementAt(i);
+            if (el != null) {
+                String s = el.toString();
+                if (s != null && !s.isEmpty()) sb.append(s);
+            }
+        }
+        return sb.toString();
+    }
 
     public void redraw() {
-        if (VirtualCanvas.getInstance().isShown()) {
+        if (VirtualListController.getInstance().isActive()) {
+            VirtualListController.getInstance().notifyUpdate();
+        } else if (VirtualCanvas.getInstance().isShown()) {
             VirtualCanvas.getInstance().repaint();
-            return;
-         }
+        }
      }
       
 
@@ -1266,7 +1230,11 @@ public abstract class VirtualList {
     public void destroyView() {
         if (canBack) {
             sd.roster.activeContact = null;
-            VirtualCanvas.getInstance().show(parentView);
+            if (VirtualListController.getInstance().isActive()) {
+                if (parentView != null) parentView.show();
+            } else {
+                VirtualCanvas.getInstance().show(parentView);
+            }
         }
     }
 

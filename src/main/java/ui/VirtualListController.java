@@ -1,51 +1,37 @@
 /*
  * VirtualListController.java
  *
- * Singleton navigation controller bridging business logic to native UI.
- * Replaces VirtualCanvas as the screen-show mechanism.
- *
- * Following SawimNE's VirtualList pattern:
- *   VirtualListController.getInstance().setCaption("Title");
- *   VirtualListController.getInstance().setModel(model);
- *   VirtualListController.getInstance().setClickListListener(this);
- *   VirtualListController.getInstance().show(activity);
- *
- * Named VirtualListController to avoid conflict with the existing
- * VirtualList J2ME class. Will be renamed to VirtualList after
- * the old class is removed (Phase 8 cleanup).
+ * Singleton navigation controller bridging VirtualList to Compose UI.
+ * The current VirtualList is rendered by ScreenHost via instanceof checks
+ * on VirtualElement items — no parallel data model needed.
  */
 package ui;
 
+import Menu.MenuCommand;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 /**
- * Singleton controller that manages the current screen's model and
- * mediates between business logic and the native rendering layer.
+ * Singleton that holds the currently displayed VirtualList and
+ * notifies the Compose UI layer of updates.
  *
- * Business code calls setModel() and show(). The native UI layer
- * (ComposeHostActivity / ScreenHost) observes the model and
- * renders accordingly.
+ * Business code calls VirtualList.show() which sets itself
+ * as the current list. The Compose ScreenHost observes the
+ * current list and renders controls by instanceof.
  */
 public class VirtualListController {
 
     private static VirtualListController instance;
 
-    private NativeScreenModel model;
-    private String caption;
+    private VirtualList currentList;
     private boolean isActive;
 
-    // Listener interfaces, following SawimNE pattern
     private OnUpdateListener updateListener;
-    private OnClickListListener clickListListener;
-    private OnBuildOptionsMenu buildOptionsMenu;
-    private OnBuildContextMenu buildContextMenu;
 
-    // Callback to dismiss native UI and return to legacy screen
+    /** For explicit dismiss actions (e.g., from Compose UI) */
     private Runnable onDismiss;
-
-    public void setOnDismiss(Runnable r) { onDismiss = r; }
-    public Runnable getOnDismiss() { return onDismiss; }
+    private Runnable onCancel;
 
     // Back stack for navigation
     private final List<StackEntry> backStack = new ArrayList<StackEntry>();
@@ -66,22 +52,59 @@ public class VirtualListController {
     private VirtualListController() {
     }
 
+    // --- Current list ---
+
+    public VirtualList getCurrentList() {
+        return currentList;
+    }
+
+    public void setCurrentList(VirtualList list) {
+        if (currentList != null && currentList != list) {
+            // Push current to back stack
+            StackEntry entry = new StackEntry();
+            entry.list = currentList;
+            entry.caption = currentList.getMainBarText();
+            backStack.add(entry);
+        }
+        this.currentList = list;
+    }
+
     // --- Properties ---
 
-    public void setCaption(String caption) {
-        this.caption = caption;
-    }
-
     public String getCaption() {
-        return caption;
+        if (currentList != null) {
+            String s = currentList.getMainBarText();
+            if (s != null && !s.isEmpty()) return s;
+        }
+        return "BombusMod";
     }
 
-    public void setModel(NativeScreenModel model) {
-        this.model = model;
+    /**
+     * Get menu commands from the current list.
+     * Handles DefForm and VirtualList subclasses.
+     */
+    @SuppressWarnings("unchecked")
+    public java.util.Vector<MenuCommand> getMenuCommands() {
+        if (currentList instanceof ui.controls.form.DefForm) {
+            return ((ui.controls.form.DefForm) currentList).menuCommands;
+        }
+        return new java.util.Vector<MenuCommand>();
     }
 
-    public NativeScreenModel getModel() {
-        return model;
+    /**
+     * Get left bottom bar command label.
+     */
+    public String getLeftCommand() {
+        if (currentList != null) return currentList.touchLeftCommand();
+        return "";
+    }
+
+    /**
+     * Get right bottom bar command label.
+     */
+    public String getRightCommand() {
+        if (currentList != null) return currentList.touchRightCommand();
+        return "OK";
     }
 
     public boolean isActive() {
@@ -92,66 +115,55 @@ public class VirtualListController {
         isActive = active;
     }
 
+    // --- Dismiss callbacks ---
+
+    public void setOnDismiss(Runnable r) { onDismiss = r; }
+    public Runnable getOnDismiss() { return onDismiss; }
+    public void setOnCancel(Runnable r) { onCancel = r; }
+    public Runnable getOnCancel() { return onCancel; }
+
     // --- Navigation ---
 
-    /**
-     * Show the current model. On Android with native UI active,
-     * this triggers Compose recomposition. On legacy platforms,
-     * delegates to VirtualCanvas.
-     */
-    public void show(Object activity) {
-        if (!isActive) {
-            // Legacy path — use old VirtualCanvas
-            return;
-        }
-        // Push current model to back stack, notify UI
-        notifyUpdate();
+    public void notifyUpdate() {
+        if (updateListener != null)
+            updateListener.update();
     }
 
-    /**
-     * Pop back to the previous screen.
-     */
-    public void back() {
-        if (updateListener != null) {
-            updateListener.back();
-        }
-    }
-
-    /**
-     * Push a screen onto the navigation back stack.
-     * Called internally by the ComposeHostActivity.
-     */
-    public void pushStack(NativeScreenModel model, String caption,
-                          OnClickListListener clickListener,
-                          OnBuildOptionsMenu menuListener) {
-        StackEntry entry = new StackEntry();
-        entry.model = this.model;
-        entry.caption = this.caption;
-        entry.clickListener = this.clickListListener;
-        entry.menuListener = this.buildOptionsMenu;
-        backStack.add(entry);
-
-        this.model = model;
-        this.caption = caption;
-        this.clickListListener = clickListener;
-        this.buildOptionsMenu = menuListener;
-    }
-
-    /**
-     * Pop from the back stack. Returns true if there was a previous screen.
-     */
     public boolean popStack() {
         if (backStack.isEmpty()) return false;
         StackEntry entry = backStack.remove(backStack.size() - 1);
-        this.model = entry.model;
-        this.caption = entry.caption;
-        this.clickListListener = entry.clickListener;
-        this.buildOptionsMenu = entry.menuListener;
+        this.currentList = entry.list;
+        notifyUpdate();
         return true;
     }
 
     public boolean canGoBack() {
         return !backStack.isEmpty();
+    }
+
+    // --- Listener registration ---
+
+    public void clearListeners() {
+        updateListener = null;
+    }
+
+    public void clearAll() {
+        clearListeners();
+        currentList = null;
+        caption = null;
+        onDismiss = null;
+        onCancel = null;
+        backStack.clear();
+    }
+    // Compatibility: keep caption field for existing code that sets it directly
+    private String caption;
+
+    public void setCaption(String caption) {
+        this.caption = caption;
+    }
+
+    public void setUpdateListener(OnUpdateListener l) {
+        updateListener = l;
     }
 
     // --- Item helpers ---
@@ -167,65 +179,8 @@ public class VirtualListController {
             updateListener.setCurrentItemIndex(index, isSelected);
     }
 
-    // --- Listener registration ---
+    // --- Listener interface ---
 
-    public void clearListeners() {
-        updateListener = null;
-        buildOptionsMenu = null;
-        buildContextMenu = null;
-        clickListListener = null;
-    }
-
-    public void clearAll() {
-        clearListeners();
-        if (model != null) {
-            model.clear();
-            model = null;
-        }
-        caption = null;
-        backStack.clear();
-    }
-
-    public void setUpdateListener(OnUpdateListener l) {
-        updateListener = l;
-    }
-
-    public void setClickListListener(OnClickListListener l) {
-        clickListListener = l;
-    }
-
-    public OnClickListListener getClickListListener() {
-        return clickListListener;
-    }
-
-    public void setBuildOptionsMenu(OnBuildOptionsMenu l) {
-        buildOptionsMenu = l;
-    }
-
-    public OnBuildOptionsMenu getBuildOptionsMenu() {
-        return buildOptionsMenu;
-    }
-
-    public void setBuildContextMenu(OnBuildContextMenu l) {
-        buildContextMenu = l;
-    }
-
-    public OnBuildContextMenu getBuildContextMenu() {
-        return buildContextMenu;
-    }
-
-    // --- Notify UI ---
-
-    public void notifyUpdate() {
-        if (updateListener != null)
-            updateListener.update();
-    }
-
-    // --- Listener Interfaces (following SawimNE) ---
-
-    /**
-     * Called when the model data has changed and the UI should refresh.
-     */
     public interface OnUpdateListener {
         void update();
         void back();
@@ -233,36 +188,10 @@ public class VirtualListController {
         void setCurrentItemIndex(int index, boolean isSelected);
     }
 
-    /**
-     * Called when an item in the list is clicked/selected.
-     */
-    public interface OnClickListListener {
-        void itemSelected(Object activity, int position);
-        boolean back();
-    }
-
-    /**
-     * Called to build the options menu (ActionBar/Toolbar menu).
-     */
-    public interface OnBuildOptionsMenu {
-        void onCreateOptionsMenu(Object menu);
-        void onOptionsItemSelected(Object activity, Object menuItem);
-    }
-
-    /**
-     * Called to build a context menu (long-press menu on list items).
-     */
-    public interface OnBuildContextMenu {
-        void onCreateContextMenu(Object contextMenu, int listItem);
-        void onContextItemSelected(Object activity, int listItem, int itemMenuId);
-    }
-
     // --- Stack entry ---
 
     private static class StackEntry {
-        NativeScreenModel model;
+        VirtualList list;
         String caption;
-        OnClickListListener clickListener;
-        OnBuildOptionsMenu menuListener;
     }
 }
