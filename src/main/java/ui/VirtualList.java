@@ -421,7 +421,15 @@ public abstract class VirtualList {
     
     public void show() {
         parentView = VirtualCanvas.getInstance().getList();
-        VirtualCanvas.getInstance().show(this);
+        // Route through native controller if active; otherwise legacy path
+        if (VirtualListController.getInstance().isActive()) {
+            // Convert this VirtualList to a NativeScreenModel for native rendering
+            VirtualListController ctrl = VirtualListController.getInstance();
+            // Store the legacy VirtualList ref so the bridge can render it
+            VirtualCanvas.getInstance().show(this);
+        } else {
+            VirtualCanvas.getInstance().show(this);
+        }
      }
 
     public void redraw() {

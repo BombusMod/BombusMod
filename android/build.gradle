@@ -1,4 +1,7 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.plugin.compose'
+}
 
 dependencies {
     implementation rootProject
@@ -6,6 +9,16 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.1'
 
     implementation 'com.github.tony19:logback-android:3.0.0'
+
+    // Compose
+    def composeBom = platform('androidx.compose:compose-bom:2024.12.01')
+    implementation composeBom
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.activity:activity-compose:1.9.3'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7'
+    debugImplementation 'androidx.compose.ui:ui-tooling'
 }
 
 def keystoreProperties = new Properties()
@@ -17,7 +30,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     compileSdk 35
     defaultConfig {
-        minSdkVersion 24
+        minSdkVersion 25
         targetSdkVersion 35
         versionCode 1430
         versionName "0.9.$versionCode"
@@ -26,13 +39,14 @@ android {
     }
     lintOptions {
         checkReleaseBuilds false
-        // Or, if you prefer, you can continue to check for errors in release builds,
-        // but continue the build even when errors are found:
         abortOnError false
     }
+    buildFeatures {
+        compose = true
+    }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     signingConfigs {
         release {
