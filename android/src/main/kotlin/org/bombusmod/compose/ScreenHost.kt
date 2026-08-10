@@ -11,9 +11,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import org.bombusmod.compose.controls.*
 import org.bombusmod.compose.theme.MyColors
 import ui.NativeScreenCommand
+import ui.NativeScreenItem
 import ui.NativeScreenModel
+import android.content.Context
+import androidx.browser.customtabs.CustomTabsIntent
+import android.net.Uri
 import ui.VirtualListController
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,7 +76,6 @@ fun ScreenHost() {
                             .padding(horizontal = 8.dp, vertical = 6.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        // Left: OK
                         val okCmd = commands.firstOrNull { it.type == NativeScreenCommand.OK }
                         TextButton(onClick = {
                             controller.buildOptionsMenu
@@ -79,7 +83,6 @@ fun ScreenHost() {
                         }) {
                             Text(okCmd?.label ?: "OK", color = MyColors.BAR_INK)
                         }
-                        // Right: Back
                         val backCmd = commands.firstOrNull {
                             it.type == NativeScreenCommand.BACK
                                 || it.type == NativeScreenCommand.CANCEL
@@ -102,38 +105,123 @@ fun ScreenHost() {
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
+                    .imePadding()
             ) {
                 itemsIndexed(model.elements) { index, item ->
-                    Surface(
-                        color = MyColors.LIST_BGND,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                controller.clickListListener
-                                    ?.itemSelected(null, index)
-                            }
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                if (item.label != null) {
-                                    Text(
-                                        text = item.label,
-                                        color = MyColors.LIST_INK,
-                                        style = MaterialTheme.typography.bodyLarge
-                                    )
-                                }
-                                if (item.description != null) {
-                                    Text(
-                                        text = item.description,
-                                        color = MyColors.SECOND_LINE,
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
-                            }
-                        }
+                    RenderItem(item, index, controller)
+                }
+            }
+        }
+    }
+}
+
+// ── Item renderer ────────────────────────────────────────────────
+
+@Composable
+private fun RenderItem(item: NativeScreenItem, index: Int, controller: VirtualListController) {
+    when (item.controlType) {
+        NativeScreenItem.TYPE_CHECKBOX -> {
+            var checked by remember(item.key, item.checked) { mutableStateOf(item.checked) }
+            MyCheckBox(
+                label = item.label ?: "",
+                checked = checked,
+                onCheckedChange = { c ->
+                    checked = c; item.checked = c
+                    controller.clickListListener?.itemSelected(null, index)
+                }
+            )
+        }
+        NativeScreenItem.TYPE_INPUT -> {
+            var text by remember(item.key, item.textValue) { mutableStateOf(item.textValue ?: "") }
+            MyTextField(
+                caption = item.label ?: "",
+                value = text,
+                onValueChange = { t -> text = t; item.textValue = t }
+            )
+        }
+        NativeScreenItem.TYPE_NUMBER -> {
+            var num by remember(item.key, item.intValue) { mutableStateOf(item.intValue) }
+            MyNumberInput(
+                caption = item.label ?: "",
+                value = num,
+                onValueChange = { n -> num = n; item.intValue = n }
+            )
+        }
+        NativeScreenItem.TYPE_PASSWORD -> {
+            var pass by remember(item.key, item.textValue) { mutableStateOf(item.textValue ?: "") }
+            MyPasswordInput(
+                caption = item.label ?: "",
+                value = pass,
+                onValueChange = { p -> pass = p; item.textValue = p }
+            )
+        }
+        NativeScreenItem.TYPE_DROPDOWN -> {
+            val options = item.options ?: emptyArray()
+            var sel by remember(item.key, item.intValue) { mutableStateOf(item.intValue) }
+            MyDropdown(
+                caption = item.label ?: "",
+                options = options.toList(),
+                selectedIndex = sel,
+                onSelect = { s -> sel = s; item.intValue = s }
+            )
+        }
+        NativeScreenItem.TYPE_SLIDER -> {
+            var v by remember(item.key, item.floatValue) { mutableStateOf(item.floatValue) }
+            MySlider(
+                caption = item.label ?: "",
+                value = v,
+                onValueChange = { s -> v = s; item.floatValue = s },
+                valueRange = item.sliderMin..item.sliderMax
+            )
+        }
+        NativeScreenItem.TYPE_HEADER -> MyHeader(text = item.label ?: "")
+        NativeScreenItem.TYPE_LINK -> {
+            val ctx = androidx.compose.ui.platform.LocalContext.current
+            MyLinkText(
+                text = item.label ?: "",
+                onClick = {
+                    val url = item.description
+                    if (!url.isNullOrEmpty()) {
+                        CustomTabsIntent.Builder()
+                            .setShowTitle(true)
+                            .build()
+                            .launchUrl(ctx, Uri.parse(url))
+                    } else {
+                        controller.clickListListener?.itemSelected(null, index)
+                    }
+                }
+            )
+        }
+        NativeScreenItem.TYPE_MULTILINE -> MyMultilineText(
+            text = item.description ?: item.label ?: ""
+        )
+        NativeScreenItem.TYPE_SPACER -> MySpacer(
+            heightDp = item.intValue.coerceAtLeast(4)
+        )
+        NativeScreenItem.TYPE_IMAGE -> MyTextLine(text = "[image:${item.imageIndex}]")
+        else -> {
+            Surface(
+                color = MyColors.LIST_BGND,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(
+                        enabled = item.selectable,
+                        onClick = { controller.clickListListener?.itemSelected(null, index) }
+                    )
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        if (item.label != null) Text(
+                            item.label, color = MyColors.LIST_INK,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        if (item.description != null) Text(
+                            item.description, color = MyColors.SECOND_LINE,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                 }
             }
