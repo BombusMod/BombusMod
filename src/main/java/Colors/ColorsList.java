@@ -34,7 +34,11 @@ import java.util.Enumeration;
 import images.RosterIcons;
 
 import locale.SR;
+import ui.NativeScreenCommand;
+import ui.NativeScreenItem;
+import ui.NativeScreenModel;
 import ui.VirtualList;
+import ui.VirtualListController;
 import ui.controls.form.DefForm;
 
 /**
@@ -57,8 +61,9 @@ public class ColorsList extends DefForm
      * Creates a new instance of ColorsList
      */
     public ColorsList() {
-        super(SR.MS_COLOR_TUNE);       
-        
+        super(SR.MS_COLOR_TUNE);
+        if (!buildNativeModel()) return;
+
         int cnt=0;
         itemsList.removeAllElements();
         for (Enumeration r = ColorTheme.colorsContainer.elements(); r.hasMoreElements();) {
@@ -160,6 +165,19 @@ public class ColorsList extends DefForm
 
             SR.MS_CONTROL_ITEM,
         };
+
+    private boolean buildNativeModel() {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        NativeScreenModel m = new NativeScreenModel();
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        final ColorsList self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption(SR.MS_COLOR_TUNE);
+        VirtualListController.getInstance().setModel(m);
+        return false;
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

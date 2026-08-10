@@ -34,7 +34,11 @@ import Messages.MessageList;
 import java.util.Vector;
 import Menu.MenuCommand;
 import locale.SR;
+import ui.NativeScreenCommand;
+import ui.NativeScreenItem;
+import ui.NativeScreenModel;
 import ui.VirtualList;
+import ui.VirtualListController;
 import images.RosterIcons;
 import ui.MainBar;
 
@@ -56,8 +60,8 @@ public final class XMLList
      */
     public XMLList() {
         super (new Vector());
-                       
-        super.smiles = false;       
+        if (!buildNativeModel()) return;
+        super.smiles = false;
         stanzas = StanzasList.getInstance();
         moveCursorHome();
 
@@ -163,6 +167,19 @@ public final class XMLList
 
         return super.doUserKeyAction(command_id);
     }
+
+    private boolean buildNativeModel() {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        NativeScreenModel m = new NativeScreenModel();
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        final XMLList self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption(SR.MS_XML_CONSOLE);
+        VirtualListController.getInstance().setModel(m);
+        return false;
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

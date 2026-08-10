@@ -13,6 +13,10 @@ import com.alsutton.jabber.JabberBlockListener;
 import com.alsutton.jabber.JabberDataBlock;
 import java.util.Vector;
 import locale.SR;
+import ui.NativeScreenCommand;
+import ui.NativeScreenItem;
+import ui.NativeScreenModel;
+import ui.VirtualListController;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -33,6 +37,7 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
 
     public QuickPrivacy() {
         super("Privacy", false);
+        if (!buildNativeModel()) return;
         usePrivacy = new CheckBox("Enable privacy settings", cf.useQuickPrivacy);
         itemsList.addElement(usePrivacy);
         itemsList.addElement(new SpacerItem(10));
@@ -134,6 +139,22 @@ public class QuickPrivacy extends DefForm implements JabberBlockListener {
         StaticData.getInstance().getTheStream().addBlockListener(this);
         PrivacyList.privacyListRq(true, qList, "quicklst");
     }
+
+    private boolean buildNativeModel() {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        NativeScreenModel m = new NativeScreenModel();
+        m.addPar(new NativeScreenItem() {{ setAsCheckBox("Enable privacy settings", cf.useQuickPrivacy); }});
+        m.addPar(new NativeScreenItem() {{ setAsSpacer(10); }});
+        m.addPar(new NativeScreenItem() {{ setAsDropdown("nil", SR.MS_NOT_IN_LIST, new String[]{SR.MS_NIL_DROP_MP, SR.MS_NIL_DROP_P, SR.MS_NIL_ALLOW_ALL}, cf.notInListDropLevel); }});
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        final QuickPrivacy self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption("Privacy");
+        VirtualListController.getInstance().setModel(m);
+        return false;
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

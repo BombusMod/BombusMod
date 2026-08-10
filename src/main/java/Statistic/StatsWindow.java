@@ -32,7 +32,11 @@ package Statistic;
 import Client.Roster;
 import Menu.MenuCommand;
 import locale.SR;
+import ui.NativeScreenCommand;
+import ui.NativeScreenItem;
+import ui.NativeScreenModel;
 import ui.VirtualList;
+import ui.VirtualListController;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 import org.bombusmod.util.ClipBoardIO;
@@ -62,6 +66,7 @@ public class StatsWindow
      */
     public StatsWindow() {
         super(SR.MS_STATS);
+        if (!buildNativeModel()) return;
         item=new MultiLine(SR.MS_ALL, StringUtils.getSizeString(st.getAllTraffic())); item.selectable=true; itemsList.addElement(item);
 
         item=new MultiLine(SR.MS_PREVIOUS_, StringUtils.getSizeString(st.getLatest())); item.selectable=true; itemsList.addElement(item);
@@ -133,6 +138,27 @@ public class StatsWindow
     public void eventLongOk() {
         showMenu();
     }
+
+    private boolean buildNativeModel() {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        NativeScreenModel m = new NativeScreenModel();
+        m.addPar(new NativeScreenItem() {{ setAsMultiline(SR.MS_ALL + "\n" + StringUtils.getSizeString(st.getAllTraffic())); }});
+        m.addPar(new NativeScreenItem() {{ setAsMultiline(SR.MS_PREVIOUS_ + "\n" + StringUtils.getSizeString(st.getLatest())); }});
+        m.addPar(new NativeScreenItem() {{ setAsMultiline(SR.MS_CURRENT + "\n" + StringUtils.getSizeString(Stats.getCurrentTraffic())); }});
+        m.addPar(new NativeScreenItem() {{ setAsMultiline(SR.MS_CONN + "\n" + Integer.toString(st.getSessionsCount())); }});
+        m.addPar(new NativeScreenItem() {{ setAsMultiline(SR.MS_STARTED + "\n" + Roster.startTime); }});
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        m.addCommand("copy", SR.MS_COPY, NativeScreenCommand.SCREEN, RosterIcons.ICON_COPY);
+        m.addCommand("clear", SR.MS_CLEAR, NativeScreenCommand.SCREEN, RosterIcons.ICON_CLEAR);
+        final StatsWindow self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption(SR.MS_STATS);
+        VirtualListController.getInstance().setModel(m);
+        return false;
+    }
+
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif

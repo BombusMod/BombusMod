@@ -37,6 +37,10 @@ import locale.SR;
 import ui.VirtualList;
 import ui.controls.form.DropChoiceBox;
 import ui.controls.form.DefForm;
+import ui.NativeScreenCommand;
+import ui.NativeScreenItem;
+import ui.NativeScreenModel;
+import ui.VirtualListController;
 import ui.controls.form.LinkString;
 import ui.controls.form.SpacerItem;
 import util.StringLoader;
@@ -62,7 +66,8 @@ public class ColorConfigForm
     /** Creates a new instance of ColorConfigForm
      */
     public ColorConfigForm() {
-        super(SR.MS_COLOR_TUNE);        
+        super(SR.MS_COLOR_TUNE);
+        if (!buildNativeModel()) return;
 //#ifdef COLOR_TUNE
         configureColors=new LinkString(SR.MS_COLOR_TUNE) { public void doAction() { new ColorsList(); } };
         itemsList.addElement(configureColors);
@@ -102,5 +107,21 @@ public class ColorConfigForm
             }
         } catch (Exception ex) {}
     }
+
+    private boolean buildNativeModel() {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        NativeScreenModel m = new NativeScreenModel();
+        m.addPar(new NativeScreenItem() {{ setAsLink(SR.MS_COLOR_TUNE); }});
+        m.addPar(new NativeScreenItem() {{ setAsLink(SR.MS_INVERT); }});
+        m.addPar(new NativeScreenItem() {{ setAsLink(SR.MS_CLEAR); }});
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        final ColorConfigForm self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption(SR.MS_COLOR_TUNE);
+        VirtualListController.getInstance().setModel(m);
+        return false;
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 

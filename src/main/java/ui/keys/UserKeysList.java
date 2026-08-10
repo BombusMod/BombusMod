@@ -30,7 +30,11 @@ package ui.keys;
 
 import locale.SR;
 import Menu.MenuCommand;
+import ui.NativeScreenCommand;
+import ui.NativeScreenItem;
+import ui.NativeScreenModel;
 import ui.VirtualList;
+import ui.VirtualListController;
 import ui.controls.form.DefForm;
 import java.util.Vector;
 import ui.VirtualElement;
@@ -46,11 +50,25 @@ public class UserKeysList extends DefForm {
 
     public UserKeysList() {
         super(SR.MS_CUSTOM_KEYS);
+        if (!buildNativeModel()) return;
         enableListWrapping(true);
         keyScheme = new KeyScheme(UserKeyExec.getInstance().keyScheme);
 //        redraw(); TODO: Need?
         commandState();
     }
+
+    private boolean buildNativeModel() {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        NativeScreenModel m = new NativeScreenModel();
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        final UserKeysList self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption(SR.MS_CUSTOM_KEYS);
+        VirtualListController.getInstance().setModel(m);
+        return false;
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 
     public VirtualElement getItemRef(int index) {
         if (index >= getItemCount()) {

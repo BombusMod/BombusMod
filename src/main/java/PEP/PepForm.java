@@ -10,6 +10,10 @@ package PEP;
 import Client.Config;
 import Client.StaticData;
 import locale.SR;
+import ui.NativeScreenCommand;
+import ui.NativeScreenItem;
+import ui.NativeScreenModel;
+import ui.VirtualListController;
 import ui.controls.form.CheckBox;
 import ui.controls.form.DefForm;
 import ui.controls.form.DropChoiceBox;
@@ -43,7 +47,7 @@ public class PepForm extends DefForm {
     
     public PepForm() {
         super(SR.MS_PEP);
-        
+        if (!buildNativeModel()) return;
             itemsList.addElement(new SimpleString("Receive events", true));
             sndrcvmood = new CheckBox(SR.MS_USERMOOD, Config.getInstance().sndrcvmood);
             itemsList.addElement(sndrcvmood);
@@ -101,7 +105,31 @@ public class PepForm extends DefForm {
         Config.getInstance().saveToStorage();
         parentView = sd.roster;
         destroyView();
-    }   
+    }
+
+    private boolean buildNativeModel() {
+        if (!VirtualListController.getInstance().isActive()) return true;
+        NativeScreenModel m = new NativeScreenModel();
+        Config cf = Config.getInstance();
+        m.addPar(new NativeScreenItem() {{ setAsHeader("Receive events"); }});
+        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_USERMOOD, cf.sndrcvmood); }});
+        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_USERTUNE, cf.rcvtune); }});
+        m.addPar(new NativeScreenItem() {{ setAsCheckBox(SR.MS_USERACTIVITY, cf.rcvactivity); }});
+        m.addPar(new NativeScreenItem() {{ setAsSpacer(10); }});
+        m.addPar(new NativeScreenItem() {{ setAsHeader("Publish events"); }});
+        m.addPar(new NativeScreenItem() {{ setAsLink(SR.MS_USERMOOD); }});
+        m.addPar(new NativeScreenItem() {{ setAsLink(SR.MS_USERACTIVITY); }});
+        m.addPar(new NativeScreenItem() {{ setAsSpacer(10); }});
+        m.addPar(new NativeScreenItem() {{ setAsCheckBox("Scrobbled song", cf.updatetune); }});
+        m.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
+        final PepForm self = this;
+        VirtualListController.getInstance().setOnDismiss(new Runnable() { public void run() { self.dismissNative(); } });
+        VirtualListController.getInstance().setCaption(SR.MS_PEP);
+        VirtualListController.getInstance().setModel(m);
+        return false;
+    }
+    public void dismissNative() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); destroyView(); }
+    public void destroyView() { VirtualListController.getInstance().setModel(null); VirtualListController.getInstance().notifyUpdate(); super.destroyView(); }
 }
 
 //#endif
