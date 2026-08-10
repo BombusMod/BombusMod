@@ -358,7 +358,7 @@ public abstract class VirtualList {
     
     protected boolean showBalloon;
     
-    protected ComplexString mainbar;
+    public ComplexString mainbar;
     protected ComplexString infobar;
     
     private boolean wrapping = true;

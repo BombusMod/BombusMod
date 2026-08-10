@@ -43,8 +43,8 @@ import java.util.TimerTask;
  */
 public class ReconnectWindow extends TimerTask {
 
-    private int pos;
-    private static int timeout;
+    int pos;
+    static int timeout;
     private boolean active;
     private String reconnectString = "";
     private Progress pb;
@@ -53,6 +53,9 @@ public class ReconnectWindow extends TimerTask {
     public ReconnectWindow() {
         timeout = Config.getInstance().reconnectTime * 4;
     }
+
+    public int getPos() { return pos; }
+    public int getTimeout() { return timeout; }
 
     public void draw(Graphics g, int width, int height) {
         int reconnectPos = pos * 4;
@@ -83,6 +86,9 @@ public class ReconnectWindow extends TimerTask {
 
     private void redraw() {
         VirtualCanvas.getInstance().repaint();
+        if (VirtualListController.getInstance().isActive()) {
+            VirtualListController.getInstance().notifyUpdate();
+        }
     }
 
     public void startReconnect() throws IllegalStateException {

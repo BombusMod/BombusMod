@@ -16,6 +16,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import Menu.MenuCommand
 import Client.Group
 import Client.Contact
+import ui.IconTextElement
 import org.bombusmod.compose.controls.*
 import org.bombusmod.compose.theme.MyColors
 import ui.*
@@ -46,6 +47,10 @@ fun ScreenHost(legacyView: View? = null) {
     @Suppress("UNUSED_EXPRESSION") updateVersion
     val caption = controller.caption
 
+    // Reconnect overlay — check every recomposition
+    val rw = ui.VirtualCanvas.getInstance().rw
+    val showReconnect = rw != null && rw.isActive()
+
     if (list == null || list.getItemCount() == 0) {
         if (legacyView != null) {
             AndroidView(factory = { legacyView }, modifier = Modifier.fillMaxSize())
@@ -62,8 +67,27 @@ fun ScreenHost(legacyView: View? = null) {
 
     Scaffold(
         topBar = {
+            // Read first icon from mainbar ComplexString elements
+            val barIcon = list?.mainbar?.let { mb ->
+                var idx = -1
+                val count = (mb as java.util.Vector<*>).size
+                for (i in 0 until count) {
+                    val el = (mb as java.util.Vector<*>).elementAt(i)
+                    when {
+                        el is java.lang.Integer -> { idx = el.toInt(); break }
+                        el is IconTextElement -> { idx = el.getImageIndex(); if (idx >= 0) break }
+                    }
+                }
+                idx
+            } ?: -1
+
             TopAppBar(
                 title = { Text(caption, color = MyColors.BAR_INK) },
+                navigationIcon = {
+                    if (barIcon >= 0) {
+                        MySpriteIcon(imageIndex = barIcon, iconSize = 24.dp)
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MyColors.BAR_BGND,
                     titleContentColor = MyColors.BAR_INK
@@ -125,13 +149,37 @@ fun ScreenHost(legacyView: View? = null) {
             }
         }
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding).imePadding()
-        ) {
-            val itemCount = list.getItemCount()
-            items(itemCount) { index ->
-                key("item_$index") {
-                    RenderVirtualElement(list.getItemRef(index), index, controller)
+        Column(modifier = Modifier.fillMaxSize().padding(padding)) {
+            // Reconnect progress bar
+            if (showReconnect && rw != null) {
+                val progress = if (rw.timeout > 0) rw.pos.toFloat() / rw.timeout else 0f
+                Surface(
+                    color = MyColors.LIST_BGND_EVEN,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Text(
+                            "Reconnecting...",
+                            color = MyColors.LIST_INK,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        Spacer(Modifier.height(4.dp))
+                        LinearProgressIndicator(
+                            progress = { progress.coerceIn(0f, 1f) },
+                            modifier = Modifier.fillMaxWidth(),
+                            color = MyColors.CONTROL_ITEM,
+                            trackColor = MyColors.SECOND_LINE
+                        )
+                    }
+                }
+            }
+            // Main list
+            LazyColumn(modifier = Modifier.fillMaxWidth().weight(1f).imePadding()) {
+                val itemCount = list.getItemCount()
+                items(itemCount) { index ->
+                    key("item_$index") {
+                        RenderVirtualElement(list.getItemRef(index), index, controller)
+                    }
                 }
             }
         }
@@ -279,6 +327,8 @@ private fun RenderVirtualElement(
                     .fillMaxWidth()
                     .clickable {
                         el.onSelect()
+                        // Rebuild roster items to reflect collapsed state
+                        Client.StaticData.getInstance().roster.reEnumRoster()
                         controller.notifyUpdate()
                     }
             ) {
@@ -288,7 +338,7 @@ private fun RenderVirtualElement(
                 ) {
                     MySpriteIcon(
                         imageIndex = el.getImageIndex(),
-                        iconSize = 18.dp,
+                        iconSize = 24.dp,
                         modifier = Modifier.padding(end = 4.dp)
                     )
                     Text(
