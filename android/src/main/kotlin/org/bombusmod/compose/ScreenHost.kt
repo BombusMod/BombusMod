@@ -47,6 +47,7 @@ fun ScreenHost(legacyView: View? = null) {
     @Suppress("UNUSED_EXPRESSION") updateVersion
     val caption = controller.caption
 
+
     // Reconnect overlay — check every recomposition
     val rw = ui.VirtualCanvas.getInstance().rw
     val showReconnect = rw != null && rw.isActive()
@@ -329,7 +330,6 @@ private fun RenderVirtualElement(
                         el.onSelect()
                         // Rebuild roster items to reflect collapsed state
                         Client.StaticData.getInstance().roster.reEnumRoster()
-                        controller.notifyUpdate()
                     }
             ) {
                 Row(
