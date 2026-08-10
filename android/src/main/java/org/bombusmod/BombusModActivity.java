@@ -55,6 +55,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
 
 import org.bombusmod.android.scrobbler.Receiver;
 import org.bombusmod.android.service.XmppService;
@@ -127,6 +128,8 @@ public class BombusModActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        org.bombusmod.compose.NativeUiBridge.init(this);
 
         config.FONT_SIZE_SMALL = getResources().getDimensionPixelSize(R.dimen.small_font_size);
         config.FONT_SIZE_MEDIUM = getResources().getDimensionPixelSize(R.dimen.medium_font_size);
@@ -377,35 +380,20 @@ public class BombusModActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        // Use SAME J2ME command dispatch chain for both native and legacy
         MIDletAccess ma = MIDletBridge.getMIDletAccess();
-        if (ma == null) {
-            return;
-        }
+        if (ma == null) return;
         final DisplayAccess da = ma.getDisplayAccess();
-        if (da == null) {
-            return;
-        }
+        if (da == null) return;
         AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-        if (ui == null) {
-            return;
-        }
-
+        if (ui == null) return;
         List<AndroidCommandUI> commands = ui.getCommandsUI();
-
         CommandUI cmd = getFirstCommandOfType(commands, Command.BACK);
-        if (cmd == null) {
-            cmd = getFirstCommandOfType(commands, Command.EXIT);
-        }
-        if (cmd == null) {
-            cmd = getFirstCommandOfType(commands, Command.CANCEL);
-        }
-        if (cmd == null) {
-            return;
-        }
-
+        if (cmd == null) cmd = getFirstCommandOfType(commands, Command.EXIT);
+        if (cmd == null) cmd = getFirstCommandOfType(commands, Command.CANCEL);
+        if (cmd == null) return;
         if (ui.getCommandListener() != null) {
             ignoreBackKeyUp = true;
-
             MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(cmd.getCommand(), da.getCurrent());
         }
     }
@@ -680,9 +668,11 @@ public class BombusModActivity extends AppCompatActivity {
     @Override
     public void setContentView(View view) {
         logger.debug("set content view: " + view);
-        super.setContentView(view);
-
         contentView = view;
+        // Wrap in ComposeView: shows native ScreenHost when model is set,
+        // otherwise shows the legacy J2ME CanvasView
+        super.setContentView(
+            org.bombusmod.compose.NativeUiBridge.wrap(this, view));
     }
 
     @Override

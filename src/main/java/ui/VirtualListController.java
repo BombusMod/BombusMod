@@ -41,6 +41,12 @@ public class VirtualListController {
     private OnBuildOptionsMenu buildOptionsMenu;
     private OnBuildContextMenu buildContextMenu;
 
+    // Callback to dismiss native UI and return to legacy screen
+    private Runnable onDismiss;
+
+    public void setOnDismiss(Runnable r) { onDismiss = r; }
+    public Runnable getOnDismiss() { return onDismiss; }
+
     // Back stack for navigation
     private final List<StackEntry> backStack = new ArrayList<StackEntry>();
 
