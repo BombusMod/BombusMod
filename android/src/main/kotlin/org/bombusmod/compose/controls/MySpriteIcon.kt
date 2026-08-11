@@ -2,7 +2,7 @@ package org.bombusmod.compose.controls
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Canvas
+import android.graphics.Canvas as AndroidCanvas
 import android.graphics.Paint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
@@ -15,7 +15,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-private const val COLS = 8
+private const val PHYS_COLS = 8  // ICONS_IN_ROW
 
 @Composable
 fun MySpriteIcon(imageIndex: Int, iconSize: Dp = 28.dp, modifier: Modifier = Modifier) {
@@ -26,12 +26,19 @@ fun MySpriteIcon(imageIndex: Int, iconSize: Dp = 28.dp, modifier: Modifier = Mod
         try {
             ctx.assets.open("images/skin.png").use { stream ->
                 val src = BitmapFactory.decodeStream(stream) ?: return@remember null
-                val cw = src.width / COLS
-                if (cw <= 0) return@remember null
-                val col = imageIndex % COLS
-                val row = imageIndex / COLS
-                val argb = Bitmap.createBitmap(cw, cw, Bitmap.Config.ARGB_8888)
-                Canvas(argb).drawBitmap(src, (-col * cw).toFloat(), (-row * cw).toFloat(), Paint())
+                val cellSize = src.width / PHYS_COLS
+                if (cellSize <= 0) return@remember null
+
+                // Exact J2ME formula from ImageList.drawImage:
+                //   int iy = y - height * (index >> 4);
+                //   int ix = x - width * (index & 0x0f);
+                val col = imageIndex and 0x0f
+                val row = imageIndex shr 4
+
+                val argb = Bitmap.createBitmap(cellSize, cellSize, Bitmap.Config.ARGB_8888)
+                val c = AndroidCanvas(argb)
+                // Draw source shifted so cell (col,row) lands at (0,0)
+                c.drawBitmap(src, (-col * cellSize).toFloat(), (-row * cellSize).toFloat(), Paint())
                 src.recycle()
                 argb.asImageBitmap()
             }
