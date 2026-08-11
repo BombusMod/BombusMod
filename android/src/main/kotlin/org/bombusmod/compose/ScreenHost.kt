@@ -3,7 +3,6 @@
 package org.bombusmod.compose
 
 import android.view.View
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -62,12 +61,6 @@ fun ScreenHost(legacyView: View? = null) {
     var showMenuSheet by remember { mutableStateOf(false) }
     val menuCommands = remember(list, updateVersion) {
         controller.getMenuCommands().filter { it.map == MenuCommand.SCREEN }
-    }
-
-    // Back gesture: call cmdCancel/Back on sub-screens (matches J2ME onBackPressed)
-    BackHandler(enabled = list !is Roster) {
-        if (list is DefForm) (list as DefForm).cmdCancel()
-        else controller.onCancel?.run() ?: controller.onDismiss?.run()
     }
 
     Scaffold(

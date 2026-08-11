@@ -422,7 +422,6 @@ public abstract class VirtualList {
     public void show() {
         parentView = VirtualCanvas.getInstance().getList();
         if (VirtualListController.getInstance().isActive()) {
-            System.out.println("VirtualList.show: " + this.getClass().getSimpleName());
             VirtualListController.getInstance().setCurrentList(this);
             commandState();
             VirtualListController.getInstance().notifyUpdate();

@@ -99,7 +99,7 @@ public class VirtualListController {
             String cmd = currentList.touchRightCommand();
             if (cmd != null && !cmd.isEmpty()) return cmd;
         }
-        return "OK";
+        return "";  // Don't fabricate — empty means no right command
     }
 
     public String getLeftCommand() {

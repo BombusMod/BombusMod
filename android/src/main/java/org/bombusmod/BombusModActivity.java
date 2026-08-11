@@ -52,6 +52,7 @@ import android.view.Window;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -89,6 +90,8 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Locale;
+
+import Menu.MenuCommand;
 
 import javax.microedition.lcdui.Command;
 import javax.microedition.midlet.MIDlet;
@@ -264,6 +267,23 @@ public class BombusModActivity extends AppCompatActivity {
             );
             launcher.launch(POST_NOTIFICATIONS);
         }
+        setupBackHandler();
+    }
+
+    private void setupBackHandler() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            public void handleOnBackPressed() {
+                ui.VirtualList list = ui.VirtualListController.getInstance().getCurrentList();
+                if (list instanceof ui.controls.form.DefForm) {
+                    ui.controls.form.DefForm form = (ui.controls.form.DefForm) list;
+                    MenuCommand cmd = form.findCommand(MenuCommand.BACK);
+                    if (cmd == null) cmd = form.findCommand(MenuCommand.EXIT);
+                    if (cmd == null) cmd = form.findCommand(MenuCommand.CANCEL);
+                    if (cmd != null) { form.menuAction(cmd, list); return; }
+                }
+                if (list != null) list.cmdCancel();
+            }
+        });
     }
 
     @Override
@@ -376,91 +396,6 @@ public class BombusModActivity extends AppCompatActivity {
     }
 
     private boolean ignoreBackKeyUp = false;
-
-    @Override
-    public void onBackPressed() {
-        // Compose mode: let BackHandler handle it
-        if (ui.VirtualListController.getInstance().isActive()) {
-            super.onBackPressed();
-            return;
-        }
-        // J2ME command dispatch
-        MIDletAccess ma = MIDletBridge.getMIDletAccess();
-        if (ma == null) return;
-        final DisplayAccess da = ma.getDisplayAccess();
-        if (da == null) return;
-        AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-        if (ui == null) return;
-        List<AndroidCommandUI> commands = ui.getCommandsUI();
-        CommandUI cmd = getFirstCommandOfType(commands, Command.BACK);
-        if (cmd == null) cmd = getFirstCommandOfType(commands, Command.EXIT);
-        if (cmd == null) cmd = getFirstCommandOfType(commands, Command.CANCEL);
-        if (cmd == null) return;
-        if (ui.getCommandListener() != null) {
-            ignoreBackKeyUp = true;
-            MIDletBridge.getMIDletAccess().getDisplayAccess().commandAction(cmd.getCommand(), da.getCurrent());
-        }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        MIDletAccess ma = MIDletBridge.getMIDletAccess();
-        if (ma == null) {
-            return false;
-        }
-        final DisplayAccess da = ma.getDisplayAccess();
-        if (da == null) {
-            return false;
-        }
-        AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-        if (ui == null) {
-            return false;
-        }
-        if (ui instanceof AndroidCanvasUI) {
-            if (ignoreKey(keyCode)) {
-                return false;
-            }
-
-            Device device = DeviceFactory.getDevice();
-            ((AndroidInputMethod) device.getInputMethod()).buttonPressed(event);
-
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public boolean onKeyUp(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && ignoreBackKeyUp) {
-            ignoreBackKeyUp = false;
-            return true;
-        }
-        MIDletAccess ma = MIDletBridge.getMIDletAccess();
-        if (ma == null) {
-            return false;
-        }
-        final DisplayAccess da = ma.getDisplayAccess();
-        if (da == null) {
-            return false;
-        }
-        AndroidDisplayableUI ui = (AndroidDisplayableUI) da.getDisplayableUI(da.getCurrent());
-        if (ui == null) {
-            return false;
-        }
-
-        if (ui instanceof AndroidCanvasUI) {
-            if (ignoreKey(keyCode)) {
-                return false;
-            }
-
-            Device device = DeviceFactory.getDevice();
-            ((AndroidInputMethod) device.getInputMethod()).buttonReleased(event);
-
-            return true;
-        }
-
-        return super.onKeyUp(keyCode, event);
-    }
 
     private CommandUI getFirstCommandOfType(List<AndroidCommandUI> commands, int commandType) {
         for (int i = 0; i < commands.size(); i++) {
