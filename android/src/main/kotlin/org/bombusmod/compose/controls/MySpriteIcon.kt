@@ -1,33 +1,42 @@
 package org.bombusmod.compose.controls
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-private val colors = listOf(
-    Color(0xFF1EA5C5.toInt()), // cyan - default
-    Color(0xFF4CAF50.toInt()), // green - expanded
-    Color(0xFFFF9800.toInt()), // orange - collapsed
-    Color(0xFFF44336.toInt()), // red - error
-    Color(0xFF9C27B0.toInt()), // purple - MUC
-)
+private const val COLS = 8
 
 @Composable
 fun MySpriteIcon(imageIndex: Int, iconSize: Dp = 28.dp, modifier: Modifier = Modifier) {
     if (imageIndex < 0) return
-    // Use imageIndex to pick distinct color — visible differenciation
-    val color = colors[imageIndex % colors.size]
-    Box(
-        modifier = modifier
-            .size(iconSize)
-            .clip(CircleShape)
-            .background(color)
-    )
+    val ctx = LocalContext.current
+
+    val cell = remember(imageIndex) {
+        try {
+            ctx.assets.open("images/skin.png").use { stream ->
+                val src = BitmapFactory.decodeStream(stream) ?: return@remember null
+                val cw = src.width / COLS
+                if (cw <= 0) return@remember null
+                val col = imageIndex % COLS
+                val row = imageIndex / COLS
+                val argb = Bitmap.createBitmap(cw, cw, Bitmap.Config.ARGB_8888)
+                Canvas(argb).drawBitmap(src, (-col * cw).toFloat(), (-row * cw).toFloat(), Paint())
+                src.recycle()
+                argb.asImageBitmap()
+            }
+        } catch (_: Exception) { null }
+    } ?: return
+
+    Image(bitmap = cell, contentDescription = null, contentScale = ContentScale.Fit, modifier = modifier.size(iconSize))
 }
