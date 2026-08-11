@@ -379,7 +379,12 @@ public class BombusModActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Use SAME J2ME command dispatch chain for both native and legacy
+        // Compose mode: let BackHandler handle it
+        if (ui.VirtualListController.getInstance().isActive()) {
+            super.onBackPressed();
+            return;
+        }
+        // J2ME command dispatch
         MIDletAccess ma = MIDletBridge.getMIDletAccess();
         if (ma == null) return;
         final DisplayAccess da = ma.getDisplayAccess();

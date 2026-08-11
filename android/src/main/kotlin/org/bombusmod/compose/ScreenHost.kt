@@ -3,10 +3,11 @@
 package org.bombusmod.compose
 
 import android.view.View
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,7 +19,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import Menu.MenuCommand
 import Client.Group
 import Client.Contact
+import Client.Roster
 import ui.IconTextElement
+import locale.SR
 import org.bombusmod.compose.controls.*
 import org.bombusmod.compose.theme.MyColors
 import ui.*
@@ -56,9 +59,15 @@ fun ScreenHost(legacyView: View? = null) {
     val rw = VirtualCanvas.getInstance().rw
     val showReconnect = rw != null && rw.isActive()
 
-    var showMenu by remember { mutableStateOf(false) }
+    var showMenuSheet by remember { mutableStateOf(false) }
     val menuCommands = remember(list, updateVersion) {
         controller.getMenuCommands().filter { it.map == MenuCommand.SCREEN }
+    }
+
+    // Back gesture: call cmdCancel/Back on sub-screens (matches J2ME onBackPressed)
+    BackHandler(enabled = list !is Roster) {
+        if (list is DefForm) (list as DefForm).cmdCancel()
+        else controller.onCancel?.run() ?: controller.onDismiss?.run()
     }
 
     Scaffold(
@@ -86,29 +95,28 @@ fun ScreenHost(legacyView: View? = null) {
                 ),
                 actions = {
                     if (menuCommands.isNotEmpty()) {
-                        Box {
-                            TextButton(onClick = { showMenu = true }) { Text("Menu", color = MyColors.BAR_INK) }
-                            DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
-                                menuCommands.forEach { cmd ->
-                                    DropdownMenuItem(text = { Text(cmd.name) }, onClick = {
-                                        showMenu = false
-                                        if (list is DefForm) (list as DefForm).menuAction(cmd, list)
-                                    })
-                                }
-                            }
+                        TextButton(onClick = { showMenuSheet = true }) {
+                            Text(SR.MS_MENU, color = MyColors.BAR_INK)
                         }
                     }
                 }
             )
         },
         bottomBar = {
-            Surface(color = MyColors.BAR_BGND) {
-                Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    TextButton(onClick = { if (list is DefForm) (list as DefForm).touchLeftPressed() }) {
-                        Text(controller.getLeftCommand(), color = MyColors.BAR_INK)
-                    }
-                    TextButton(onClick = { if (list is DefForm) (list as DefForm).touchRightPressed() }) {
-                        Text(controller.getRightCommand(), color = MyColors.BAR_INK)
+            // Show command bar on non-roster screens for Back/OK
+            if (list !is Roster) {
+                val leftCmd = controller.getLeftCommand()
+                val rightCmd = controller.getRightCommand()
+                Surface(color = MyColors.BAR_BGND) {
+                    Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                        TextButton(onClick = { if (list is DefForm) (list as DefForm).touchLeftPressed() }) {
+                            Text(leftCmd, color = MyColors.BAR_INK)
+                        }
+                        if (rightCmd.isNotEmpty() && rightCmd != leftCmd) {
+                            TextButton(onClick = { if (list is DefForm) (list as DefForm).touchRightPressed() }) {
+                                Text(rightCmd, color = MyColors.BAR_INK)
+                            }
+                        }
                     }
                 }
             }
@@ -132,10 +140,28 @@ fun ScreenHost(legacyView: View? = null) {
             }
 
             val count = list.getItemCount()
-            val items = remember(count) { (0 until count).map { list.getItemRef(it) } }
             LazyColumn(Modifier.fillMaxWidth().weight(1f).imePadding()) {
-                itemsIndexed(items) { index, el ->
-                    key("item_$index") { RenderVirtualElement(el, index, controller) }
+                items(count, key = { it }) { index ->
+                    RenderVirtualElement(list.getItemRef(index), index, controller)
+                }
+            }
+        }
+    }
+
+    // Menu bottom sheet
+    if (showMenuSheet) {
+        ModalBottomSheet(onDismissRequest = { showMenuSheet = false }) {
+            Column(Modifier.padding(bottom = 32.dp)) {
+                menuCommands.forEach { cmd ->
+                    TextButton(
+                        onClick = {
+                            showMenuSheet = false
+                            if (list is DefForm) (list as DefForm).menuAction(cmd, list)
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(cmd.name, color = MyColors.LIST_INK, fontSize = 16.sp)
+                    }
                 }
             }
         }

@@ -94,17 +94,20 @@ public class VirtualListController {
     /**
      * Get left bottom bar command label.
      */
-    public String getLeftCommand() {
-        if (currentList != null) return currentList.touchLeftCommand();
-        return "";
+    public String getRightCommand() {
+        if (currentList != null) {
+            String cmd = currentList.touchRightCommand();
+            if (cmd != null && !cmd.isEmpty()) return cmd;
+        }
+        return "OK";
     }
 
-    /**
-     * Get right bottom bar command label.
-     */
-    public String getRightCommand() {
-        if (currentList != null) return currentList.touchRightCommand();
-        return "OK";
+    public String getLeftCommand() {
+        if (currentList != null) {
+            String cmd = currentList.touchLeftCommand();
+            if (cmd != null && !cmd.isEmpty()) return cmd;
+        }
+        return "";
     }
 
     public boolean isActive() {
