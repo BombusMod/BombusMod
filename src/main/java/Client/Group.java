@@ -55,7 +55,7 @@ public class Group extends IconTextElement {
     private int tncontacts;
     public int unreadMessages=0;
     
-    public volatile boolean collapsed;
+    protected boolean collapsed;
 
     public Group(String name) {
         super(RosterIcons.getInstance());
