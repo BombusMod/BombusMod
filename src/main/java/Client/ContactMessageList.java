@@ -1025,14 +1025,25 @@ public class ContactMessageList extends MessageList {
     public void touchRightPressed(){ if (cf.swapMenu) showMenu(); else destroyView(); }
     public void touchLeftPressed(){ if (cf.swapMenu) messageEditResume(); else showMenu(); }
 
-    public void sendMessage(String body) {
+    public void sendMessage(final String body) {
         if (body == null || body.isEmpty() || !sd.roster.isLoggedIn()) return;
+        new Thread(new Runnable() {
+            public void run() {
+                sendMessageInternal(body);
+            }
+        }).start();
+    }
+
+    private void sendMessageInternal(String body) {
         String id = String.valueOf((int) System.currentTimeMillis());
-        Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, contact.jid.getBare(), null, body);
+        body = body.trim();
+        String from = sd.account.toString();
+        Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, from, null, body);
         msg.id = id;
-        msg.itemCollapsed = true;
-        sd.roster.sendMessage(contact, id, body, null, null);
-        if (contact.origin != Contact.ORIGIN_GROUPCHAT) contact.addMessage(msg);
+        contact.addMessage(msg);
+        String comp = cf.eventComposing ? "active" : null;
+        contact.lastSendedMessage = body;
+        sd.roster.sendMessage(contact, id, body, null, comp);
         redraw();
         VirtualListController.getInstance().notifyUpdate();
     }
