@@ -15,6 +15,7 @@ import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Message;
 import com.alsutton.jabber.datablocks.Presence;
 import locale.SR;
+import ui.VirtualListController;
 //#ifndef WMUC
 import xmpp.extensions.muc.Conference;
 import Conference.ConferenceGroup;
@@ -216,6 +217,7 @@ public class MessageDispatcher implements JabberBlockListener {
                 }
             }
             sd.roster.redraw();
+            ui.VirtualListController.getInstance().notifyUpdate();
 
             if (body == null) {
                 return JabberBlockListener.BLOCK_REJECTED;

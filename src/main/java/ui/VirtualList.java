@@ -455,8 +455,6 @@ public abstract class VirtualList {
         if (VirtualCanvas.getInstance().isShown()) {
             VirtualCanvas.getInstance().repaint();
         }
-        // No Compose notify here — Timer fires every 250ms, causes scroll stutter
-        // Data changes notify via loadItemsFrom(), show(), or click handlers
      }
       
 

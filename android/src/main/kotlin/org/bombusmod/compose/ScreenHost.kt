@@ -162,10 +162,9 @@ fun ScreenHost(legacyView: View? = null) {
             }
 
             val count = list.getItemCount()
-            val refs = remember(count) { Array<VirtualElement?>(count) { list.getItemRef(it) } }
             LazyColumn(Modifier.fillMaxWidth().weight(1f).imePadding()) {
                 items(count, key = { it }) { index ->
-                    RenderVirtualElement(refs[index], index, controller)
+                    RenderVirtualElement(list.getItemRef(index), index, controller)
                 }
             }
         }
