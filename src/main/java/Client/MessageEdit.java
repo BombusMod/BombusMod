@@ -329,7 +329,7 @@ public final class MessageEdit
 //#         strPos = 0;
 //#     }
 //#endif
-    public void send() {
+    private void send() {
         if (cf.autoScroll) {
                 to.moveToLatest = true;
         }

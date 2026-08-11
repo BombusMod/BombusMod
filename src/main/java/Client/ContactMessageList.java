@@ -1037,7 +1037,7 @@ public class ContactMessageList extends MessageList {
     private void sendMessageInternal(String body) {
         String id = String.valueOf((int) System.currentTimeMillis());
         body = body.trim();
-        String from = sd.account.toString();
+        String from = sd.account.getNickName();
         Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, from, null, body);
         msg.id = id;
         contact.addMessage(msg);
