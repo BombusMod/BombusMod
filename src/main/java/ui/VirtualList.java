@@ -451,11 +451,11 @@ public abstract class VirtualList {
     }
 
     public void redraw() {
-        if (VirtualListController.getInstance().isActive()) {
-            VirtualListController.getInstance().notifyUpdate();
-        } else if (VirtualCanvas.getInstance().isShown()) {
+        if (VirtualCanvas.getInstance().isShown()) {
             VirtualCanvas.getInstance().repaint();
         }
+        // No Compose notify here — Timer fires every 250ms, causes scroll stutter
+        // Data changes notify via loadItemsFrom(), show(), or click handlers
      }
       
 

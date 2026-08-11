@@ -36,6 +36,7 @@ import locale.SR;
 import ui.MainBar;
 import ui.VirtualElement;
 import ui.VirtualList;
+import ui.VirtualListController;
 
 /**
  *
@@ -97,6 +98,9 @@ public class DefForm
                 itemsList.addElement(items.elementAt(i));
             }
             redraw();
+            if (VirtualListController.getInstance().isActive()) {
+                VirtualListController.getInstance().notifyUpdate();
+            }
         }
     }
 
