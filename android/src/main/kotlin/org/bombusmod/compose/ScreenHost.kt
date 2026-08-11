@@ -118,8 +118,9 @@ fun ScreenHost(legacyView: View? = null) {
                         Spacer(Modifier.width(6.dp))
                         TextButton(onClick = {
                             if (inputText.isNotBlank()) {
-                                list.sendMessage(inputText)
+                                val text = inputText
                                 inputText = ""
+                                Thread { list.sendMessage(text) }.start()
                             }
                         }) {
                             Text(">>", color = MyColors.BAR_INK, fontSize = 18.sp)
