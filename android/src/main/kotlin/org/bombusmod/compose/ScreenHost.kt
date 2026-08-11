@@ -7,10 +7,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -19,6 +21,9 @@ import Menu.MenuCommand
 import Client.Group
 import Client.Contact
 import Client.Roster
+import Client.ContactMessageList
+import Messages.MessageItem
+import Client.Msg
 import ui.IconTextElement
 import locale.SR
 import org.bombusmod.compose.controls.*
@@ -96,8 +101,32 @@ fun ScreenHost(legacyView: View? = null) {
             )
         },
         bottomBar = {
-            // Show command bar on non-roster screens for Back/OK
-            if (list !is Roster) {
+            if (list is ContactMessageList) {
+                var inputText by remember { mutableStateOf("") }
+                Surface(color = MyColors.BAR_BGND) {
+                    Row(Modifier.fillMaxWidth().padding(6.dp), verticalAlignment = Alignment.CenterVertically) {
+                        OutlinedTextField(
+                            value = inputText,
+                            onValueChange = { inputText = it },
+                            modifier = Modifier.weight(1f),
+                            placeholder = { Text("Message", color = MyColors.SECOND_LINE) },
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = MyColors.LIST_INK,
+                                unfocusedTextColor = MyColors.LIST_INK
+                            )
+                        )
+                        Spacer(Modifier.width(6.dp))
+                        TextButton(onClick = {
+                            if (inputText.isNotBlank()) {
+                                list.sendMessage(inputText)
+                                inputText = ""
+                            }
+                        }) {
+                            Text(">>", color = MyColors.BAR_INK, fontSize = 18.sp)
+                        }
+                    }
+                }
+            } else if (list !is Roster) {
                 val leftCmd = controller.getLeftCommand()
                 val rightCmd = controller.getRightCommand()
                 Surface(color = MyColors.BAR_BGND) {
@@ -133,9 +162,10 @@ fun ScreenHost(legacyView: View? = null) {
             }
 
             val count = list.getItemCount()
+            val refs = remember(count) { Array<VirtualElement?>(count) { list.getItemRef(it) } }
             LazyColumn(Modifier.fillMaxWidth().weight(1f).imePadding()) {
                 items(count, key = { it }) { index ->
-                    RenderVirtualElement(list.getItemRef(index), index, controller)
+                    RenderVirtualElement(refs[index], index, controller)
                 }
             }
         }
@@ -203,6 +233,26 @@ private fun RenderVirtualElement(el: VirtualElement?, index: Int, controller: Vi
         el is ImageItem -> MyTextLine(text = el.altText ?: "[image]")
         el is KeyInput -> MyTextLine(text = el.toString())
 
+        el is MessageItem -> {
+            val m = el.msg
+            val isOut = m.messageType == Msg.MESSAGE_TYPE_OUT
+            Box(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 2.dp),
+                contentAlignment = if (isOut) Alignment.CenterEnd else Alignment.CenterStart) {
+                Surface(
+                    color = if (isOut) Color(0xFF1EA5C5.toInt()) else Color(0xFFE8F0F0.toInt()),
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.widthIn(max = 280.dp)
+                ) {
+                    Column(Modifier.padding(8.dp)) {
+                        if (m.from != null && m.from.isNotEmpty()) {
+                            Text(m.from, color = if (isOut) Color.White else Color.Black, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                        Text(m.body ?: "", color = if (isOut) Color.White else Color.Black, fontSize = 14.sp)
+                    }
+                }
+            }
+        }
+
         el is Group -> {
             Surface(color = MyColors.LIST_BGND_EVEN, modifier = Modifier.fillMaxWidth().clickable {
                 el.onSelect()
@@ -225,7 +275,7 @@ private fun RenderVirtualElement(el: VirtualElement?, index: Int, controller: Vi
         el is Contact -> {
             val unread = el.getNewMsgsCount()
             Surface(color = MyColors.LIST_BGND, modifier = Modifier.fillMaxWidth().clickable {
-                el.onSelect()
+                el.getMsgList()  // opens chat
                 controller.notifyUpdate()
             }) {
                 Row(Modifier.padding(start = 4.dp, top = 6.dp, bottom = 6.dp, end = 8.dp), verticalAlignment = Alignment.CenterVertically) {

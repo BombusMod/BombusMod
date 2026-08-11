@@ -60,6 +60,7 @@ import io.file.transfer.TransferDispatcher;
 //#endif
 import ui.VirtualCanvas;
 import ui.VirtualElement;
+import ui.VirtualListController;
 import org.bombusmod.util.ClipBoardIO;
 import xmpp.JidUtils;
 
@@ -161,6 +162,7 @@ public class ContactMessageList extends MessageList {
     }    
 
     public final void commandState() {
+        if (contact == null) return;
         menuName = contact.toString();
         menuCommands.removeAllElements();
         if (startSelection) addMenuCommand(cmdSelect);
@@ -1023,5 +1025,15 @@ public class ContactMessageList extends MessageList {
     public void touchRightPressed(){ if (cf.swapMenu) showMenu(); else destroyView(); }
     public void touchLeftPressed(){ if (cf.swapMenu) messageEditResume(); else showMenu(); }
 
-
+    public void sendMessage(String body) {
+        if (body == null || body.isEmpty() || !sd.roster.isLoggedIn()) return;
+        String id = String.valueOf((int) System.currentTimeMillis());
+        Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, contact.jid.getBare(), null, body);
+        msg.id = id;
+        msg.itemCollapsed = true;
+        sd.roster.sendMessage(contact, id, body, null, null);
+        if (contact.origin != Contact.ORIGIN_GROUPCHAT) contact.addMessage(msg);
+        redraw();
+        VirtualListController.getInstance().notifyUpdate();
+    }
 }
