@@ -163,7 +163,6 @@ public class Strconv {
                 ibuf=1;
             }
         }
-        try { baos.close(); } catch (Exception e) {}
         //System.out.println(ibuf);
         //System.out.println(baos.size());
         return baos;
