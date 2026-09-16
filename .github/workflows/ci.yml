@@ -1,9 +1,13 @@
 name: Gradle CI
 
-on: 
+on:
   pull_request:
   push:
     branches: [master]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -16,9 +20,11 @@ jobs:
       uses: actions/setup-java@v6
       with:
         distribution: 'temurin'
-        java-version: '18'
+        java-version: '25'
         cache: 'gradle'
     - name: Setup Android SDK
       uses: android-actions/setup-android@v4
+      with:
+        packages: 'platform-tools'
     - name: Build
       run: ./gradlew -PenableIOS=true -PenableDesktop=true
