@@ -1025,16 +1025,8 @@ public class ContactMessageList extends MessageList {
     public void touchRightPressed(){ if (cf.swapMenu) showMenu(); else destroyView(); }
     public void touchLeftPressed(){ if (cf.swapMenu) messageEditResume(); else showMenu(); }
 
-    public void sendMessage(final String body) {
+    public void sendMessage(String body) {
         if (body == null || body.isEmpty() || !sd.roster.isLoggedIn()) return;
-        new Thread(new Runnable() {
-            public void run() {
-                sendMessageInternal(body);
-            }
-        }).start();
-    }
-
-    private void sendMessageInternal(String body) {
         String id = String.valueOf((int) System.currentTimeMillis());
         body = body.trim();
         String from = sd.account.getNickName();

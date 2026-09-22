@@ -3,6 +3,7 @@
 package org.bombusmod.compose
 
 import android.view.View
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -31,7 +32,7 @@ import org.bombusmod.compose.theme.MyColors
 import ui.*
 import ui.controls.form.*
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun ScreenHost(legacyView: View? = null) {
     val controller = VirtualListController.getInstance()
@@ -118,8 +119,9 @@ fun ScreenHost(legacyView: View? = null) {
                         Spacer(Modifier.width(6.dp))
                         TextButton(onClick = {
                             if (inputText.isNotBlank()) {
-                                list.sendMessage(inputText)
+                                val text = inputText
                                 inputText = ""
+                                Thread { list.sendMessage(text) }.start()
                             }
                         }) {
                             Text(">>", color = MyColors.BAR_INK, fontSize = 18.sp)
@@ -162,9 +164,18 @@ fun ScreenHost(legacyView: View? = null) {
             }
 
             val count = list.getItemCount()
+            val snapshot = remember(updateVersion) { (0 until count).map { list.getItemRef(it) } }
             LazyColumn(Modifier.fillMaxWidth().weight(1f).imePadding()) {
-                items(count, key = { it }) { index ->
-                    RenderVirtualElement(list.getItemRef(index), index, controller)
+                snapshot.forEachIndexed { index, el ->
+                    if (el is Group) {
+                        stickyHeader(key = "group_${System.identityHashCode(el)}") {
+                            RenderVirtualElement(el, index, controller)
+                        }
+                    } else {
+                        item(key = "item_${System.identityHashCode(el)}") {
+                            RenderVirtualElement(el, index, controller)
+                        }
+                    }
                 }
             }
         }
