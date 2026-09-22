@@ -101,6 +101,10 @@ public class RosterDispatcher implements JabberBlockListener {
                     } else {
                         VirtualCanvas.getInstance().setList(roster);
                     }
+                    // Compose: ensure roster is shown
+                    if (ui.VirtualListController.getInstance().isActive()) {
+                        roster.show();
+                    }
 
                     return JabberBlockListener.BLOCK_PROCESSED;
                 }

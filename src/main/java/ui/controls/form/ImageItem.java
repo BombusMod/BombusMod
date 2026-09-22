@@ -44,7 +44,7 @@ public class ImageItem
     
     public boolean selectable=true;
 
-    private String altText;
+    public String altText;
 
     private int screenWidth;
     

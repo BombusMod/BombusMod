@@ -33,11 +33,6 @@ import java.util.Enumeration;
 import java.util.Vector;
 import locale.SR;
 import midlet.BombusMod;
-import org.bombusmod.util.VersionInfo;
-import ui.NativeScreenCommand;
-import ui.NativeScreenItem;
-import ui.NativeScreenModel;
-import ui.VirtualListController;
 import ui.controls.form.DefForm;
 import ui.controls.form.LinkString;
 import ui.controls.form.MultiLine;
@@ -71,11 +66,7 @@ public class InfoWindow
      */
     public InfoWindow() {
         super(SR.MS_ABOUT);
-        if (!buildNativeModel()) {  // native UI active
-            VirtualListController.getInstance().notifyUpdate();
-            return;
-        }
-
+        
         name = new MultiLine(StaticData.getInstance().getVersionInfo().getName(), StaticData.getInstance().getVersionInfo().getVersionNumber() + "\n" + Config.getOs() + "\nMobile Jabber client");
         name.selectable = true;
         itemsList.addElement(name);
@@ -299,83 +290,5 @@ public class InfoWindow
         ablist=null;
         abilitiesList=null;
         return ab.substring(0, ab.length()-2);
-    }
-
-    /** @return true if legacy J2ME items should be built, false if native UI is active */
-    private boolean buildNativeModel() {
-        if (!VirtualListController.getInstance().isActive()) return true;
-        NativeScreenModel model = new NativeScreenModel();
-        VersionInfo vi = StaticData.getInstance().getVersionInfo();
-
-        // App name + version
-        NativeScreenItem nameItem = model.createNewItem(false);
-        nameItem.setAsMultiline(vi.getName() + "\n" + vi.getVersionNumber()
-                + "\n" + Config.getOs() + "\nMobile Jabber client");
-        model.addPar(nameItem);
-
-        // Copyright
-        NativeScreenItem copyItem = model.createNewItem(false);
-        copyItem.setAsMultiline("Copyright (c) 2005-2020\nEugene Stahov (evgs),"
-                + "\nDaniel Apatin (ad)\n \nDistributed under GNU Public License (GPL) v2.0");
-        model.addPar(copyItem);
-
-        // Website link
-        NativeScreenItem linkItem = model.createNewItem(true);
-        linkItem.setAsLink(vi.getUrl());
-        linkItem.description = vi.getUrl();
-        model.addPar(linkItem);
-
-        model.addPar(new NativeScreenItem() {{ setAsSpacer(20); }});
-
-        // Memory
-        System.gc();
-        NativeScreenItem memItem = model.createNewItem(false);
-        memItem.setAsMultiline("Memory\nFree: " + (Runtime.getRuntime().freeMemory() >> 10)
-                + "K\nTotal: " + (Runtime.getRuntime().totalMemory() >> 10) + "K");
-        model.addPar(memItem);
-
-        model.addPar(new NativeScreenItem() {{ setAsSpacer(10); }});
-
-        // Abilities
-        NativeScreenItem abItem = model.createNewItem(false);
-        abItem.setAsMultiline("Abilities\n" + getAbilities());
-        model.addPar(abItem);
-
-        // Commands
-        model.addCommand("ok", "OK", NativeScreenCommand.OK, -1);
-        model.addCommand("copy", "Copy", NativeScreenCommand.SCREEN, -1);
-        model.addCommand("copy_plus", "+ Copy", NativeScreenCommand.SCREEN, -1);
-
-        final InfoWindow self = this;
-        VirtualListController.getInstance().setOnDismiss(new Runnable() {
-            public void run() { self.dismissNative(); }
-        });
-        VirtualListController.getInstance().setCaption(SR.MS_ABOUT);
-        VirtualListController.getInstance().setModel(model);
-        return false; // native UI active, skip J2ME items
-    }
-
-    public void show() {
-        if (VirtualListController.getInstance().isActive()
-                && VirtualListController.getInstance().getModel() != null) {
-            VirtualListController.getInstance().notifyUpdate();
-            // Dismiss the J2ME screen — native UI is showing instead
-            // parentView was saved before this screen pushed
-        } else {
-            super.show();
-        }
-    }
-
-    /** Dismiss native UI and return to the legacy CanvasView */
-    public void dismissNative() {
-        VirtualListController.getInstance().setModel(null);
-        VirtualListController.getInstance().notifyUpdate();
-        destroyView();
-    }
-
-    public void destroyView() {
-        VirtualListController.getInstance().setModel(null);
-        VirtualListController.getInstance().notifyUpdate();
-        super.destroyView();
     }
 }

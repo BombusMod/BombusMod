@@ -1,11 +1,3 @@
 rootProject.name = "BombusMod"
 
-if (enableAndroid.toBoolean()) {
-    include ":android"
-}
-if (enableIOS.toBoolean()) {
-    include  ":ios"
-}
-if (enableDesktop.toBoolean()) {
-    include  ":desktop"
-}
+include ":android"
