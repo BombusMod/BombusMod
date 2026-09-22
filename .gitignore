@@ -21,3 +21,4 @@ out/**
 .DS_Store
 keystore.properties
 .vscode
+.kotlin/
