@@ -25,11 +25,6 @@
 package Menu;
 
 import Fonts.FontCache;
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
 
 import ui.Time;
 import ui.VirtualList;
@@ -40,10 +35,10 @@ import ui.VirtualList;
  */
 public class MenuContainer {
     
-    static Font boldFont = null;
+    static Object boldFont= null;
     protected static int boldHeight = 0;
     
-    //static Font normalFont = null;
+    //static ObjectnormalObject= null;
     
     static int scWidth = 0;
     static int scHeight = 0;
@@ -64,7 +59,7 @@ public class MenuContainer {
         point_x=-1;
     }
 /*
-    public static String cutStringToWidth(String s, Font font, int width){
+    public static String cutStringToWidth(String s, Objectfont, int width){
         String str = s;
         if(font.stringWidth(str)<width)
             return str;
@@ -74,37 +69,37 @@ public class MenuContainer {
         return str+"...";
     }
 */
-    public static void drawFooter(Graphics g){
+    public static void drawFooter(Object g){
         g.setColor(0x000000);
         g.fillRect(0, scHeight-boldHeight, scWidth, boldHeight);
     }
     
-    public static void drawCenterCommand(Graphics g, String val){
+    public static void drawCenterCommand(Object g, String val){
         g.setColor(0xffffff);
         g.setFont(getBoldFont());
         int tw = getBoldFont().stringWidth(val);
         FontCache.drawString(g,val, scWidth/2, scHeight, Graphics.HCENTER | Graphics.BOTTOM);
     }
     
-    public static void drawLeftCommand(Graphics g, String val){
+    public static void drawLeftCommand(Object g, String val){
         g.setColor(0xffffff);
         g.setFont(getBoldFont());
         int tw = getBoldFont().stringWidth(val);
         FontCache.drawString(g,val, 2, scHeight, Graphics.LEFT | Graphics.BOTTOM);
     }
     
-    public static void drawRightCommand(Graphics g, String val){
+    public static void drawRightCommand(Object g, String val){
         g.setColor(0xffffff);
         g.setFont(getBoldFont());
         int tw = getBoldFont().stringWidth(val);
         FontCache.drawString(g,val, scWidth-tw-2, scHeight, Graphics.LEFT | Graphics.BOTTOM);
     }
     
-    public static Font getBoldFont() {
+    public static Object getBoldFont() {
         return boldFont;
     }
     
-    //public static Font getNormalFont() { return normalFont; }
+    //public static ObjectgetNormalFont() { return normalFont; }
     
     public int getHeight() {
         return boldHeight;
@@ -197,7 +192,7 @@ public class MenuContainer {
         this.rightCommand = rightCommand;
     }
     
-    public void paint(Graphics g){
+    public void paint(Object g){
         scWidth = g.getClipWidth();
         scHeight = g.getClipHeight();
         
@@ -217,18 +212,18 @@ public class MenuContainer {
         }
     }
     
-    public void draw (Graphics g) {
+    public void draw (Object g) {
         if (!initiated)
             init(g);
         
         paint(g);        
     }
 
-    public void init(Graphics g) {
-        boldFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
+    public void init(Object g) {
+        boldObject= Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
         boldHeight = boldFont.getHeight();
         
-        //normalFont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
+        //normalObject= Font.getFont(Font.FACE_SYSTEM, Font.STYLE_PLAIN, Font.SIZE_SMALL);
 
         initiated = true;
     }

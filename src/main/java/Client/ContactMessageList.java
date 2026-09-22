@@ -683,7 +683,7 @@ public class ContactMessageList extends MessageList {
     }
     
     public void eventOk() {
-        if (VirtualCanvas.getInstance().hasPointerEvents()) {
+        if (true) {
             Reply();
         } else {
             super.eventOk();

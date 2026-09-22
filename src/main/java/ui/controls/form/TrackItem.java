@@ -28,7 +28,6 @@
 package ui.controls.form;
 
 import Colors.ColorTheme;
-import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 import ui.VirtualCanvas;
 
@@ -53,23 +52,6 @@ public class TrackItem
     
     public int getValue() { return value; }
     public void setValue(int v) { value = v; }
-    
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int width=g.getClipWidth();
-        int height=g.getClipHeight();
-        
-        int itemWidth=6;
-        int pos=((width-itemWidth)*value)/(steps-1);
-        
-        int oldColor=g.getColor();
-        
-        g.setColor(ColorTheme.getColor(ColorTheme.CONTROL_ITEM));
-        g.drawLine(4, height/2, width-4, height/2);
-        
-        g.fillRect(pos, 2, itemWidth, height-4);
-
-        g.setColor(oldColor);
-    }  
     
     public void onSelect(){ value=(value+1)%steps; }
     

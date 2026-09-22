@@ -27,7 +27,6 @@
 
 package ui.controls.form;
 
-import javax.microedition.lcdui.TextField;
 import ui.VirtualCanvas;
 
 /**
@@ -48,7 +47,7 @@ public class NumberInput
      * @param text
      */
     public NumberInput(String caption, String text, int min, int max) {
-        super(caption, text, null, (min<0)?TextField.DECIMAL:TextField.NUMERIC);
+        super(caption, text, null, (min<0)?5:2);
         this.min=min;
         this.max=max;
         initValue=text;

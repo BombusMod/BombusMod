@@ -30,14 +30,12 @@ import Client.StaticData;
 import Colors.ColorTheme;
 import Colors.ColorsList;
 import Fonts.FontCache;
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Font;
 import ui.VirtualElement;
 
 public class ColorSelector implements VirtualElement {
 
-    static Font mfont = Font.getFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL);
-    Graphics G;
+    static Object mfont = null; // Font removed
+    Object G;
     private int yTranslate;
     public int cpos;
     String nowcolor;
@@ -72,72 +70,6 @@ public class ColorSelector implements VirtualElement {
         //String s = cl.ColorToString(red, green, blue);
 
         cpos = 0;
-    }
-
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        yTranslate = g.getTranslateY();
-        py = g.getClipHeight() - 48;
-        ph = g.getClipHeight() - 70;
-        g.setColor(0xffffff);
-        g.fillRect(0, 0, g.getClipWidth(), g.getClipHeight());
-        g.setFont(mfont);
-        String s = ColorTheme.ColorToString(red, green, blue);
-
-        g.setColor(0);
-        g.setStrokeStyle(Graphics.SOLID);
-        g.drawRect(2, 2, 48, 48);
-        g.setColor(red, green, blue);
-        g.fillRect(4, 4, 45, 45);
-        g.setColor(0x800000);
-//#ifdef COLOR_TUNE
-        FontCache.drawString(g, s + " " + ColorsList.NAMES[paramName], 70, 5, Graphics.TOP | Graphics.LEFT);
-//#endif
-
-        //draw red
-        pxred = g.getClipWidth() / 3 - 10;
-        int psred = (ph * red) / 255;
-        g.setColor(0);
-        g.setStrokeStyle(Graphics.SOLID);
-        g.fillRect(pxred - 4, py - ph, 20, ph);
-        FontCache.drawString(g, "R", pxred, py + 2, Graphics.TOP | Graphics.HCENTER);
-        g.setColor(0xff2020);
-        g.fillRect(pxred - 4, py - psred, 20, psred);
-        if (cpos == 0) {
-            g.setColor(0);
-            g.setStrokeStyle(Graphics.DOTTED);
-            g.drawRect(pxred - 7, py - ph - 5, 30, ph + 20);
-        }
-
-        //draw green
-        pxgreen = g.getClipWidth() / 2;
-        int psgreen = (ph * green) / 255;
-        g.setColor(0);
-        g.setStrokeStyle(Graphics.SOLID);
-        g.fillRect(pxgreen - 2, py - ph, 20, ph);
-        FontCache.drawString(g, "G", pxgreen, py + 2, Graphics.TOP | Graphics.HCENTER);
-        g.setColor(0x00ff00);
-        g.fillRect(pxgreen - 2, py - psgreen, 20, psgreen);
-        if (cpos == 1) {
-            g.setColor(0);
-            g.setStrokeStyle(Graphics.DOTTED);
-            g.drawRect(pxgreen - 7, py - ph - 5, 30, ph + 20);
-        }
-
-        //draw blue
-        pxblue = g.getClipWidth() - (g.getClipWidth() / 3 - 10);
-        int psblue = (ph * blue) / 255;
-        g.setColor(0);
-        g.setStrokeStyle(Graphics.SOLID);
-        g.fillRect(pxblue - 2, py - ph, 20, ph);
-        FontCache.drawString(g, "B", pxblue, py + 2, Graphics.TOP | Graphics.HCENTER);
-        g.setColor(0x4848ff);
-        g.fillRect(pxblue - 2, py - psblue, 20, psblue);
-        if (cpos == 2) {
-            g.setColor(0);
-            g.setStrokeStyle(Graphics.DOTTED);
-            g.drawRect(pxblue - 7, py - ph - 5, 30, ph + 20);
-        }
-        g.setStrokeStyle(Graphics.SOLID);
     }
 
     public boolean pointerPressed(int x, int y) {

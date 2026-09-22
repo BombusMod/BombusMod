@@ -2254,7 +2254,7 @@ public class Roster
                 return true;
             case 6:
                 Config.fullscreen = !Config.fullscreen;
-                VirtualCanvas.getInstance().setFullScreenMode(Config.fullscreen);
+                // setFullScreenMode removed — Compose handles fullscreen
                 return true;
             case 4:
                 new ConfigForm();

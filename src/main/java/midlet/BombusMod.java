@@ -33,9 +33,6 @@ import Account.AccountForm;
 import Account.AccountSelect;
 import Colors.ColorTheme;
 import javax.microedition.midlet.*;
-import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
 import locale.SR;
 import ui.*;
 import Client.*;
@@ -51,7 +48,7 @@ import ui.controls.AlertBox;
  */
 public class BombusMod extends MIDlet {
 
-    private Display display;    // The display for this MIDlet
+    private Object display;    // The display for this MIDlet
     private boolean isRunning;
     private boolean isMinimized = true;
     StaticData sd = StaticData.getInstance();
@@ -60,7 +57,7 @@ public class BombusMod extends MIDlet {
 //#     LightConfig lcf;
 //#endif    
     SplashScreen s;
-    public static Image splash;
+    public static Object splash;
     private static BombusMod instance;
 
     /** Entry point  */
@@ -75,7 +72,7 @@ public class BombusMod extends MIDlet {
 //#endif
 
         instance = this;
-        display = Display.getDisplay(this);
+        display = null; // Display removed — Compose handles UI
 
         VirtualCanvas.getInstance().setMIDlet(this);
         sd.roster = new Roster();
@@ -165,15 +162,15 @@ public class BombusMod extends MIDlet {
         return instance;
     }
 
-    public Display getDisplay() {
+    public Object getDisplay() {
         return display;
     }
 
-    public Displayable getCurrentDisplayable() {
+    public Object getCurrentDisplayable() {
         return getDisplay().getCurrent();
     }
 
-    public void setDisplayable(Displayable d) {
+    public void setDisplayable(Object d) {
         if (d == null) {
             d = VirtualCanvas.getInstance();
         }

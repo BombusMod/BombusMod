@@ -31,8 +31,6 @@ import Fonts.FontCache;
 import images.AniImageList;
 //#endif
 import java.util.*;
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Font;
 import Colors.ColorTheme;
 
 /**
@@ -51,17 +49,17 @@ public class ComplexString extends Vector implements VirtualElement {
     public final static int NICK_OFF  = 0x05000000;
 //#endif
 
-    protected Font font=FontCache.getFont(false, FontCache.msg);
+    protected int font=FontCache.getFontHeight(false, FontCache.msg);
     private int height;
     private int width;
     private ImageList imageList;
     private int colorBGnd;
     private int color;
     protected boolean centered = false;
-    
+
     //private int colors[]={0x800080, 0xff0000, 0xffa500, 0x008000, 0x0000ff};
     /*   purple 0x800080   red 0xff0000   orange 0xffa500   green 0x008000   blue 0x0000ff   */
-        
+
     /** Creates a new instance of ComplexString */
     public ComplexString() {
         super();
@@ -81,148 +79,29 @@ public class ComplexString extends Vector implements VirtualElement {
     private int imgWidth(){
         return (imageList==null)?0:imageList.getWidth();
     }
-            
+
     public int getColor() { return color; }
     public int getColorBGnd() { return colorBGnd; }
-    
+
     public void setColorBGnd(int color){ colorBGnd=color;}
     public void setColor(int color){ this.color=color;}
-    
+
     public void onSelect(){};
-    
-    public void drawItem(Graphics g, int offset, boolean selected){
-        boolean ralign=false;
-        boolean underline=false;
-        
-//#if NICK_COLORS
-	boolean nick=false;
-//#endif
-        
-        int w = g.getClipX() + offset;
-        int dw;
-        int imageYOfs=(( getVHeight()-imgHeight() )>>1);
-
-        int fontYOfs=(( getVHeight()-font.getHeight() )>>1);//+heightCorrect;
-
-        int imgWidth=imgWidth();
-        
-        g.setFont(font);
-        for (int index=0; index<elementCount;index++) {
-            Object ob=elementData[index];
-            if (ob!=null) {
-                
-                if (ob instanceof String ){
-                    // string element
-                    String s=(String) ob;
-//#if NICK_COLORS
-                    if (nick) {
-                        int nickColor=ColorTheme.getColor(ColorTheme.NICK_COLOR);
-                        int vColor=ColorTheme.strong(nickColor);
-                        //int randColor=randomColor();
-                        dw=0;
-                        int p1=0; 
-                        while (p1<s.length()) {
-                            int p2=p1;
-                            char c1=s.charAt(p1);
-                            //processing the same cp
-                            while (p2<s.length()) {
-                                char c2=s.charAt(p2);
-                                if ( (c1&0xff00) != (c2 &0xff00) ) break;
-                                p2++;
-                            }
-                            g.setColor( (c1>255) ? vColor : nickColor);
-                            //g.setColor(randColor);
-                            dw=font.substringWidth(s, p1, p2-p1);
-                            if (ralign) w-=dw;
-                            g.drawSubstring( s, p1, p2-p1, 
-                                    w,fontYOfs,Graphics.LEFT|Graphics.TOP);
-                            if (!ralign) w+=dw;
-                            p1=p2;
-                        }
-                        
-                        g.setColor(color);
-                    } else {
-//#endif
-                        g.setColor(getColor());
-                        dw=font.stringWidth(s);                        
-                        if (ralign) {
-                            w-=dw;
-                            if (centered) {
-                                if (dw > 0)
-                                    w -= ((g.getClipWidth() >> 1) - dw) >> 1;
-                            }
-                        } else if (centered) {
-                            if (dw > 0)
-                                w += ((g.getClipWidth() >> 1) - dw) >> 1;
-                        }
-                        FontCache.drawString(g,s,w,fontYOfs,Graphics.LEFT|Graphics.TOP);
-                        if (underline) {
-                            int y=getVHeight()-1;
-                            g.drawLine(w, y, w+dw, y);
-                            underline=false;
-                        }
-                        if (!ralign) w+=dw;
-//#if NICK_COLORS
-                    }
-//#endif
-
-                } else if ((ob instanceof Integer)) {
-                    // image element or color
-                    int i=((Integer)ob).intValue();
-                    switch (i&0xff000000) {
-                        case IMAGE:
-                            if (imageList==null) break;
-//#ifdef ANI_SMILES
-                            if (imageList instanceof AniImageList) {
-                                imgWidth = ((AniImageList)imageList).iconAt(i).getWidth();                                
-                            }
-//#endif
-                            if (ralign) w-=imgWidth;
-                            imageList.drawImage(g, i, w, imageYOfs);
-                            if (!ralign) w+=imgWidth;
-                            break;
-                        case COLOR:
-                            g.setColor(0xFFFFFF&i);
-                            break;
-                        case RALIGN:
-                            ralign = true;
-                            w=g.getClipWidth()-1;
-			    break;
-			case UNDERLINE:
-			    underline=true;
-			    break;                        
-//#if NICK_COLORS
-                        case NICK_ON:
-                            nick=true; 
-                            break;
-                        case NICK_OFF:
-                            nick=false;
-                            break;
-//#endif
-                    }
-                } /* Integer*/ else if (ob instanceof VirtualElement) { 
-                    ((VirtualElement)ob).drawItem(g, g.getClipX() + offset, false);
-                   // g.setClip(g.getTranslateX(), g.getTranslateY(), clipw, cliph);
-                }
-            } // if ob!=null
-        } // for
-        
-    }
 
     public int getVWidth() {
         //g.setColor(0);
         if (width>0) return width;  // cached
-        
+
         int w=0;
         int imgWidth=imgWidth();
-        
+
         for (int index=0; index<elementCount;index++) {
             Object ob=elementData[index];
             if (ob!=null) {
-                
+
                 if (ob instanceof String ){
                     // string element
-                    w+=font.stringWidth((String)ob);
+                    w+=FontCache.getStringWidth((String)ob, false, FontCache.msg);
                 } else if ((ob instanceof Integer)&& imageList!=null) {
                     // image element or color
                     int i=(((Integer)ob).intValue());
@@ -230,7 +109,7 @@ public class ComplexString extends Vector implements VirtualElement {
                         case IMAGE:
 //#ifdef ANI_SMILES
                             if (imageList instanceof AniImageList) {
-                                imgWidth = ((AniImageList)imageList).iconAt(i).getWidth();                                
+                                imgWidth = ((AniImageList)imageList).iconAt(i).getWidth();
                             }
 //#endif
                             w+=imgWidth;
@@ -247,14 +126,14 @@ public class ComplexString extends Vector implements VirtualElement {
         if (index>=elementCount) this.setSize(index+1);
         super.setElementAt(obj, index);
     }
-    
+
     public int getVHeight(){
         if (height!=0) return height;
         for (int i=0;i<elementCount;i++){
             int h=0;
             Object o=elementData[i];
             if (o==null) continue;
-            if (o instanceof String) { h=font.getHeight(); } else
+            if (o instanceof String) { h=font; } else
             if (o instanceof Integer) {
                 int a=((Integer)o).intValue();
                 if ((a&0xff000000) == 0) { h=imageList.getHeight(); }
@@ -275,12 +154,12 @@ public class ComplexString extends Vector implements VirtualElement {
     public void addColor(int colorRGB){ addElement(new Integer(COLOR | colorRGB)); }
     public void addRAlign(){ addElement(new Integer(RALIGN)); }
     public void addUnderline(){ addElement(new Integer(UNDERLINE)); }
-    
-    public Font getFont() {
+
+    public Object getFont() {
         return font;
     }
 
-    public void setFont(Font font) {
+    public void setFont(Object font) {
         this.font = font;
     }
 
@@ -289,7 +168,7 @@ public class ComplexString extends Vector implements VirtualElement {
     public boolean isSelectable() {
         return true;
     }
-    
+
     public void clearWHCache() {
         width=0;
         height=0;
@@ -302,7 +181,7 @@ public class ComplexString extends Vector implements VirtualElement {
         color=colors[random(0, 4)];
         return color;
     }
-    
+
     private int random( int beginValue, int endValue ) {
         if( endValue == beginValue ) {
             return beginValue;

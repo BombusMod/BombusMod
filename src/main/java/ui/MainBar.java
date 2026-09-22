@@ -28,7 +28,6 @@ import Client.Config;
 import Colors.ColorTheme;
 import Fonts.FontCache;
 import images.RosterIcons;
-import javax.microedition.lcdui.Graphics;
 
 public class MainBar extends ComplexString{
    
@@ -70,31 +69,5 @@ public class MainBar extends ComplexString{
        /*     if (centered && Config.getInstance().advTouch)
                 return super.getVHeight() << 1;*/
         return Math.max(Config.getInstance().minItemHeight, super.getVHeight());
-    }
-    public void drawItem(Graphics g, int offset, boolean selected) {
-        int xo = g.getClipX();
-        int yo = g.getClipY();
-        int wo = g.getClipWidth();
-        int ho = g.getClipHeight();
-        int h = getVHeight() + 1;
-//#ifdef GRADIENT
-        Gradient gradient;
-        
-        if (startColor != endColor) {
-            gradient = new Gradient(0, 0, VirtualCanvas.getInstance().getWidth(), h, startColor, endColor, false);
-            gradient.paint(g);
-        } else {
-            g.setColor(getColorBGnd());
-            g.fillRect(0, 0, VirtualCanvas.getInstance().getWidth(), h);
-        }
-//#else
-//#             g.setColor(getColorBGnd());
-//#             g.fillRect(0, 0, VirtualCanvas.getInstance().getWidth(), h);
-//#endif
-        g.setColor(getColor());
-
-        g.clipRect((lShift) ? 20 : 0, 0, g.getClipWidth() - ((rShift) ? 20 : 0), g.getClipHeight());
-        super.drawItem(g, offset, selected);
-        //g.setClip(xo, yo, wo, ho);
     }
 }

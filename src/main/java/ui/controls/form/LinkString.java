@@ -28,7 +28,6 @@
 package ui.controls.form;
 
 import Colors.ColorTheme;
-import javax.microedition.lcdui.Graphics;
 
 /**
  *
@@ -46,23 +45,8 @@ public abstract class LinkString
         return ColorTheme.getColor(ColorTheme.MSG_HIGHLIGHT);
     }
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int fontHeight = getFont().getHeight();
-
-        int oldColor = g.getColor();
-
-        int stringWidth = getFont().stringWidth(toString());
-
-        g.setColor(getColor());
-        g.drawLine(4, fontYOfs + fontHeight + 1, stringWidth + 4, fontYOfs + fontHeight + 1);
-
-        g.setColor(oldColor);
-
-        super.drawItem(g, ofs, sel);
-    }
-
     public int getVHeight() {
-        return Math.max(super.getVHeight(), getFont().getHeight() + 3);
+        return Math.max(super.getVHeight(), getFontHeight() + 3);
     }
     
     public boolean isSelectable() { return true; }

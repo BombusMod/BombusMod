@@ -32,8 +32,6 @@ import Colors.ColorTheme;
 import images.RosterIcons;
 import java.util.Enumeration;
 import java.util.Vector;
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
 import Fonts.FontCache;
 import ui.VirtualCanvas;
 import util.StringUtils;
@@ -51,7 +49,7 @@ public class PopUp {
     private int border=8;
     private int padding=4;
 
-    private static Font font;
+    private static Object font;
 
     private int width;
     private int height;
@@ -92,7 +90,7 @@ public class PopUp {
         return instance;
     }
 
-    public void init(Graphics g, int width, int height) {
+    public void init(Object g, int width, int height) {
         this.height=height;
         this.width=width;
     }
@@ -174,7 +172,7 @@ public class PopUp {
             popUps.removeAllElements();
     }
 
-    private void drawAllStrings(Graphics g, int x, int y) {
+    private void drawAllStrings(Object g, int x, int y) {
         Vector lines=((PopUpElement)popUps.elementAt(0)).getMessage();
         if (lines.size()<1) return;
 
@@ -246,7 +244,7 @@ public class PopUp {
 //paint
     //private static int[] alphaBuffer = null;
 
-/*    private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
+/*    private void fillSemiTransRect(Object graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
         int r1 = ((color & 0xFF0000) >> 16);
         int g1 = ((color & 0x00FF00) >> 8);
         int b1 = (color & 0x0000FF);
@@ -265,7 +263,7 @@ public class PopUp {
         alphaBuffer = null;
     }
 */
-    public void paintCustom(Graphics graph) {
+    public void paintCustom(Object graph) {
         if(size()<1)
             return;
         scrollable=(startLine>0)?SCROLLABLE_UP:SCROLLABLE_NONE;

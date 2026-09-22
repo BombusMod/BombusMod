@@ -26,7 +26,6 @@
 
 package ui.controls;
 
-import javax.microedition.lcdui.Graphics;
 import ui.controls.form.DefForm;
 import ui.controls.form.MultiLine;
 /**
@@ -51,7 +50,7 @@ public abstract class AlertBox extends DefForm {
         super.cmdCancel();
         no();        
     }
-    public void drawCursor(Graphics g, int width, int height) {
+    public void drawCursor(Object g, int width, int height) {
         // prevent text selection
     };
     

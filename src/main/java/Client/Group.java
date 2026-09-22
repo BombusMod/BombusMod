@@ -30,7 +30,6 @@ import com.alsutton.jabber.datablocks.Presence;
 import images.RosterIcons;
 import java.util.*;
 import Colors.ColorTheme;
-import javax.microedition.lcdui.Graphics;
 import ui.*;
 
 
@@ -68,28 +67,6 @@ public class Group extends IconTextElement {
         return collapsed?imageCollapsedIndex:imageExpandedIndex;
     }
  
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int w=g.getClipWidth();
-        int h=g.getClipHeight();
-        int xo=g.getClipX();
-        int yo=g.getClipY();
-/*
-        if (!sel) {
-            int oldColor=g.getColor();
-            g.setColor(ColorTheme.getInstance().getColor(ColorTheme.LIST_BGND_EVEN));
-            g.fillRect(0, 0, w, h);
-        
-            g.setColor(oldColor);
-        }
-*/
-        if (collapsed && unreadMessages>0) {
-            w -= il.getWidth();
-            il.drawImage(g, RosterIcons.ICON_MESSAGE_INDEX, w, (getVHeight() - il.getWidth()) >> 1);
-        }
-        
-        super.drawItem(g, ofs, sel);
-    }
-
     protected String mainbar(String mainbarStart) {
         StringBuffer mb=new StringBuffer(mainbarStart)
         .append(" (")

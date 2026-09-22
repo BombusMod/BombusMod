@@ -17,7 +17,6 @@ import ui.MIDPTextBox;
 import com.alsutton.jabber.JabberDataBlock;
 import com.alsutton.jabber.datablocks.Iq;
 
-import javax.microedition.lcdui.Display;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.SimpleString;
@@ -32,7 +31,7 @@ public class ActivityList extends DefForm implements MIDPTextBox.TextBoxNotify {
     
     String acttext;
             
-    public ActivityList(Display display) {
+    public ActivityList(Object display) {
         super(SR.MS_USERACTIVITY);
 
         for (Enumeration e = Activities.getInstance().actValue.elements(); e.hasMoreElements();) {

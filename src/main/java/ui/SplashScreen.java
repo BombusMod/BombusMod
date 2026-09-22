@@ -35,9 +35,6 @@ import Colors.ColorTheme;
 //# import Client.StaticData;
 //# import LightControl.CustomLight;
 //#endif
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
 import ui.controls.Progress;
 import ui.controls.form.DefForm;
 import Client.AutoStatus;
@@ -52,11 +49,11 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     private int pos = -1;
     // private int width;
     // private int height;
-    public Image splashimg;
+    public Object splashimg;
     private ComplexString status;
     private static SplashScreen instance;
     public int keypressed = 0;
-    private Font clockFont = FontCache.getFont(true, FontCache.bigSize);
+    private Object clockFont = FontCache.getFont(true, FontCache.bigSize);
     private Progress pb;
     private int exitKey;
 
@@ -100,8 +97,8 @@ public final class SplashScreen extends DefForm implements VirtualElement {
         show();
     }
 
-    protected void drawTraffic(final Graphics g, boolean up) { }
-    protected void drawEnvelop(final Graphics g) { }
+    protected void drawTraffic(final Object g, boolean up) { }
+    protected void drawEnvelop(final Object g) { }
 
     public void commandState() {
         menuCommands.removeAllElements();
@@ -135,7 +132,7 @@ public final class SplashScreen extends DefForm implements VirtualElement {
     public void setExit(VirtualList nextDisplayable) {
         parentView = nextDisplayable;
     }
-    
+
     public int getVHeight() {
         return winHeight;
     }
@@ -158,37 +155,6 @@ public final class SplashScreen extends DefForm implements VirtualElement {
 
     public VirtualElement getItemRef(int index) {
         return this;
-    }
-
-    public void drawItem(Graphics g, int ofs, boolean selected) {
-        setAbsOrg(g, 0, 0);
-        g.setColor(ColorTheme.getColor(ColorTheme.BLK_BGND));
-        g.fillRect(0, 0, width, height);
-
-        if (splashimg != null) {
-            g.drawImage(splashimg, width >> 1, height >> 1, Graphics.VCENTER | Graphics.HCENTER);
-        }
-
-        if (pos == -1) {
-            if (status != null) {
-                status.drawItem(g, 0, false);
-            }
-
-			g.setColor(ColorTheme.getColor(ColorTheme.BLK_INK));
-            g.setFont(clockFont);
-            int h = clockFont.getHeight() + 1;
-
-            String time = Time.localTime();
-            int tw = clockFont.stringWidth(time);
-
-            FontCache.drawString(g, time, width / 2, height, Graphics.BOTTOM | Graphics.HCENTER);
-        } else {
-            int filled = pos * width / 100;
-            if (pb == null) {
-                pb = new Progress(0, height, width);
-            }
-            pb.draw(g, filled, capt);
-        }
     }
 
     public String getTipString() {

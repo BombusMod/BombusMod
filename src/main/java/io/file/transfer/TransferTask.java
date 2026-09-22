@@ -39,7 +39,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Vector;
-import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import Colors.ColorTheme;
 import ui.IconTextElement;
@@ -154,24 +153,6 @@ public class TransferTask
 
     public int getColor() {
         return (sending) ? ColorTheme.getColor(ColorTheme.MESSAGE_OUT) : ColorTheme.getColor(ColorTheme.MESSAGE_IN);
-    }
-
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int xpgs = (g.getClipWidth() / 3) * 2;
-        int pgsz = g.getClipWidth() - xpgs - 4;
-        int filled = (fileSize == 0) ? 0 : (pgsz * filePos) / fileSize;
-
-        int oldColor = g.getColor();
-        g.setColor(0xffffff);
-
-        g.fillRect(xpgs, 3, pgsz, getVHeight() - 6);
-        g.setColor(0x668866);
-        g.drawRect(xpgs, 3, pgsz, getVHeight() - 6);
-        g.fillRect(xpgs, 3, filled, getVHeight() - 6);
-        g.setColor(oldColor);
-
-        super.drawItem(g, ofs, sel);
-        showEvent = false;
     }
 
     public String toString() {

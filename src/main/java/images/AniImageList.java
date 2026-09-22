@@ -29,9 +29,6 @@
 package images;
 
 import java.io.InputStream;
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Graphics;
 
 import Client.StaticData;
 import midlet.BombusMod;
@@ -58,7 +55,7 @@ public class AniImageList extends ImageList implements Runnable {
         return icons != null ? icons.length : 0;
     }
 
-    public void drawImage(Graphics g, int index, int x, int y) {
+    public void drawImage(Object g, int index, int x, int y) {
         if (0 <= index && index < icons.length) {
             //g.drawRect(x, y+(height-icons[index].getHeight())/2, icons[index].getWidth(), icons[index].getHeight());
             icons[index].drawImage(g, x, y+(height-icons[index].getHeight())/2);

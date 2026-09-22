@@ -27,8 +27,6 @@
 
 package ui.controls.form;
 
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
 import ui.IconTextElement;
 import ui.VirtualCanvas;
 
@@ -39,7 +37,7 @@ import ui.VirtualCanvas;
 public class ImageItem
     extends IconTextElement {
     
-    public Image img;
+    public Object img;
     public boolean collapsed;
     
     public boolean selectable=true;
@@ -49,7 +47,7 @@ public class ImageItem
     private int screenWidth;
     
     /** Creates a new instance of ImageItem */
-    public ImageItem(Image img, String altText) {
+    public ImageItem(Object img, String altText) {
         super(null);
 
         this.img=img;
@@ -82,16 +80,6 @@ public class ImageItem
         return img.getHeight();
     }
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        screenWidth=g.getClipWidth();        
-        if (img != null && img.getWidth() > 0) {            
-        if (!collapsed) {
-            g.drawImage(img, screenWidth/2, 0, Graphics.TOP|Graphics.HCENTER);
-        }
-	}
-		VirtualCanvas.getInstance().repaint();
-        super.drawItem(g, ofs, sel);
-    }
 
     public boolean isSelectable() { return selectable; }
 }

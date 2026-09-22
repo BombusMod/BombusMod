@@ -14,12 +14,6 @@ import Client.StaticData;
 import Colors.ColorTheme;
 import java.util.Timer;
 import java.util.TimerTask;
-import javax.microedition.lcdui.Canvas;
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-import javax.microedition.lcdui.Display;
-import javax.microedition.lcdui.Displayable;
-import javax.microedition.lcdui.Graphics;
 import javax.microedition.midlet.MIDlet;
 import ui.controls.PopUp;
 //#ifdef USER_KEYS
@@ -36,7 +30,7 @@ import Client.AutoStatus;
  *
  * @author Vladimir Krukov
  */
-public class VirtualCanvas extends Canvas implements CommandListener{
+public class VirtualCanvas {
 
     public static final int _KEY_STAR = 10;
     public static final int _KEY_POUND = 11;
@@ -61,8 +55,8 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     private VirtualList list;
     public VirtualList homeList;
 
-    public Command commandOk;
-    public Command commandCancel;
+    public Object commandOk;
+    public Object commandCancel;
 
     static VirtualCanvas instance;
     static MIDlet midlet;
@@ -119,7 +113,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
     }
 
 
-    protected void paint(Graphics graphics) {
+    protected void paint(Object graphics) {
         VirtualList.width = getWidth();
         VirtualList.height = getHeight();
         graphics.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
@@ -236,7 +230,7 @@ public class VirtualCanvas extends Canvas implements CommandListener{
         }
     }
 
-    public void commandAction(Command c, Displayable d) {
+    public void commandAction(Object c, Object d) {
         if (c == commandOk) 
             list.touchLeftPressed();
         if (c == commandCancel) 

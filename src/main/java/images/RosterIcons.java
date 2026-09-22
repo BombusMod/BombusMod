@@ -29,7 +29,6 @@ package images;
 
 import java.util.Hashtable;
 import java.util.Vector;
-import javax.microedition.lcdui.Graphics;
 import ui.ImageList;
 import util.StringLoader;
 
@@ -83,12 +82,6 @@ public class RosterIcons extends ImageList{
     }
    
 
-    public void drawImage(Graphics g, int index, int x, int y) {        
-        if (index>66000) { //draw transport icons
-            if (transports == null) return;
-            ((ImageList)transpSkins.elementAt( (index>>24) -1 )).drawImage(g, index & 0xff, x, y);
-        } else super.drawImage(g, index, x, y);
-    }
 
     public final static int ICON_PRESENCE_ONLINE = 0x00; //1. Контакт 'Доступен'.
     public final static int ICON_PRESENCE_CHAT = 0x01; //2. Контакт 'Готов поболтать'.

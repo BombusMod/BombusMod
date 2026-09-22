@@ -29,7 +29,6 @@
 
 package Colors;
 
-import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
 /**
@@ -59,25 +58,6 @@ public class ColorVisualItem
     }
     
     public String toString() { return (locale==null)?name:locale; }
-    
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int width=g.getClipWidth();
-        int height=super.getVHeight();
-
-        int oldColor=g.getColor();
-
-        g.setColor(color);
-        g.fillRect(1, 1, height-2, height-2);
-
-        g.setColor(oldColor);
-
-        g.translate(height,0);
-        super.drawItem(g, ofs, sel);
-        g.translate(-height,0);
-        
-    }
-    
-    //public void setLocale(String locale){ this.locale=locale; }
     
     public void onSelect(){
         //state=!state;

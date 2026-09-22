@@ -32,9 +32,6 @@ import Fonts.FontCache;
 import io.NvStorage;
 import java.io.DataInputStream;
 import java.io.EOFException;
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.TextField;
 import ui.IconTextElement;
 import ui.VirtualCanvas;
 import ui.VirtualList;
@@ -55,10 +52,7 @@ public class TextInput
 
     private int boxType;
     
-    private Font font;
     private int fontHeight;
-    
-    private Font captionFont;
     private int captionFontHeight;
 
     private int itemHeight=0;
@@ -87,13 +81,11 @@ public class TextInput
         colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
         colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
         
-        font=FontCache.getFont(false, FontCache.roster);
-        fontHeight=font.getHeight();
+        fontHeight=FontCache.getFontHeight(false, FontCache.roster);
         itemHeight=fontHeight;
-        
+
         if (caption!=null) {
-            captionFont=FontCache.getFont(true, FontCache.msg);
-            captionFontHeight=captionFont.getHeight();
+            captionFontHeight=FontCache.getFontHeight(true, FontCache.msg);
             itemHeight+=captionFontHeight;
         }
         if (text==null && id!=null) {
@@ -111,19 +103,19 @@ public class TextInput
     }
     
     public TextInput(String caption, String text, String id) {
-        this(caption, text, id, TextField.ANY);
+        this(caption, text, id, 0);
     }
 
     public int getCaptionLength() {
         if (caption==null) return 0;
         if (caption.equals("")) return 0;
-        return captionFont.stringWidth(caption);
+        return FontCache.getStringWidth(caption);
     }
 
     public int getTextLength() {
         if (text==null) return 0;
         if (text.equals("")) return 0;
-        return font.stringWidth(text);
+        return FontCache.getStringWidth(text, false, FontCache.roster);
     }
     
     public String toString() { return (getCaptionLength()>getTextLength())?caption:getValue(); }
@@ -146,36 +138,5 @@ public class TextInput
         return getValue();
     }
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int width=g.getClipWidth();
-        int height=fontHeight;
-
-        int oldColor=g.getColor();
-        
-        int thisOfs=0;
-        
-        int y=0;
-        if (caption!=null) {
-            thisOfs=(getCaptionLength()>width)?-ofs:2;
-            g.setFont(captionFont);
-            FontCache.drawString(g,caption, thisOfs, y, Graphics.TOP|Graphics.LEFT);
-            y=captionFontHeight;
-        }
-
-        g.setColor(colorBGnd);
-        g.fillRect(0, y, width-1, height-1);
-
-        g.setColor((sel)?colorBorder:colorItem);
-        g.drawRect(0, y, width-1, height-1);
-
-        g.setColor(oldColor);
-        
-        if (getTextLength()>0) {
-            thisOfs=(getTextLength()>width)?-ofs+4:4;
-            g.setFont(font);
-            FontCache.drawString(g,getText(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
-        }
-    }
-
     public boolean isSelectable() { return selectable; }
 	}

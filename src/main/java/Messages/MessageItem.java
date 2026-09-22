@@ -32,8 +32,6 @@ import Client.Msg;
 import Client.StaticData;
 import images.RosterIcons;
 import java.util.Vector;
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
 import Colors.ColorTheme;
 import ui.ComplexString;
 import Fonts.FontCache;
@@ -75,7 +73,7 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
         return Math.max(itemHeight, Config.getInstance().minItemHeight);
     }
     
-    public Font getFont() {
+    public Object getFont() {
         return FontCache.getFont(false, FontCache.msg);
     }
     
@@ -90,59 +88,6 @@ public class MessageItem implements VirtualElement {//, MessageParser.MessagePar
     }
     public int getColor() { return msg.getColor(); }
     
-    public void drawItem(Graphics g, int ofs, boolean selected) {
-        int xorg=g.getTranslateX();
-        int yorg=g.getTranslateY();
-        int iconOffset = 2;
-        g.translate(2,0);
-        if (msgLines.isEmpty()) {
-            parse();
-        }
-        if (msgLines.isEmpty()) {
-            return;
-        }
-        //int y=0;
-        int lineCount = msg.itemCollapsed ? 1 : msgLines.size();
-        int messageHeight = 0;
-        for (int i = 0; i < lineCount; i++) {
-            messageHeight += ((ComplexString) msgLines.elementAt(i)).getVHeight();
-        }
-        if (messageHeight < Config.getInstance().minItemHeight) {
-            g.translate(g.getTranslateX(), (Config.getInstance().minItemHeight - messageHeight) >> 1);
-        }
-        for (int index = 0; index < lineCount; ++index) {
-            ComplexString line = (ComplexString)msgLines.elementAt(index);
-            if (line.isEmpty()) break;
-            int h=line.getVHeight();
-            int cy=g.getClipY();
-            //clipping
-            if (cy <= h && cy+g.getClipHeight()>0 ) {
-                if (msg.itemCollapsed && (msgLines.size()>1)) {
-                    RosterIcons.getInstance().drawImage(g, 
-                            RosterIcons.ICON_MSGCOLLAPSED_INDEX,
-                            0,
-                            (getVHeight()
-                            - RosterIcons.getInstance().getHeight()) >> 1  - g.getTranslateY());
-                    g.translate(8,0);
-                    iconOffset = 2 + RosterIcons.getInstance().getWidth() >> 1;
-                }
-                line.setColor(getColor());
-                line.drawItem(g, iconOffset, selected);
-            }
-            g.translate(0, h);
-            if (msg.itemCollapsed) break;
-        }
-        
-        g.translate(xorg-g.getTranslateX(), yorg-g.getTranslateY());
-
-        if (msg.delivered) {
-            int right=g.getClipX()+g.getClipWidth();
-            RosterIcons.getInstance().drawImage(
-                    g, RosterIcons.ICON_DELIVERED_INDEX, 
-                    right-RosterIcons.getInstance().getWidth()-3, 0 
-            );
-        }
-    }
     
     public void onSelect() {
         msg.itemCollapsed = !msg.itemCollapsed;

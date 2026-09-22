@@ -37,7 +37,6 @@ import java.io.IOException;
 //# import javax.microedition.media.MediaException;
 //# import javax.microedition.media.Player;
 //#endif
-import javax.microedition.lcdui.Image;
 import locale.SR;
 import ui.controls.form.DefForm;
 import ui.controls.form.ImageItem;
@@ -96,7 +95,7 @@ public class ShowFile extends DefForm {
 
     private void view(String file) {
 		try{
-			Image img = Image.createImage(rawBytes, 0, len);
+			Object img = Image.createImage(rawBytes, 0, len);
 			itemsList.addElement(new ImageItem(img, "minimized, size: " + String.valueOf(len) + "b."));
 		} catch(OutOfMemoryError eom){
 		} catch (Exception e) {}

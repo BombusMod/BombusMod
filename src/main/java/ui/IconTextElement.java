@@ -27,8 +27,6 @@
 
 package ui;
 import Fonts.FontCache;
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Font;
 import Colors.ColorTheme;
 import Client.Config;
 
@@ -38,68 +36,53 @@ abstract public class IconTextElement implements VirtualElement {
     int itemHeight;
     int imageYOfs;
     protected int fontYOfs;
-    
+
     protected ImageList il;
     private int ilImageSize=0;
-    
+
     public IconTextElement(ImageList il) {
         super();
         this.il=il;
-	if (il!=null) ilImageSize=il.getHeight();
+        if (il!=null) ilImageSize=il.getHeight();
     }
-    
-    private boolean selectable=true; 
-    public boolean isSelectable() { return selectable; }    
-    
+
+    private boolean selectable=true;
+    public boolean isSelectable() { return selectable; }
+
     public boolean handleEvent(int keyCode) { return false; }
-    
+
     public int getImageIndex() { return -1; };
-    
-    public String getImgAlt() { return ""; }; // if image not loaded
+
+    public String getImgAlt() { return ""; };
 
     public int getFontIndex() { return 0; }
-    
-    public Font getFont() {
-        return FontCache.getFont((getFontIndex()==0)?false:true, FontCache.roster);
+
+    /** Returns font height in pixels for layout calculations */
+    public int getFontHeight() {
+        return FontCache.getFontHeight((getFontIndex()==0)?false:true, FontCache.roster);
     }
 
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        g.setFont(getFont());
-
-        String str = toString();
-        int offset = 4;
-
-        if (il != null) {
-            if (getImageIndex() != -1) {
-                offset += ilImageSize;
-                il.drawImage(g, getImageIndex(), 2, imageYOfs);
-            }
-            if (!il.isLoaded) {
-                str = getImgAlt() + toString();
-            }
-        }
-        g.clipRect(offset, 0, g.getClipWidth(), itemHeight);
-
-        if (str != null) {
-            FontCache.drawString(g, str, offset - ofs, fontYOfs, Graphics.TOP | Graphics.LEFT);
-        }
+    /** Estimates text width in pixels for layout calculations */
+    public int getTextWidth(String text) {
+        return FontCache.getStringWidth(text, (getFontIndex()==0)?false:true, FontCache.roster);
     }
 
-    public int getVWidth(){ 
-        return getFont().stringWidth(toString())+ilImageSize+4;
+    public int getVWidth(){
+        return getTextWidth(toString())+ilImageSize+4;
     }
-    
+
     public int getVHeight() {
-        itemHeight = Math.max(Math.max(ilImageSize, getFont().getHeight()), cf.minItemHeight);
-        fontYOfs = (itemHeight - getFont().getHeight()) >> 1;
+        int fontHeight = getFontHeight();
+        itemHeight = Math.max(Math.max(ilImageSize, fontHeight), cf.minItemHeight);
+        fontYOfs = (itemHeight - fontHeight) >> 1;
         imageYOfs = (itemHeight - ilImageSize) >> 1;
         return itemHeight;
     }
-    
-    public int getItemHeight(){ 
+
+    public int getItemHeight(){
         return itemHeight;
     }
-    
+
     public int getColorBGnd(){ return ColorTheme.getColor(ColorTheme.LIST_BGND);}
     public int getColor(){ return ColorTheme.getColor(ColorTheme.LIST_INK);}
 

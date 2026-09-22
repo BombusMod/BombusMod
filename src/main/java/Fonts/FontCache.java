@@ -27,93 +27,43 @@
 package Fonts;
 
 import Client.Config;
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
 
 /**
- *
- * @author ad
+ * Font size cache. Stores pixel sizes directly (no J2ME Font objects).
+ * Sizes are set by the platform at startup (BombusModActivity.onResume).
  */
 public class FontCache {
 
-    private static Font small;
-    private static Font smallBold;
-    
-    private static Font middle;
-    private static Font middleBold;
-    
-    private static Font big;
-    private static Font bigBold;
-    
-    public final static int smallSize=Font.SIZE_SMALL;
-    public final static int middleSize=Font.SIZE_MEDIUM;
-    public final static int bigSize=Font.SIZE_LARGE;
-    
-    public final static int plain=Font.STYLE_PLAIN;
-    public final static int bold=Font.STYLE_BOLD;
-    
-    public final static int face=Font.FACE_PROPORTIONAL;
+    // Default pixel sizes — overridden by platform at startup
+    public static int smallFontSize  = 12;
+    public static int mediumFontSize = 16;
+    public static int largeFontSize  = 20;
 
     public static int roster=0;
     public static int msg=0;
     public static int bar=0;
     public static int baloon=0;
 
-    
-    private static Font getSmallFont() {
-        if (small==null) small=Font.getFont(face, plain, smallSize);
-        return small;
-    }
-    private static Font getSmallBoldFont() {
-        if (smallBold==null) smallBold=Font.getFont(face, bold, smallSize);
-        return smallBold;
-    }
-    
-    private static Font getMiddleFont() {
-        if (middle==null) middle=Font.getFont(face, plain, middleSize);
-        return middle;
-    }
-    private static Font getMiddleBoldFont() {
-        if (middleBold==null) middleBold=Font.getFont(face, bold, middleSize);
-        return middleBold;
-    }
-    
-    private static Font getBigFont() {
-        if (big==null) big=Font.getFont(face, plain, bigSize);
-        return big;
-    }
-    private static Font getBigBoldFont() {
-        if (bigBold==null) bigBold=Font.getFont(face, bold, bigSize);
-        return bigBold;
-    }
-    
-    public static Font getFont(boolean isBold, int size) {
+    public static int getFontHeight(boolean isBold, int size) {
         switch (size) {
-            case smallSize:
-                return (isBold || Config.getInstance().forceBoldFont)
-                        ? getSmallBoldFont()
-                        : getSmallFont();
-            case middleSize:
-                return (isBold || Config.getInstance().forceBoldFont) 
-                        ? getMiddleBoldFont() 
-                        : getMiddleFont();
-            case bigSize:
-                return (isBold || Config.getInstance().forceBoldFont) 
-                        ? getBigBoldFont() 
-                        : getBigFont();
+            case 0: return smallFontSize;
+            case 1: return mediumFontSize;
+            case 2: return largeFontSize;
+            default: return mediumFontSize;
         }
-        return getSmallFont();
     }
 
-    public static void drawString(Graphics g, String text, int x, int y, int anchor) {
-        if (Config.getInstance().shadowed) {
-            int color = g.getColor();
-            g.setColor((color) / 3 > 0x7f ? 0x333333 : 0xcccccc);
-            g.drawString(text, x + 1, y + 1, anchor);
-            g.setColor(color);
-        }        
-        g.drawString(text, x, y, anchor);
+    /** Approximate string width: char count * avg char width (~60% of height) */
+    public static int getStringWidth(String text, boolean isBold, int size) {
+        if (text == null) return 0;
+        int h = getFontHeight(isBold, size);
+        return text.length() * (h * 6 / 10);
     }
 
-    //public final static void resetCache() { roster=msg=bar=baloon=0; }
+    /** Initialize from platform pixel values. Called by BombusModActivity.onResume. */
+    public static void initSizes(int small, int medium, int large) {
+        smallFontSize = small;
+        mediumFontSize = medium;
+        largeFontSize = large;
+    }
 }

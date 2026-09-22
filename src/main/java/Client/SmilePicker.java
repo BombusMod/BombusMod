@@ -38,7 +38,6 @@ import ui.*;
 import java.util.Vector;
 
 
-import javax.microedition.lcdui.Graphics;
 import ui.controls.form.DefForm;
 
 public class SmilePicker 
@@ -87,7 +86,7 @@ public class SmilePicker
         
         imgCnt=smileTable.size();
         
-        realWidth=VirtualCanvas.getInstance().getWidth()-scrollbar.getScrollWidth();
+        realWidth=VirtualList.width-scrollbar.getScrollWidth();
         
         imgWidth=Math.max(il.getWidth()+(CURSOR_HOFFSET*2), cf.minItemHeight);
         lineHeight = il.getHeight()+(CURSOR_VOFFSET*2);
@@ -122,42 +121,12 @@ public class SmilePicker
         midlet.BombusMod.getInstance().setDisplayable(me.textbox);
     }
 
-    public void drawItem(Graphics g, int ofs, boolean selected){
-        int max=(lineIndex==lines-1)? xLastCnt:xCnt;   
-        int x, iwidth;
-
-//#ifdef ANI_SMILES
-        AniIcon item;
-//#endif
-        for (int i=0;i<max;i++) {
-            x = xBorder+(i*imgWidth+CURSOR_HOFFSET);
-//#ifdef ANI_SMILES
-            if (il instanceof AniImageList) {
-                item = ((AniImageList)il).iconAt(lineIndex*xCnt + i);
-                iwidth = (item == null)? 0 : item.getWidth();
-                x += (imgWidth - iwidth) >> 1;                                                       
-            }
-//#endif
-            il.drawImage(g, lineIndex*xCnt + i, x, CURSOR_VOFFSET);            
-        }
-    }
-
     protected synchronized int updateLayout() {
         int res = super.updateLayout();
         mainbar.setElementAt(getTipString(), 0);
         return res;
     }
 
-    public void drawCursor(Graphics g, int width, int height){
-        int x=xBorder+(xCursor*imgWidth);
-
-        g.setColor(getColorBGnd());
-        g.fillRect(0,0,width, height);
-        
-        g.translate(x,0);
-        super.drawCursor(g, imgWidth, lineHeight);
-        g.translate(-x,0);
-    } 
    
     
     public void pageLeft(){ 

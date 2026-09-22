@@ -30,7 +30,6 @@ import Menu.MenuCommand;
 import java.util.*;
 import com.alsutton.jabber.*;
 import com.alsutton.jabber.datablocks.*;
-import javax.microedition.lcdui.Image;
 import locale.SR;
 import ui.VirtualList;
 import ui.controls.form.ComplexForm;

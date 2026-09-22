@@ -29,8 +29,6 @@ package ui.controls.form;
 
 import Fonts.FontCache;
 import java.util.Vector;
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 import ui.VirtualCanvas;
 import util.StringUtils;
@@ -48,10 +46,10 @@ public class MultiLine extends IconTextElement {
     
     public boolean selectable;
     
-    private Font font;
+    private Object font;
     private int fontHeight;
-    
-    private Font captionFont;
+
+    private Object captionFont;
     private int captionFontHeight;
     
     private boolean parsed;
@@ -103,24 +101,5 @@ public class MultiLine extends IconTextElement {
         return itemHeight;
     }
     
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        if (!parsed) return;
-        
-        int y=0;
-        if (caption!=null) {
-            g.setFont(captionFont);
-            FontCache.drawString(g,caption, 2, y, Graphics.TOP|Graphics.LEFT);
-            y=captionFontHeight;
-        }
-
-        g.setFont(font);
-
-	for (int line=0; line<lines.size(); ){
-            FontCache.drawString(g,(String) lines.elementAt(line), 2, y, Graphics.TOP|Graphics.LEFT);
-            line=line+1;
-            y += fontHeight;
-	}
-    }
-
     public boolean isSelectable() { return selectable; }
 }

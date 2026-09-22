@@ -235,8 +235,8 @@ public class Config {
         } catch (InterruptedException e) {
         }
 
-        int h1 = VirtualCanvas.getInstance().getHeight();
-        int h2 = VirtualCanvas.getInstance().getWidth();
+        int h1 = ui.VirtualList.height;
+        int h2 = ui.VirtualList.width;
         rosterFont = 16;
         barFont = 16;
         msgFont = 16;

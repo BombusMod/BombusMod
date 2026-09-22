@@ -26,7 +26,6 @@
  */
 package Account;
 
-import javax.microedition.lcdui.Display;
 import javax.microedition.midlet.MIDlet;
 
 import midlet.BombusMod;
@@ -47,7 +46,6 @@ import ui.controls.form.TextInput;
 import io.file.browse.Browser;
 import io.file.browse.BrowserListener;
 //#endif
-import javax.microedition.lcdui.TextField;
 import xmpp.Jid;
 
 /**
@@ -198,20 +196,20 @@ public class AccountForm
 
         proxyHost = new TextInput(/*
              * SR.MS_PROXY_HOST
-             */"Proxy name/IP", item.account.proxyHostAddr, null, TextField.URL);
+             */"Proxy name/IP", item.account.proxyHostAddr, null, 4);
         proxyPort = new NumberInput(/*
                  * SR.MS_PROXY_PORT
                  */"Proxy port", Integer.toString(item.account.getProxyPort()), 0, 65535);
         proxyUser = new TextInput(/*
                  * SR.MS_PROXY_HOST
-                 */"Proxy user", item.account.getProxyUser(), null, TextField.URL);
+                 */"Proxy user", item.account.getProxyUser(), null, 4);
         proxyPass = new TextInput(/*
                  * SR.MS_PROXY_HOST
-                 */"Proxy pass", item.account.getProxyPass(), null, TextField.URL);
+                 */"Proxy pass", item.account.getProxyPass(), null, 4);
 //#elif HTTPPOLL        
-//# 	proxyHost = new TextInput("HTTP Polling URL (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
+//# 	proxyHost = new TextInput("HTTP Polling URL (http://server.tld:port)", item.account.proxyHostAddr, null, 4);
 //#elif HTTPBIND
-//#         proxyHost = new TextInput("BOSH CM (http://server.tld:port)", item.account.proxyHostAddr, null, TextField.URL);
+//#         proxyHost = new TextInput("BOSH CM (http://server.tld:port)", item.account.proxyHostAddr, null, 4);
 //#endif
 
         itemsList.addElement(ipbox);

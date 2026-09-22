@@ -37,7 +37,6 @@ import images.ClientsIcons;
 //#if HISTORY
 import History.HistoryAppend;
 //#endif
-import javax.microedition.lcdui.Graphics;
 import ui.ImageList;
 //#ifdef PEP
 import images.MoodIcons;
@@ -166,7 +165,7 @@ public class Contact extends IconTextElement {
 
         //secondFont=FontCache.getFont(false, FontCache.baloon);
         //secondFontHeight=secondFont.getHeight();
-        fontHeight = getFont().getHeight();
+        fontHeight = getFontHeight();
     }
 
     public Contact(final String Nick, final String sJid, final int Status, String subscr) {
@@ -671,7 +670,7 @@ public class Contact extends IconTextElement {
 
     public int getVWidth() {
         String str = (!cf.rosterStatus) ? getFirstString() : (getFirstLength() > getSecondLength()) ? getFirstString() : getSecondString();
-        int wft = getFont().stringWidth(str);
+        int wft = getTextWidth(str);
 
         return wft + il.getWidth() + 4;
     }
@@ -687,7 +686,7 @@ public class Contact extends IconTextElement {
         if (getSecondString().length() == 0) {
             return 0;
         }
-        return FontCache.getFont(false, FontCache.baloon).stringWidth(getSecondString());
+        return FontCache.getStringWidth(getSecondString(), false, FontCache.baloon);
     }
 
     public int getFirstLength() {
@@ -697,7 +696,7 @@ public class Contact extends IconTextElement {
         if (getFirstString().length() == 0) {
             return 0;
         }
-        return getFont().stringWidth(getFirstString());
+        return getTextWidth(getFirstString());
     }
 
     public String getFirstString() {
@@ -769,109 +768,12 @@ public class Contact extends IconTextElement {
     public int getVHeight() {
         int itemVHeight = Math.max(maxImgHeight, fontHeight);
         if (getSecondString() != null) {
-            itemVHeight += FontCache.getFont(false, FontCache.baloon).getHeight() - 3;
+            itemVHeight += FontCache.getFontHeight(false, FontCache.baloon) - 3;
         }
 
         return Math.max(itemVHeight, cf.minItemHeight);
     }
 
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        int w = g.getClipWidth();
-        int h = getVHeight();
-        int xo = g.getClipX();
-        int yo = g.getClipY();
-
-        int offset = xo + 4;
-
-        int imgH = (h - ilHeight) >> 1;
-
-        if (getImageIndex() > -1) {
-            offset += ilHeight;
-            il.drawImage(g, getImageIndex(), xo + 2, imgH);
-        }
-//#ifdef CLIENTS_ICONS
-        if (hasClientIcon()) {
-            ImageList clients = ClientsIcons.getInstance();
-            int clientImgSize = clients.getWidth();
-            w -= clientImgSize;
-            clients.drawImage(g, client, w, (h - clientImgSize) / 2);
-            if (maxImgHeight < clientImgSize) {
-                maxImgHeight = clientImgSize;
-            }
-        }
-//#endif
-//#ifdef PEP
-        if (hasMood()) {
-            ImageList moods = MoodIcons.getInstance();
-            int moodImgSize = moods.getWidth();
-            w -= moodImgSize;
-            moods.drawImage(g, pepMood, w, (h - moodImgSize) / 2);
-            if (maxImgHeight < moodImgSize) {
-                maxImgHeight = moodImgSize;
-            }
-        }
-//#ifdef PEP_TUNE
-        if (pepTune) {
-            w -= ilHeight;
-            il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX + 1, w, imgH);
-        }
-//#ifdef PEP_ACTIVITY
-        if (hasActivity()) {
-            w -= ilHeight;
-            il.drawImage(g, RosterIcons.ICON_PROFILE_INDEX, w, imgH);
-        }
-//#endif
-//#ifdef PEP_LOCATION
-        if (hasLocation()) {
-            w -= ilHeight;
-            il.drawImage(g, RosterIcons.ICON_PROGRESS_INDEX, w, imgH);
-        }
-//#endif
-
-//#endif
-//#endif
-/*         
-        if (vcard!=null) {
-        w-=ilHeight;
-        il.drawImage(g, RosterIcons.ICON_SEARCH_INDEX, w,imgH);
-        }
-         */
-//#ifdef FILE_TRANSFER
-        if (fileQuery) {
-            w -= ilHeight;
-            il.drawImage(g, RosterIcons.ICON_PROGRESS_INDEX, w, imgH);
-        }
-//#endif
-        if (getSecImageIndex() > -1) {
-            w -= ilHeight;
-            il.drawImage(g, getSecImageIndex(), w, imgH);
-        }
-
-        int thisOfs = 0;
-
-        g.setClip(offset, yo, w - offset, h);
-
-        thisOfs = (getFirstLength() > w) ? -ofs + offset : offset;
-        if ((thisOfs + getFirstLength()) < 0) {
-            thisOfs = offset;
-        }
-        g.setFont(getFont());
-
-        int thisYOfs = 0;
-        if (getSecondString() == null) {
-            thisYOfs = (h - getFont().getHeight()) >> 1;
-        }
-        FontCache.drawString(g, getFirstString(), thisOfs, thisYOfs, Graphics.TOP | Graphics.LEFT);
-
-        if (getSecondString() != null) {
-            int y = getFont().getHeight() - 3;
-            thisOfs = (getSecondLength() > w) ? -ofs + offset : offset;
-            g.setFont(FontCache.getFont(false, FontCache.baloon));
-            g.setColor(ColorTheme.getColor(ColorTheme.SECOND_LINE));
-            FontCache.drawString(g, getSecondString(), thisOfs, y, Graphics.TOP | Graphics.LEFT);
-        }
-        g.setClip(xo, yo, w, h);
-    }
 
 //#ifdef CLIENTS_ICONS
     boolean hasClientIcon() {

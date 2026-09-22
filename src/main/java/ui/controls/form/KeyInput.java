@@ -11,8 +11,6 @@ import ui.IconTextElement;
 import images.RosterIcons;
 import ui.keys.UserKey;
 import ui.keys.UserKeyExec;
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Font;
 import Fonts.FontCache;
 import Colors.ColorTheme;
 
@@ -31,10 +29,10 @@ public class KeyInput extends IconTextElement {
 
     private String caption = "";
 
-    private Font font;
+    private Object font;
     private int fontHeight;
 
-    private Font captionFont;
+    private Object captionFont;
     private int captionFontHeight;
 
     public KeyInput(String caption) {
@@ -60,39 +58,6 @@ public class KeyInput extends IconTextElement {
     public void key(int keyCode) {
         this.keyCode = keyCode;
         selected = false;
-    }
-
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
-        colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
-        colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
-
-        int width=g.getClipWidth();
-        int height=fontHeight;
-
-        int oldColor=g.getColor();
-
-        int thisOfs=0;
-
-        int y = 0;
-        thisOfs = (getCaptionLength() > width) ? -ofs : 2;
-        g.setFont(captionFont);
-        FontCache.drawString(g,caption, thisOfs, y, Graphics.TOP | Graphics.LEFT);
-        y = captionFontHeight;
-
-        g.setColor(colorBGnd);
-        g.fillRect(0, y, width-1, height-1);
-
-        g.setColor((sel)?colorBorder:colorItem);
-        g.drawRect(0, y, width-1, height-1);
-
-        g.setColor(oldColor);
-
-        if (getTextLength()>0) {
-            thisOfs=(getTextLength()>width)?-ofs+4:4;
-            g.setFont(font);
-            FontCache.drawString(g,toString(), thisOfs, y, Graphics.TOP|Graphics.LEFT);
-        }
     }
 
     public int getVHeight() {

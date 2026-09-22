@@ -34,7 +34,6 @@ import images.SmilesIcons;
 import Fonts.FontCache;
 import java.io.*;
 import java.util.Vector;
-import javax.microedition.lcdui.Font;
 import Colors.ColorTheme;
 
 import ui.*;
@@ -216,7 +215,7 @@ public final class MessageParser {
 //#endif
         lines.addElement(l);
         
-        Font f=getFont((task.msg.highlite || isSubj));
+        Object f=getFont((task.msg.highlite || isSubj));
         l.setFont(f);
         
         int color=ColorTheme.getColor(isSubj ? ColorTheme.NICK_COLOR : ColorTheme.LIST_INK);
@@ -378,7 +377,7 @@ public final class MessageParser {
             lines.removeElementAt(lines.size()-1);
     }
     
-    public Font getFont(boolean bold) {
+    public Object getFont(boolean bold) {
         return FontCache.getFont(bold, FontCache.msg);
     }
 }

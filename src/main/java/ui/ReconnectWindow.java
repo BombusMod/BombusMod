@@ -31,7 +31,6 @@ import Client.Config;
 import Client.StaticData;
 import ui.controls.Progress;
 import Fonts.FontCache;
-import javax.microedition.lcdui.Graphics;
 import locale.SR;
 import Colors.ColorTheme;
 import java.util.Timer;
@@ -57,7 +56,7 @@ public class ReconnectWindow extends TimerTask {
     public int getPos() { return pos; }
     public int getTimeout() { return timeout; }
 
-    public void draw(Graphics g, int width, int height) {
+    public void draw(Object g, int width, int height) {
         int reconnectPos = pos * 4;
         int reconnectTimeout = timeout * 4;
 

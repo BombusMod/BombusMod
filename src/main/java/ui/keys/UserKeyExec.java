@@ -62,7 +62,6 @@ import Conference.Bookmarks;
 import Client.ActiveContacts;
 import Menu.RosterToolsMenu;
 import ui.SplashScreen;
-import javax.microedition.lcdui.Displayable;
 import PrivacyLists.PrivacyModifyList;
 import PrivacyLists.PrivacySelect;
 import Archive.ArchiveList;

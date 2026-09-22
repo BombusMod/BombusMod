@@ -30,7 +30,6 @@ package ui;
 import Colors.ColorTheme;
 
 import Fonts.FontCache;
-import javax.microedition.lcdui.Graphics;
 import Client.*;
 import locale.SR;
 import ui.controls.PopUp;
@@ -289,8 +288,8 @@ public abstract class VirtualList {
     public boolean canBack = true;
 
     /** метрика экрана */
-    protected static int width;
-    protected static int height;
+    public static int width;
+    public static int height;
     
     public int cursor;
 
@@ -409,14 +408,14 @@ public abstract class VirtualList {
 //        setFullScreenMode(fullscreen);
      
         scrollbar=new ScrollBar();
-        scrollbar.setHasPointerEvents(VirtualCanvas.getInstance().hasPointerEvents());
+        scrollbar.setHasPointerEvents(true);
 
-        infobar = new MainBar("", true, VirtualCanvas.getInstance().hasPointerEvents() && cf.advTouch && Config.fullscreen);
+        infobar = new MainBar("", true, true && cf.advTouch && Config.fullscreen);
         infobar.addElement(null); //1
         infobar.addRAlign();
         infobar.addElement(null); //3
 
-        stringHeight = FontCache.getFont(false, FontCache.roster).getHeight();        
+        stringHeight = FontCache.getFontHeight(false, FontCache.roster);
     }
     
     public void show() {
@@ -452,8 +451,8 @@ public abstract class VirtualList {
     }
 
     public void redraw() {
-        if (VirtualCanvas.getInstance().isShown()) {
-            VirtualCanvas.getInstance().repaint();
+        if (VirtualListController.getInstance().isActive()) {
+            VirtualListController.getInstance().notifyUpdate();
         }
      }
       
@@ -482,214 +481,15 @@ public abstract class VirtualList {
      */
     protected void beginPaint() { }
 
-    public synchronized void paint(Graphics g) {
-        if (messagesWidth == 0) {
-            messagesWidth = getListWidth();
-        }
-        beginPaint();
-       PopUp.getInstance().init(g, width, height);
-
-        //StaticData.getInstance().screenWidth=width;
+    public void paint() { /* Compose renders */ }
+    // paint body removed — Compose ScreenHost handles all rendering
 
 
-
-        int count = updateLayout();
-
-        setAbsOrg(g, 0, 0);
-
-        setInfo();
-        
-        if (paintTop) {
-            if (reverse) {
-                if (infobar != null) {
-                    list_top = infobar.getVHeight();
-                    drawInfoPanel(g);
-                }
-            } else {
-                if (mainbar != null) {
-                    list_top = mainbar.getVHeight();
-                    drawMainPanel(g);
-                }
-            }
-        }
-        if (paintBottom) {
-            if (reverse) {
-                if (mainbar != null) {
-                    list_bottom = mainbar.getVHeight();
-                }
-            } else {
-                if (infobar != null) {
-                    list_bottom = infobar.getVHeight();
-                }
-            }
-        }
-
-        winHeight = height - list_top - list_bottom;
-
-        boolean scroll = (listHeight > winHeight);
-
-        if (count == 0) {
-            cursor = (cursor == -1) ? -1 : 0;
-            win_top = 0;
-        } else if (cursor >= count) {
-            cursor = count - 1;
-            stickyWindow = true;
-        }
-        if (updateLayout() > 0 && stickyWindow) {
-            fitCursorByTop();
-        }
-
-        int itemMaxWidth = (scroll) ? (width - scrollbar.getScrollWidth()) : (width);
-
-        int itemIndex = win_top > 0 ? getElementIndexAt(win_top) : 0;
-        int displayedIndex = 0;
-        int displayedBottom = list_top;
-
-        int baloon = -1;
-        while (itemIndex < itemLayoutY.length) {
-            int itemYpos = itemLayoutY[itemIndex] - win_top;
-            if (itemYpos >= winHeight) {
-                break;
-            }
-            VirtualElement el = getItemRef(itemIndex);
-            boolean sel = (itemIndex == cursor);
-            if (el != null) {
-                int lh = el.getVHeight();
-
-                setAbsOrg(g, 0, list_top);
-                g.setClip(0, 0, itemMaxWidth, winHeight);
-
-                g.translate(0, itemYpos);
-
-                g.setColor(el.getColorBGnd());
-
-                if (sel) {
-                    drawCursor(g, itemMaxWidth, lh);
-                    baloon = g.getTranslateY();
-                } else {
-                    g.fillRect(0, 0, itemMaxWidth, lh); //clear field
-                }
-                g.setColor(el.getColor());
-
-                g.clipRect(0, 0, itemMaxWidth, lh);
-                el.drawItem(g, (sel) ? offset : 0, sel);
-                displayedBottom = list_top + itemYpos + lh;
-            }
-            itemIndex++;
-
-        } // while
-        int clrH = height - displayedBottom;
-
-        if (clrH > 0) {
-            setAbsOrg(g, 0, displayedBottom);
-            g.setClip(0, 0, itemMaxWidth, clrH);
-            g.setColor(ColorTheme.getColor(ColorTheme.LIST_BGND));
-            g.fillRect(0, 0, itemMaxWidth, clrH);
-        }
-
-        if (scroll) {
-            setAbsOrg(g, 0, list_top);
-            g.setClip(0, 0, width, winHeight);
-
-            scrollbar.setPostion(win_top);
-            scrollbar.setSize(listHeight);
-            scrollbar.setWindowSize(winHeight);
-
-            scrollbar.draw(g);
-        } else {
-            scrollbar.setSize(0);
-        }
-
-        setAbsClip(g, width, height);
-        
-
-        if (paintBottom) {
-            if (reverse) {
-                if (mainbar != null) {
-                    setAbsOrg(g, 0, height - mainbar.getVHeight());
-                    drawMainPanel(g);
-                    CommandsPointer.init(width, height, mainbar.getVHeight());
-                }
-            } else {
-                if (infobar != null) {
-                    setAbsOrg(g, 0, height - infobar.getVHeight());
-                    drawInfoPanel(g);
-                    CommandsPointer.init(width, height, infobar.getVHeight());
-
-                }
-            }
-            setAbsClip(g, width, height);
-
-            if (sd.roster.messageCount > 0) {
-                drawEnvelop(g);
-            }
-            if (System.currentTimeMillis() - sd.getTrafficIn() < 2000) {
-                drawTraffic(g, false);
-            }
-            if (System.currentTimeMillis() - sd.getTrafficOut() < 2000) {
-                drawTraffic(g, true);
-            }
-        }
-
-        setAbsClip(g, width, height);
-        drawPopUp(g);
-    }
-
-
-    protected void drawEnvelop(final Graphics g) {
-        g.setColor(getMainBarRGB());
-        int wpos= (width/2);
-        int hpos= height-13;
-        
-        g.drawRect(wpos-4,	hpos, 	8, 	6);
-        g.drawLine(wpos-3,	hpos+1,	wpos,	hpos+4);
-        g.drawLine(wpos,	hpos+4,	wpos+3,	hpos+1);
-        g.drawLine(wpos-3,	hpos+5,	wpos-2,	hpos+4);
-        g.drawLine(wpos+2,	hpos+4,	wpos+3,	hpos+5);
-    }
     
-    protected void drawTraffic(final Graphics g, boolean up) {
-        int pos=(up)?(width/2)+3:(width/2)-3;
-        int pos2=(up)?height-4:height-2;
-        
-        //g.setColor((up)?0xff0000:0x00ff00);
-        g.setColor(getMainBarRGB());
-        g.drawLine(pos, height-5, pos, height-1);
-        g.drawLine(pos-1, pos2, pos+1, pos2);       
-        g.fillRect(pos-2, height-3, 1, 1);
-        g.fillRect(pos+2, height-3, 1, 1);
-    }
     
-    protected void drawPopUp(final Graphics g) {
-        PopUp.getInstance().paintCustom(g);
-    }
     
-    private void setAbsClip(final Graphics g, int w, int h) {
-        setAbsOrg(g, 0, 0);
-        g.setClip(0,0, w, h);
-    }
         
-    private void drawInfoPanel (final Graphics g) {
-        int h=infobar.getVHeight()+1;
-
-        g.setClip(0,0, width, h);
-//#ifdef GRADIENT        
-        ((MainBar)infobar).startColor = getMainBarBGnd();
-        ((MainBar)infobar).endColor = getMainBarBGndBottom();
-//#endif        
-        
-        infobar.drawItem(g, 0, false);
-    }
     
-    private void drawMainPanel (final Graphics g) {    
-        int h=mainbar.getVHeight()+1;
-        g.setClip(0,0, width, h);
-//#ifdef GRADIENT        
-        ((MainBar)mainbar).startColor = getMainBarBGndBottom();
-        ((MainBar)mainbar).endColor = getMainBarBGnd();
-//#endif        
-        mainbar.drawItem(g, 0, false);
-    }
     
 
     /**
@@ -698,9 +498,6 @@ public abstract class VirtualList {
      * @param x абсолютная x-координата нового начала координат
      * @param y абсолютная y-координата нового начала координат
      */
-    public static void setAbsOrg(Graphics g, int x, int y){
-        g.translate(x-g.getTranslateX(), y-g.getTranslateY());
-    }
 
     /** перемещение курсора в начало списка */
     public void moveCursorHome(){
@@ -1190,42 +987,7 @@ public abstract class VirtualList {
  //#endif
     }
     
-    protected void drawCursor (Graphics g, int width, int height) {
-
-        g.fillRect(0, 0, width, height);
-        
-        int cursorBGnd=ColorTheme.getColor(ColorTheme.CURSOR_BGND);
-        int cursorOutline=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
-        
-        if (cursorBGnd!=0x010101) {
-            g.setColor(ColorTheme.getColor(ColorTheme.CURSOR_BGND));
-            g.fillRoundRect(0, 0, width, height, 6, 6);
-            //fillSemiTransRect(g, ColorTheme.getColor(ColorTheme.CURSOR_BGND), 200, 1, 1, width-2, height-2);
-        }
-
-        if (cursorOutline!=0x010101) {
-            g.setColor(cursorOutline);
-            g.drawRoundRect(0, 0, width-1, height-1, 6, 6);
-        }
-    }
 /*
-    private void fillSemiTransRect(Graphics graph, int color, int alpha, int xPos, int yPos, int rectWidth, int rectHeight) {
-        int r1 = ((color & 0xFF0000) >> 16);
-        int g1 = ((color & 0x00FF00) >> 8);
-        int b1 = (color & 0x0000FF);
-        
-        int col = (r1 << 16) | (g1 << 8) | (b1) | (alpha << 24);
-        
-        
-        int[] alphaBuffer = new int[rectWidth*rectHeight];
-        
-        for(int i = 0; i < alphaBuffer.length; i++)
-          alphaBuffer[i] = col;
-        
-        graph.drawRGB(alphaBuffer, 0, rectWidth, xPos, yPos, rectWidth, rectHeight, true);
-
-        alphaBuffer = null;
-    }
 */
     
 

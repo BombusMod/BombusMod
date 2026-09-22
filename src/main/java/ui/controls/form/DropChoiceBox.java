@@ -30,8 +30,6 @@ import Colors.ColorTheme;
 import Fonts.FontCache;
 import images.RosterIcons;
 import java.util.Vector;
-import javax.microedition.lcdui.Font;
-import javax.microedition.lcdui.Graphics;
 import ui.IconTextElement;
 
 /**
@@ -53,10 +51,10 @@ public class DropChoiceBox
     
     private String caption="";
     
-    private Font font;
+    private Object font;
     private int fontHeight;
-    
-    private Font captionFont;
+
+    private Object captionFont;
     private int captionFontHeight;
 
     private int itemHeight=0;
@@ -68,13 +66,12 @@ public class DropChoiceBox
         super(RosterIcons.getInstance());
         this.caption=(caption==null)?"":caption;
         
-        font=FontCache.getFont(false, FontCache.roster);
-        fontHeight=font.getHeight();
+        fontHeight=FontCache.getFontHeight(false, FontCache.roster);
+        fontHeight=FontCache.getFontHeight(false, FontCache.roster);
         itemHeight=fontHeight;
         
         if (caption!=null) {
-            captionFont=FontCache.getFont(true, FontCache.msg);
-            captionFontHeight=captionFont.getHeight();
+            captionFontHeight=FontCache.getFontHeight(true, FontCache.msg);
             itemHeight+=captionFontHeight;
         }
     }
@@ -82,13 +79,13 @@ public class DropChoiceBox
     public int getCaptionLength() {
         if (caption==null) return 0;
         if (caption.equals("")) return 0;
-        return captionFont.stringWidth(caption);
+        return FontCache.getStringWidth(caption, true, FontCache.msg);
     }
 
     public int getTextLength() {
         String text=getTextValue();
         if (text.equals("")) return 0;
-        return font.stringWidth(text);
+        return FontCache.getStringWidth(text, false, FontCache.roster);
     }
 
     private String getTextValue() {
@@ -120,44 +117,6 @@ public class DropChoiceBox
     }
     
     public int getSelectedIndex() { return index; }
-    
-    public void drawItem(Graphics g, int ofs, boolean sel) {
-        colorItem=ColorTheme.getColor(ColorTheme.CONTROL_ITEM);
-        colorBorder=ColorTheme.getColor(ColorTheme.CURSOR_OUTLINE);
-        colorBGnd=ColorTheme.getColor(ColorTheme.LIST_BGND);
-
-        int width=g.getClipWidth();
-        int height=fontHeight;
-
-        int oldColor=g.getColor();
-        
-        int thisOfs=0;
-        
-        int y=0;
-        if (caption!=null) {
-            thisOfs=(getCaptionLength()>width)?-ofs:2;
-            g.setFont(captionFont);
-            FontCache.drawString(g,caption, thisOfs, y, Graphics.TOP|Graphics.LEFT);
-            y=captionFontHeight;
-        }
-
-        g.setColor(colorBGnd);
-        g.fillRect(0, y, width-1, height-1);
-
-        g.setColor((sel)?colorBorder:colorItem);
-        g.drawRect(0, y, width-1, height-1);
-
-        g.setColor(oldColor);
-        
-        if (getTextLength()>0) {
-            thisOfs=(getTextLength()>width)?-ofs+4:4;
-            g.setFont(font);
-            FontCache.drawString(g,getTextValue(), thisOfs, y, Graphics.TOP|Graphics.LEFT); 
-        }
-        
-        if (size()>1)
-            il.drawImage(g, RosterIcons.ICON_COLLAPSED_INDEX, (width-il.getHeight())-1, ((y)+height/2)-il.getHeight()/2);
-    }
     
     public int getVHeight(){
         return itemHeight;

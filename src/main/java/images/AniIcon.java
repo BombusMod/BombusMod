@@ -34,8 +34,6 @@
 package images;
 
 import Client.StaticData;
-import javax.microedition.lcdui.Graphics;
-import javax.microedition.lcdui.Image;
 import ui.ImageList;
 
 /**
@@ -49,13 +47,13 @@ public class AniIcon {
     private int currentFrame = 0;
     /** Creates a new instance of GifIcon */
 
-    public Image skin_png;
+    public Object skin_png;
 
-    protected Image resImage;
+    protected Object resImage;
     protected int height;
     protected int width;
 
-    public void drawImage(Graphics g, int x, int y) {
+    public void drawImage(Object g, int x, int y) {
         int ho = g.getClipHeight();
         int wo = g.getClipWidth();
         int xo = g.getClipX();

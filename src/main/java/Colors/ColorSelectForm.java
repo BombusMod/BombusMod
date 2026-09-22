@@ -8,7 +8,6 @@
 package Colors;
 
 import ui.controls.form.ColorSelector;
-import javax.microedition.lcdui.Graphics;
 import ui.VirtualList;
 import ui.controls.form.DefForm;
 
@@ -40,7 +39,7 @@ public final class ColorSelectForm extends DefForm {
         super.destroyView();
     }
 
-    public void drawCursor(Graphics g, int width, int height) {
+    public void drawCursor(Object g, int width, int height) {
         // prevent text selection
     }
 
