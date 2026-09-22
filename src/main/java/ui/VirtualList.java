@@ -358,7 +358,7 @@ public abstract class VirtualList {
     
     protected boolean showBalloon;
     
-    protected ComplexString mainbar;
+    public ComplexString mainbar;
     protected ComplexString infobar;
     
     private boolean wrapping = true;
@@ -435,20 +435,27 @@ public abstract class VirtualList {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < mainbar.size(); i++) {
             Object el = mainbar.elementAt(i);
-            if (el != null) {
+            if (el instanceof String) {
+                sb.append((String) el);
+            } else if (el instanceof Integer) {
+                // skip numeric elements (color codes, progress indices)
+            } else if (el != null) {
                 String s = el.toString();
-                if (s != null && !s.isEmpty()) sb.append(s);
+                // Filter out pure numeric junk
+                if (s != null && !s.matches("\\d+")) {
+                    sb.append(s);
+                }
             }
         }
         return sb.toString();
     }
 
     public void redraw() {
-        if (VirtualListController.getInstance().isActive()) {
-            VirtualListController.getInstance().notifyUpdate();
-        } else if (VirtualCanvas.getInstance().isShown()) {
+        if (VirtualCanvas.getInstance().isShown()) {
             VirtualCanvas.getInstance().repaint();
         }
+        // No Compose notify here — Timer fires every 250ms, causes scroll stutter
+        // Data changes notify via loadItemsFrom(), show(), or click handlers
      }
       
 
