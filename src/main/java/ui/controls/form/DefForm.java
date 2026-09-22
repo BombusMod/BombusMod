@@ -131,7 +131,7 @@ public class DefForm
         new MyMenu(this, menuName, RosterIcons.getInstance(), menuCommands);
     }
 
-    MenuCommand findCommand(int type) {
+    public MenuCommand findCommand(int type) {
 	int size = menuCommands.size();
 	for (int i = 0; i < size; i++) {
 	    MenuCommand item = (MenuCommand) menuCommands.elementAt(i);

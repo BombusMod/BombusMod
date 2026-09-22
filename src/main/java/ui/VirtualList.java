@@ -423,6 +423,7 @@ public abstract class VirtualList {
         parentView = VirtualCanvas.getInstance().getList();
         if (VirtualListController.getInstance().isActive()) {
             VirtualListController.getInstance().setCurrentList(this);
+            commandState();
             VirtualListController.getInstance().notifyUpdate();
         } else {
             VirtualCanvas.getInstance().show(this);
@@ -454,8 +455,6 @@ public abstract class VirtualList {
         if (VirtualCanvas.getInstance().isShown()) {
             VirtualCanvas.getInstance().repaint();
         }
-        // No Compose notify here — Timer fires every 250ms, causes scroll stutter
-        // Data changes notify via loadItemsFrom(), show(), or click handlers
      }
       
 

@@ -60,6 +60,7 @@ import io.file.transfer.TransferDispatcher;
 //#endif
 import ui.VirtualCanvas;
 import ui.VirtualElement;
+import ui.VirtualListController;
 import org.bombusmod.util.ClipBoardIO;
 import xmpp.JidUtils;
 
@@ -161,6 +162,7 @@ public class ContactMessageList extends MessageList {
     }    
 
     public final void commandState() {
+        if (contact == null) return;
         menuName = contact.toString();
         menuCommands.removeAllElements();
         if (startSelection) addMenuCommand(cmdSelect);
@@ -1023,5 +1025,26 @@ public class ContactMessageList extends MessageList {
     public void touchRightPressed(){ if (cf.swapMenu) showMenu(); else destroyView(); }
     public void touchLeftPressed(){ if (cf.swapMenu) messageEditResume(); else showMenu(); }
 
+    public void sendMessage(final String body) {
+        if (body == null || body.isEmpty() || !sd.roster.isLoggedIn()) return;
+        new Thread(new Runnable() {
+            public void run() {
+                sendMessageInternal(body);
+            }
+        }).start();
+    }
 
+    private void sendMessageInternal(String body) {
+        String id = String.valueOf((int) System.currentTimeMillis());
+        body = body.trim();
+        String from = sd.account.getNickName();
+        Msg msg = new Msg(Msg.MESSAGE_TYPE_OUT, from, null, body);
+        msg.id = id;
+        contact.addMessage(msg);
+        String comp = cf.eventComposing ? "active" : null;
+        contact.lastSendedMessage = body;
+        sd.roster.sendMessage(contact, id, body, null, comp);
+        redraw();
+        VirtualListController.getInstance().notifyUpdate();
+    }
 }
